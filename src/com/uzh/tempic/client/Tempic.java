@@ -3,14 +3,13 @@ package com.uzh.tempic.client;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.user.client.ui.*;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.gwt.user.client.DOM;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 
 /**
  * Entry point classes define <code>onModuleLoad()</code>
  */
-public class tempic implements EntryPoint {
+public class Tempic implements EntryPoint {
 
     /**
      * This is the entry point method.
@@ -22,7 +21,7 @@ public class tempic implements EntryPoint {
         button.addClickHandler(new ClickHandler() {
             public void onClick(ClickEvent event) {
                 if (label.getText().equals("")) {
-                    tempicService.App.getInstance().getMessage("Hello, World!", new MyAsyncCallback(label));
+                    TempicService.App.getInstance().getMessage("Hello, World!", new MyAsyncCallback(label));
                 } else {
                     label.setText("");
                 }

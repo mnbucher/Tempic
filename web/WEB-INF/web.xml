@@ -5,7 +5,7 @@
          version="3.1">
     <servlet>
         <servlet-name>com.uzh.tempic.tempic tempicService</servlet-name>
-        <servlet-class>com.uzh.tempic.server.tempicServiceImpl</servlet-class>
+        <servlet-class>com.uzh.tempic.server.TempicServiceImpl</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>com.uzh.tempic.tempic tempicService</servlet-name>

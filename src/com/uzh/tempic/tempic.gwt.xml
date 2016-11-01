@@ -6,10 +6,10 @@
     <inherits name='com.google.gwt.user.User'/>
 
     <!-- Specify the app entry point class.                   -->
-    <entry-point class='com.uzh.tempic.client.tempic'/>
+    <entry-point class='com.uzh.tempic.client.Tempic'/>
 
 
     <!-- Specify the app servlets.                   -->
-    <servlet path='/tempicService' class='com.uzh.tempic.server.tempicServiceImpl'/>
+    <servlet path='/tempicService' class='com.uzh.tempic.server.TempicServiceImpl'/>
 
 </module>

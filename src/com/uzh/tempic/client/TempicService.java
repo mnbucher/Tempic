@@ -5,18 +5,18 @@ import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 
 @RemoteServiceRelativePath("tempicService")
-public interface tempicService extends RemoteService {
+public interface TempicService extends RemoteService {
     // Sample interface method of remote interface
     String getMessage(String msg);
 
     /**
      * Utility/Convenience class.
-     * Use tempicService.App.getInstance() to access static instance of tempicServiceAsync
+     * Use TempicService.App.getInstance() to access static instance of tempicServiceAsync
      */
     public static class App {
-        private static tempicServiceAsync ourInstance = GWT.create(tempicService.class);
+        private static TempicServiceAsync ourInstance = GWT.create(TempicService.class);
 
-        public static synchronized tempicServiceAsync getInstance() {
+        public static synchronized TempicServiceAsync getInstance() {
             return ourInstance;
         }
     }
