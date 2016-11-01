@@ -29,4 +29,5 @@ www-test/
 
 #exclude local IDE stuff
 .idea/*
+Tempic.iml
 
