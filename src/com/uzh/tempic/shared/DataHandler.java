@@ -1,12 +1,7 @@
 package com.uzh.tempic.shared;
 
 import java.util.ArrayList;
-import java.util.Date;
 
-
-/**
- * Created by michaelziorjen on 01.11.16.
- */
 public class DataHandler {
     public ArrayList<TemperatureData> data;
 

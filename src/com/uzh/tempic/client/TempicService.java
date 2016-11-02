@@ -13,7 +13,7 @@ public interface TempicService extends RemoteService {
      * Utility/Convenience class.
      * Use TempicService.App.getInstance() to access static instance of tempicServiceAsync
      */
-    public static class App {
+    class App {
         private static TempicServiceAsync ourInstance = GWT.create(TempicService.class);
 
         public static synchronized TempicServiceAsync getInstance() {

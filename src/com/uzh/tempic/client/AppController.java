@@ -9,9 +9,6 @@ import com.uzh.tempic.client.presenter.Presenter;
 import com.uzh.tempic.client.presenter.WorldDashboardPresenter;
 import com.uzh.tempic.client.view.WorldDashboardView;
 
-/**
- * Created by michaelziorjen on 01.11.16.
- */
 public class AppController implements Presenter, ValueChangeHandler<String> {
     private final HandlerManager eventBus;
     private final TempicServiceAsync rpcService;

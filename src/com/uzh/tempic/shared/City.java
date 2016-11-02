@@ -2,9 +2,6 @@ package com.uzh.tempic.shared;
 
 import java.util.ArrayList;
 
-/**
- * Created by michaelziorjen on 01.11.16.
- */
 public class City {
     private double latitude;
     private double longitude;

@@ -8,9 +8,6 @@ import com.uzh.tempic.client.presenter.WorldDashboardPresenter;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by michaelziorjen on 01.11.16.
- */
 public class WorldDashboardView extends Composite implements WorldDashboardPresenter.Display {
     private final Button addButton;
     private final Button deleteButton;

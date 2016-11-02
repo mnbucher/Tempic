@@ -2,33 +2,30 @@ package com.uzh.tempic.shared;
 
 import java.util.Date;
 
-/**
- * Created by michaelziorjen on 01.11.16.
- */
 public class TemperatureData {
 
-    private double averageTemperatureUncertainity;
+    private double averageTemperatureUncertainty;
     private double averageTemperature;
     private Date date;
     private City city;
 
-    public TemperatureData(double averageTemperatureUncertainity, double averageTemperature, Date date) {
+    public TemperatureData(double averageTemperatureUncertainty, double averageTemperature, Date date) {
         this.averageTemperature = averageTemperature;
-        this.averageTemperatureUncertainity = averageTemperatureUncertainity;
+        this.averageTemperatureUncertainty = averageTemperatureUncertainty;
         this.city = null;
         this.date = date;
     }
 
-    public TemperatureData(double averageTemperatureUncertainity, double averageTemperature,  Date date, City city) {
+    public TemperatureData(double averageTemperatureUncertainty, double averageTemperature,  Date date, City city) {
         this.averageTemperature = averageTemperature;
-        this.averageTemperatureUncertainity = averageTemperatureUncertainity;
+        this.averageTemperatureUncertainty = averageTemperatureUncertainty;
         this.city = city;
         this.date = date;
     }
 
 
-    public double getUncertainity() {
-        return this.averageTemperatureUncertainity;
+    public double getUncertainty() {
+        return this.averageTemperatureUncertainty;
     }
 
     public double getAverageTemperature() {

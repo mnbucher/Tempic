@@ -4,17 +4,12 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.event.shared.HandlerManager;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Widget;
 import com.uzh.tempic.client.TempicServiceAsync;
-import com.uzh.tempic.client.presenter.Presenter;
 
 import java.util.List;
 
-/**
- * Created by michaelziorjen on 01.11.16.
- */
 public class WorldDashboardPresenter implements Presenter {
     public interface Display {
         HasClickHandlers getAddButton();
