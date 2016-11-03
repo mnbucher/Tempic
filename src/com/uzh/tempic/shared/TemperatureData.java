@@ -1,8 +1,9 @@
 package com.uzh.tempic.shared;
 
-import java.sql.Date;
+import java.io.Serializable;
+import java.util.Date;
 
-public class TemperatureData {
+public class TemperatureData implements Serializable {
     private Date date;
     private Double avgTemperature;
     private Double avgTemperatureUncertainty;
@@ -10,6 +11,8 @@ public class TemperatureData {
     private String country;
     private Double latitude;
     private Double longitude;
+
+    public TemperatureData() {}
 
     public TemperatureData(Date date, Double avgTemperature, Double avgTemperatureUncertainty,
                            String city, String country, Double latitude, Double longitude) {
@@ -48,5 +51,17 @@ public class TemperatureData {
 
     public Double getLongitude() {
         return longitude;
+    }
+
+    public String toString() {
+        return "TemperatureData{" +
+                "date=" + date +
+                ", avgTemperature=" + avgTemperature +
+                ", avgTemperatureUncertainty=" + avgTemperatureUncertainty +
+                ", city='" + city + '\'' +
+                ", country='" + country + '\'' +
+                ", latitude=" + latitude +
+                ", longitude=" + longitude +
+                '}';
     }
 }

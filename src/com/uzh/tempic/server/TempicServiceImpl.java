@@ -2,20 +2,56 @@ package com.uzh.tempic.server;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import com.uzh.tempic.client.TempicService;
+import com.uzh.tempic.shared.TemperatureData;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Date;
+import java.util.ArrayList;
 
+@SuppressWarnings("serial")
 public class TempicServiceImpl extends RemoteServiceServlet implements TempicService {
 
     // Implementation of sample interface method
     public String getMessage(String msg){
-        String output;
-        output = testConnection();
-        return output;
+        String output = "Hello";
+        output = output.concat(testConnection());
+        return output.concat(msg);
+    }
+
+    public ArrayList<TemperatureData> getTemperatureData() {
+        ArrayList<TemperatureData> temperatureDataArrayList = new ArrayList<>();
+
+        String selectSql = "SELECT * FROM temperature_data ORDER BY dt ASC LIMIT 100";
+        String url = "jdbc:mysql://104.199.57.151/tempic";
+        try { Class.forName("com.mysql.jdbc.Driver");
+        } catch(ClassNotFoundException e) {
+            //return null;
+        }
+        try {
+            Connection conn = DriverManager.getConnection(url,"root","T3mp!C_Y0L0");
+
+            ResultSet rs = conn.prepareStatement(selectSql).executeQuery();
+            while (rs.next()) {
+                TemperatureData tempEntry = new TemperatureData(
+                        rs.getDate("dt"),
+                        1234.5123,
+                        1234.1234,
+                        rs.getString("city"),
+                        rs.getString("country"),
+                        124.234,
+                        12345.12340);
+                temperatureDataArrayList.add(tempEntry);
+            }
+        } catch(SQLException e) {
+            //return null;
+        }
+        //ArrayList<TemperatureData> temperatureDataArrayList;
+        //temperatureDataArrayList = new ArrayList<TemperatureData>();
+        //temperatureDataArrayList.add(new TemperatureData(new Date(System.currentTimeMillis()), 1239.32, 12304.23, "t1234est", "coun4213try", 5534.12, 123.54234));
+        return temperatureDataArrayList;
     }
 
     public String testConnection()  {
