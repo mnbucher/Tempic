@@ -1,46 +1,52 @@
 package com.uzh.tempic.shared;
 
-import java.util.Date;
+import java.sql.Date;
 
 public class TemperatureData {
-
-    private double averageTemperatureUncertainty;
-    private double averageTemperature;
     private Date date;
-    private City city;
+    private Double avgTemperature;
+    private Double avgTemperatureUncertainty;
+    private String city;
+    private String country;
+    private Double latitude;
+    private Double longitude;
 
-    public TemperatureData(double averageTemperatureUncertainty, double averageTemperature, Date date) {
-        this.averageTemperature = averageTemperature;
-        this.averageTemperatureUncertainty = averageTemperatureUncertainty;
-        this.city = null;
+    public TemperatureData(Date date, Double avgTemperature, Double avgTemperatureUncertainty,
+                           String city, String country, Double latitude, Double longitude) {
         this.date = date;
-    }
-
-    public TemperatureData(double averageTemperatureUncertainty, double averageTemperature,  Date date, City city) {
-        this.averageTemperature = averageTemperature;
-        this.averageTemperatureUncertainty = averageTemperatureUncertainty;
+        this.avgTemperature = avgTemperature;
+        this.avgTemperatureUncertainty = avgTemperatureUncertainty;
         this.city = city;
-        this.date = date;
-    }
-
-
-    public double getUncertainty() {
-        return this.averageTemperatureUncertainty;
-    }
-
-    public double getAverageTemperature() {
-        return this.averageTemperature;
-    }
-
-    public City getCity() {
-        return this.city;
-    }
-
-    public void setCity(City city) {
-        this.city = city;
+        this.country = country;
+        this.latitude = latitude;
+        this.longitude = longitude;
     }
 
     public Date getDate() {
-        return this.date;
+        return date;
+    }
+
+    public Double getAvgTemperature() {
+        return avgTemperature;
+    }
+
+    public Double getAvgTemperatureUncertainty() {
+        return avgTemperatureUncertainty;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public Double getLatitude() {
+        return latitude;
+    }
+
+    public Double getLongitude() {
+        return longitude;
     }
 }
