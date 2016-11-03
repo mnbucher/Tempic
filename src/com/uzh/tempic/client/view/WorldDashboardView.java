@@ -9,18 +9,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class WorldDashboardView extends Composite implements WorldDashboardPresenter.Display {
-    private final Button addButton;
-    private final Button deleteButton;
+   // private final Button addButton;
+   // private final Button deleteButton;
 
     private HorizontalPanel wrapperTable;
     private VerticalPanel navTable;
     private VerticalPanel contentWrapperTable;
-    private FlexTable dashboardTable;
-
+    private VerticalPanel dashboardTable;
+    private HorizontalPanel filterSection;
+    private FlexTable dashboardTemperatureTable;
 
     public WorldDashboardView() {
-
-        // SET WHOLE WRAPPER
 
         // SPLIT BETWEEN NAV AND CONTENT
         wrapperTable = new HorizontalPanel();
@@ -31,7 +30,6 @@ public class WorldDashboardView extends Composite implements WorldDashboardPrese
         // CREATE NAV AND ADD TO TEMPIC_WRAPPER
         navTable = new VerticalPanel();
         navTable.getElement().setId("nav");
-
         Label logo = new Label("Tempic");
         Hyperlink linkDashboard = new Hyperlink("Dashboard", "dashboard");
         Hyperlink linkCountry = new Hyperlink("Country", "country");
@@ -40,46 +38,70 @@ public class WorldDashboardView extends Composite implements WorldDashboardPrese
         navTable.add(linkDashboard);
         navTable.add(linkCountry);
         navTable.add(linkWorldmap);
-
-
-        addButton = new Button ("Add");
-        deleteButton = new Button ("Delete");
-        // WTF, doesnt' work
-        // navTable.add(addButton);
-        // navTable.add(deleteButton);
         wrapperTable.add(navTable);
 
         // CREATE CONTENT_WRAPPER AND ADD TO TEMPIC_WRAPPER
         contentWrapperTable = new VerticalPanel();
         contentWrapperTable.getElement().setId("content_wrapper");
+
+            // ADD LABEL FOR CURRENT VIEW
+            Label currentViewLabel = new Label("Dashboard");
+            currentViewLabel.getElement().setId("currentViewLabel");
+            contentWrapperTable.add(currentViewLabel);
+
+            // ADD DASHBOARD WRAPPER
+            dashboardTable = new VerticalPanel();
+            dashboardTable.getElement().setId("dashboard_wrapper");
+
+                // ADD FILTER BAR TO DASHBOARD_WRAPPER
+                filterSection = new HorizontalPanel();
+
+                // TODO: Change to real filters
+                Label filterYearStart = new Label ("filterYearStart");
+                Label filterYearEnd = new Label ("filterYearEnd");
+                Label filterMaxUncertainity = new Label ("filterMaxUncertainity");
+                filterSection.add(filterYearStart);
+                filterSection.add(filterYearEnd);
+                filterSection.add(filterMaxUncertainity);
+                filterSection.getElement().setId("dashboard_filterSection");
+                dashboardTable.add(filterSection);
+
+                // ADD TABLE WITH REAL TEMPERATURE DATA TO DASHBOARD_WRAPPER
+                dashboardTemperatureTable = new FlexTable();
+                dashboardTemperatureTable.getElement().setId("dashboard_temperatureTable");
+                dashboardTable.add(dashboardTemperatureTable);
+
+            contentWrapperTable.add(dashboardTable);
+
         wrapperTable.add(contentWrapperTable);
 
     }
 
+    /*
     public HasClickHandlers getAddButton() {
-        return addButton;
+        //return addButton;
     }
 
     public HasClickHandlers getDeleteButton() {
-        return deleteButton;
-    }
+        //return deleteButton;
+    }*/
 
     public HasClickHandlers getList() {
-        return dashboardTable;
+        return dashboardTemperatureTable;
     }
 
     public void setData(List<String> data) {
-        dashboardTable.removeAllRows();
+        dashboardTemperatureTable.removeAllRows();
 
         for (int i = 0; i < data.size(); ++i) {
-            dashboardTable.setWidget(i, 0, new CheckBox());
-            dashboardTable.setText(i, 1, data.get(i));
+            dashboardTemperatureTable.setWidget(i, 0, new CheckBox());
+            dashboardTemperatureTable.setText(i, 1, data.get(i));
         }
     }
 
     public int getClickedRow(ClickEvent event) {
         int selectedRow = -1;
-        HTMLTable.Cell cell = dashboardTable.getCellForEvent(event);
+        HTMLTable.Cell cell = dashboardTemperatureTable.getCellForEvent(event);
 
         if (cell != null) {
             // Suppress clicks if the user is actually selecting the
@@ -96,8 +118,8 @@ public class WorldDashboardView extends Composite implements WorldDashboardPrese
     public List<Integer> getSelectedRows() {
         List<Integer> selectedRows = new ArrayList<Integer>();
 
-        for (int i = 0; i < dashboardTable.getRowCount(); ++i) {
-            CheckBox checkBox = (CheckBox)dashboardTable.getWidget(i, 0);
+        for (int i = 0; i < dashboardTemperatureTable.getRowCount(); ++i) {
+            CheckBox checkBox = (CheckBox)dashboardTemperatureTable.getWidget(i, 0);
             if (checkBox.getValue()) {
                 selectedRows.add(i);
             }

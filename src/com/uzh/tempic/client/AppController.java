@@ -82,7 +82,7 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 
             // TODO: CHANGE TO SINGLEVIEW WHEN VIEW WAS CREATED (MICHI)
             if (token.equals("country")) {
-                presenter = new WorldDashboardPresenter(rpcService, eventBus, new WorldMapView());
+                presenter = new WorldMapPresenter(rpcService, eventBus, new WorldMapView());
             }
 
             if (token.equals("worldmap")) {

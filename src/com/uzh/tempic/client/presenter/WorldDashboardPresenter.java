@@ -12,8 +12,8 @@ import java.util.List;
 
 public class WorldDashboardPresenter implements Presenter {
     public interface Display {
-        HasClickHandlers getAddButton();
-        HasClickHandlers getDeleteButton();
+       // HasClickHandlers getAddButton();
+       // HasClickHandlers getDeleteButton();
         HasClickHandlers getList();
         void setData(List<String> data);
         int getClickedRow(ClickEvent event);
@@ -35,7 +35,7 @@ public class WorldDashboardPresenter implements Presenter {
         Binds the interactions in the view to the presenter / eventbus
      */
     public void bind() {
-        display.getAddButton().addClickHandler(new ClickHandler() {
+        /*display.getAddButton().addClickHandler(new ClickHandler() {
             public void onClick(ClickEvent event) {
                 // eventBus.fireEvent(new AddContactEvent());
             }
@@ -45,7 +45,7 @@ public class WorldDashboardPresenter implements Presenter {
             public void onClick(ClickEvent event) {
                 // deleteSelectedContacts();
             }
-        });
+        });*/
     }
     /*
         Renders the view
