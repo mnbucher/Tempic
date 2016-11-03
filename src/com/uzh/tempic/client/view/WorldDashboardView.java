@@ -11,45 +11,49 @@ import java.util.List;
 public class WorldDashboardView extends Composite implements WorldDashboardPresenter.Display {
     private final Button addButton;
     private final Button deleteButton;
+
+    private HorizontalPanel wrapperTable;
+    private VerticalPanel navTable;
+    private VerticalPanel contentWrapperTable;
     private FlexTable dashboardTable;
-    private final FlexTable contentTable;
+
 
     public WorldDashboardView() {
-        DecoratorPanel contentTableDecorator = new DecoratorPanel();
-        initWidget(contentTableDecorator);
-        contentTableDecorator.setWidth("100%");
-        contentTableDecorator.setWidth("18em");
 
-        contentTable = new FlexTable();
-        contentTable.setWidth("100%");
-        contentTable.getCellFormatter().addStyleName(0, 0, "worldDashboard-ListContainer");
-        contentTable.getCellFormatter().setWidth(0, 0, "100%");
-        contentTable.getFlexCellFormatter().setVerticalAlignment(0, 0, DockPanel.ALIGN_TOP);
+        // SET WHOLE WRAPPER
 
-        // Create the menu
-        //
-        HorizontalPanel hPanel = new HorizontalPanel();
-        hPanel.setBorderWidth(0);
-        hPanel.setSpacing(0);
-        hPanel.setHorizontalAlignment(HorizontalPanel.ALIGN_LEFT);
-        addButton = new Button("Add");
-        hPanel.add(addButton);
-        deleteButton = new Button("Delete");
-        hPanel.add(deleteButton);
-        contentTable.getCellFormatter().addStyleName(0, 0, "worldDashboard-ListMenu");
-        contentTable.setWidget(0, 0, hPanel);
+        // SPLIT BETWEEN NAV AND CONTENT
+        wrapperTable = new HorizontalPanel();
+        initWidget(wrapperTable);
+        wrapperTable.setWidth("100%");
+        wrapperTable.getElement().setId("tempic_wrapper");
 
-        // Create the contacts list
-        //
-        dashboardTable = new FlexTable();
-        dashboardTable.setCellSpacing(0);
-        dashboardTable.setCellPadding(0);
-        dashboardTable.setWidth("100%");
-        dashboardTable.addStyleName("worldDashboard-ListContents");
-        dashboardTable.getColumnFormatter().setWidth(0, "15px");
-        contentTable.setWidget(1, 0, dashboardTable);
+        // CREATE NAV AND ADD TO TEMPIC_WRAPPER
+        navTable = new VerticalPanel();
+        navTable.getElement().setId("nav");
 
-        contentTableDecorator.add(contentTable);
+        Label logo = new Label("Tempic");
+        Hyperlink linkDashboard = new Hyperlink("Dashboard", "dashboard");
+        Hyperlink linkCountry = new Hyperlink("Country", "country");
+        Hyperlink linkWorldmap = new Hyperlink("Worldmap", "worldmap");
+        navTable.add(logo);
+        navTable.add(linkDashboard);
+        navTable.add(linkCountry);
+        navTable.add(linkWorldmap);
+
+
+        addButton = new Button ("Add");
+        deleteButton = new Button ("Delete");
+        // WTF, doesnt' work
+        // navTable.add(addButton);
+        // navTable.add(deleteButton);
+        wrapperTable.add(navTable);
+
+        // CREATE CONTENT_WRAPPER AND ADD TO TEMPIC_WRAPPER
+        contentWrapperTable = new VerticalPanel();
+        contentWrapperTable.getElement().setId("content_wrapper");
+        wrapperTable.add(contentWrapperTable);
+
     }
 
     public HasClickHandlers getAddButton() {

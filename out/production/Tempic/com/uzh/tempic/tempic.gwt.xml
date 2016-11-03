@@ -8,7 +8,6 @@
     <!-- Specify the app entry point class.                   -->
     <entry-point class='com.uzh.tempic.client.Tempic'/>
 
-
     <!-- Specify the app servlets.                   -->
     <servlet path='/tempicService' class='com.uzh.tempic.server.TempicServiceImpl'/>
 

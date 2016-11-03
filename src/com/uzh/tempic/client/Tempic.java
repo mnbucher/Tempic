@@ -22,7 +22,7 @@ public class Tempic implements EntryPoint {
         TempicServiceAsync rpcService = GWT.create(TempicService.class);
         HandlerManager eventBus = new HandlerManager(null);
         AppController appViewer = new AppController(rpcService, eventBus);
-        appViewer.go(RootPanel.get());
+        appViewer.go(RootPanel.get("tempic"));
 
 
         /*final Button button = new Button("Click me");

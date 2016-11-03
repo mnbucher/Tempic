@@ -8,6 +8,9 @@ import com.google.gwt.user.client.ui.HasWidgets;
 import com.uzh.tempic.client.presenter.Presenter;
 import com.uzh.tempic.client.presenter.WorldDashboardPresenter;
 import com.uzh.tempic.client.view.WorldDashboardView;
+import com.uzh.tempic.client.presenter.WorldMapPresenter;
+import com.uzh.tempic.client.view.WorldMapView;
+// TODO: ADD SINGLE PRESENTER AND VIEW HERE
 
 public class AppController implements Presenter, ValueChangeHandler<String> {
     private final HandlerManager eventBus;
@@ -22,6 +25,8 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 
     private void bind() {
         History.addValueChangeHandler(this);
+
+        // TODO: ADD EVENTHANDLERS TO EVENTBUS
         /*
         eventBus.addHandler(AddContactEvent.TYPE, new AddContactEventHandler() {
             public void onAddContact(AddContactEvent event) {
@@ -50,17 +55,22 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 
 
     public void go(final HasWidgets container) {
+
         this.container = container;
 
+        // If Token is empty create new Item
         if ("".equals(History.getToken())) {
             History.newItem("dashboard");
         }
+
         else {
             History.fireCurrentHistoryState();
         }
+
     }
 
     public void onValueChange(ValueChangeEvent<String> event) {
+
         String token = event.getValue();
 
         if (token != null) {
@@ -69,10 +79,21 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
             if (token.equals("dashboard")) {
                 presenter = new WorldDashboardPresenter(rpcService, eventBus, new WorldDashboardView());
             }
+
+            // TODO: CHANGE TO SINGLEVIEW WHEN VIEW WAS CREATED (MICHI)
+            if (token.equals("country")) {
+                presenter = new WorldDashboardPresenter(rpcService, eventBus, new WorldMapView());
+            }
+
+            if (token.equals("worldmap")) {
+                presenter = new WorldMapPresenter(rpcService, eventBus, new WorldMapView());
+            }
+
             if (presenter != null) {
                 presenter.go(container);
             }
         }
+
     }
 
 }
