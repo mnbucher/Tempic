@@ -9,13 +9,13 @@ public class TemperatureData implements Serializable {
     private Double avgTemperatureUncertainty;
     private String city;
     private String country;
-    private Double latitude;
-    private Double longitude;
+    private String latitude;
+    private String longitude;
 
     public TemperatureData() {}
 
     public TemperatureData(Date date, Double avgTemperature, Double avgTemperatureUncertainty,
-                           String city, String country, Double latitude, Double longitude) {
+                           String city, String country, String latitude, String longitude) {
         this.date = date;
         this.avgTemperature = avgTemperature;
         this.avgTemperatureUncertainty = avgTemperatureUncertainty;
@@ -45,11 +45,11 @@ public class TemperatureData implements Serializable {
         return country;
     }
 
-    public Double getLatitude() {
+    public String getLatitude() {
         return latitude;
     }
 
-    public Double getLongitude() {
+    public String getLongitude() {
         return longitude;
     }
 

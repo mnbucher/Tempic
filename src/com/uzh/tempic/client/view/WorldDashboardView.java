@@ -1,8 +1,10 @@
 package com.uzh.tempic.client.view;
 
+import com.google.gwt.cell.client.NumberCell;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.user.cellview.client.CellTable;
+import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.TextColumn;
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.Composite;
@@ -13,14 +15,12 @@ import com.google.gwt.user.client.ui.Hyperlink;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.view.client.ListDataProvider;
 import com.uzh.tempic.client.presenter.WorldDashboardPresenter;
 import com.uzh.tempic.shared.TemperatureData;
 
-import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
-
-import static com.sun.xml.internal.fastinfoset.alphabet.BuiltInRestrictedAlphabets.table;
 
 public class WorldDashboardView extends Composite implements WorldDashboardPresenter.Display {
     // private final Button addButton;
@@ -90,6 +90,64 @@ public class WorldDashboardView extends Composite implements WorldDashboardPrese
 
         wrapperTable.add(contentWrapperTable);
 
+        // Create a CellTable.
+        temperatureDataTable = new CellTable<>();
+
+        // Set Range to something higher than 15
+        temperatureDataTable.setVisibleRange(1, 500);
+
+        // Create Country column.
+        TextColumn<TemperatureData> countryColumn = new TextColumn<TemperatureData>() {
+            @Override
+            public String getValue(TemperatureData temperatureData) {
+                return temperatureData.getCountry();
+            }
+        };
+        // Create City column.
+        TextColumn<TemperatureData> cityColumn = new TextColumn<TemperatureData>() {
+            @Override
+            public String getValue(TemperatureData temperatureData) {
+                return temperatureData.getCity();
+            }
+        };
+        // Create Longitude column.
+        Column<TemperatureData, Number> avgTempColumn = new Column<TemperatureData, Number>(new NumberCell()) {
+            @Override
+            public Number getValue(TemperatureData temperatureData) {
+                return temperatureData.getAvgTemperature();
+            }
+        };
+        // Create Latitude column.
+        Column<TemperatureData, Number> avgTempUncertaintyColumn = new Column<TemperatureData, Number>(new NumberCell()) {
+            @Override
+            public Number getValue(TemperatureData temperatureData) {
+                return temperatureData.getAvgTemperatureUncertainty();
+            }
+        };
+        // Create Longitude column.
+        TextColumn<TemperatureData> longitudeColumn = new TextColumn<TemperatureData>() {
+            @Override
+            public String getValue(TemperatureData temperatureData) {
+                return temperatureData.getLongitude();
+            }
+        };
+        // Create Latitude column.
+        TextColumn<TemperatureData> latitudeColumn = new TextColumn<TemperatureData>() {
+            @Override
+            public String getValue(TemperatureData temperatureData) {
+                return temperatureData.getLatitude();
+            }
+        };
+
+        // Add the columns.
+        temperatureDataTable.addColumn(countryColumn, "Country");
+        temperatureDataTable.addColumn(cityColumn, "City");
+        temperatureDataTable.addColumn(avgTempColumn, "Average Temp");
+        temperatureDataTable.addColumn(avgTempUncertaintyColumn, "Uncertainty");
+        temperatureDataTable.addColumn(longitudeColumn, "Longitude");
+        temperatureDataTable.addColumn(latitudeColumn, "Latitude");
+        // Add it to the panel.
+        dashboardTable.add(temperatureDataTable);
     }
 
     /*
@@ -107,7 +165,6 @@ public class WorldDashboardView extends Composite implements WorldDashboardPrese
 
     public void setData(List<String> data) {
         dashboardTemperatureTable.removeAllRows();
-
         for (int i = 0; i < data.size(); ++i) {
             dashboardTemperatureTable.setWidget(i, 0, new CheckBox());
             dashboardTemperatureTable.setText(i, 1, data.get(i));
@@ -115,34 +172,20 @@ public class WorldDashboardView extends Composite implements WorldDashboardPrese
     }
 
     public void setTemperatureTableData(ArrayList<TemperatureData> temperatureData) {
+        if(temperatureData == null) { return; }
+        // Create a data provider.
+        ListDataProvider<TemperatureData> dataProvider = new ListDataProvider<TemperatureData>();
 
-        // Create a CellTable.
-        temperatureDataTable = new CellTable<TemperatureData>();
-
-        // Create Country column.
-        TextColumn<TemperatureData> countryColumn = new TextColumn<TemperatureData>() {
-            @Override
-            public String getValue(TemperatureData temperatureData) {
-                return temperatureData.getCountry();
-            }
-        };
-        // Create City column.
-        TextColumn<TemperatureData> cityColumn = new TextColumn<TemperatureData>() {
-            @Override
-            public String getValue(TemperatureData temperatureData) {
-                return temperatureData.getCity();
-            }
-        };
-
-        // Add the columns.
-        temperatureDataTable.addColumn(countryColumn, "Country");
-        temperatureDataTable.addColumn(cityColumn, "City");
+        // Connect the table to the data provider.
+        dataProvider.addDataDisplay(temperatureDataTable);
 
         // Push the data into the widget.
-        temperatureDataTable.setRowData(0, temperatureData);
+        //temperatureDataTable.setRowData(0, temperatureData);
+        List<TemperatureData> tempData = dataProvider.getList();
+        for (TemperatureData tData : temperatureData) {
+            tempData.add(tData);
+        }
 
-        // Add it to the root panel.
-        dashboardTable.add(temperatureDataTable);
     }
     public int getClickedRow(ClickEvent event) {
         int selectedRow = -1;

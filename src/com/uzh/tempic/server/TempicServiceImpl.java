@@ -24,7 +24,7 @@ public class TempicServiceImpl extends RemoteServiceServlet implements TempicSer
     public ArrayList<TemperatureData> getTemperatureData() {
         ArrayList<TemperatureData> temperatureDataArrayList = new ArrayList<>();
 
-        String selectSql = "SELECT * FROM temperature_data ORDER BY dt ASC LIMIT 100";
+        String selectSql = "SELECT * FROM temperature_data ORDER BY dt ASC LIMIT 500";
         String url = "jdbc:mysql://104.199.57.151/tempic";
         try { Class.forName("com.mysql.jdbc.Driver");
         } catch(ClassNotFoundException e) {
@@ -37,12 +37,12 @@ public class TempicServiceImpl extends RemoteServiceServlet implements TempicSer
             while (rs.next()) {
                 TemperatureData tempEntry = new TemperatureData(
                         rs.getDate("dt"),
-                        1234.5123,
-                        1234.1234,
+                        rs.getDouble("average_temperature"),
+                        rs.getDouble("average_temperature_uncertainity"),
                         rs.getString("city"),
                         rs.getString("country"),
-                        124.234,
-                        12345.12340);
+                        rs.getString("latitude"),
+                        rs.getString("longitude"));
                 temperatureDataArrayList.add(tempEntry);
             }
         } catch(SQLException e) {
