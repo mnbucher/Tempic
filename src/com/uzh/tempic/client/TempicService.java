@@ -13,6 +13,7 @@ public interface TempicService extends RemoteService {
     String getMessage(String msg);
 
     ArrayList<TemperatureData> getTemperatureData();
+    ArrayList<String> getCountryNames();
 
     /**
      * Utility/Convenience class.

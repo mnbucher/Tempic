@@ -1,7 +1,11 @@
 .filterSection {
-    border: 1px solid red;
+    margin: 10px 0px;
 }
 
 .filterSection .gwt-Label {
+    margin-right: 10px;
+}
+
+.filterSection .gwt-ListBox {
     margin-right: 10px;
 }

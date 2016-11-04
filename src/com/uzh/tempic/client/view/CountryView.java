@@ -61,10 +61,9 @@ public class CountryView extends Composite implements CountryPresenter.Display {
 
 
         // TODO: Implement Dropdown Changes
-        // TODO: Fill with actual data
         countryListBox = new ListBox();
-        countryListBox.addItem("Switzerland");
-        countryListBox.addItem("Russia");
+        countryListBox.setMultipleSelect(true);
+        countryListBox.setStyleName("chosen-select");
         contentWrapperTable.add(countryListBox);
 
         // ADD Country WRAPPER
@@ -77,23 +76,23 @@ public class CountryView extends Composite implements CountryPresenter.Display {
 
         Label filterYearStart = new Label ("From:");
         fromYearListBox = new ListBox();
-        fromYearListBox.addItem("1995");
-        fromYearListBox.addItem("1996");
-
-
+        for(int i = 1743; i < 2013; i++) {
+            fromYearListBox.addItem(String.valueOf(i));
+        }
 
         Label filterYearEnd = new Label ("To:");
 
-
         toYearListBox = new ListBox();
-        toYearListBox.addItem("1997");
-        toYearListBox.addItem("1998");
+        for(int i = 1743; i < 2013; i++) {
+            toYearListBox.addItem(String.valueOf(i));
+        }
 
         Label filterMaxUncertainity = new Label ("Uncertainty:");
         uncertaintyListBox = new ListBox();
         uncertaintyListBox.addItem("< 3");
         uncertaintyListBox.addItem("< 1");
 
+        // between 0.04 and
         filterSection.add(filterYearStart);
         filterSection.add(fromYearListBox);
         filterSection.add(filterYearEnd);
@@ -175,71 +174,26 @@ public class CountryView extends Composite implements CountryPresenter.Display {
         countryTable.add(temperatureDataTable);
     }
 
+
+
+    public void setCountryNames(ArrayList<String> countryNames) {
+        for (int i = 0; i < countryNames.size(); ++i) {
+            countryListBox.addItem(countryNames.get(i));
+        }
+        js();
+    }
+
+    @Override
+    public void onAttach() {
+        super.onAttach();
+    }
+
     /*
-    public HasClickHandlers getAddButton() {
-        //return addButton;
-    }
-
-    public HasClickHandlers getDeleteButton() {
-        //return deleteButton;
-    }*/
-
-    public HasClickHandlers getList() {
-        return dashboardTemperatureTable;
-    }
-
-    public void setData(List<String> data) {
-        dashboardTemperatureTable.removeAllRows();
-        for (int i = 0; i < data.size(); ++i) {
-            dashboardTemperatureTable.setWidget(i, 0, new CheckBox());
-            dashboardTemperatureTable.setText(i, 1, data.get(i));
-        }
-    }
-
-    public void setTemperatureTableData(ArrayList<TemperatureData> temperatureData) {
-        if(temperatureData == null) { return; }
-        // Create a data provider.
-        ListDataProvider<TemperatureData> dataProvider = new ListDataProvider<TemperatureData>();
-
-        // Connect the table to the data provider.
-        dataProvider.addDataDisplay(temperatureDataTable);
-
-        // Push the data into the widget.
-        //temperatureDataTable.setRowData(0, temperatureData);
-        List<TemperatureData> tempData = dataProvider.getList();
-        for (TemperatureData tData : temperatureData) {
-            tempData.add(tData);
-        }
-
-    }
-    public int getClickedRow(ClickEvent event) {
-        int selectedRow = -1;
-        HTMLTable.Cell cell = dashboardTemperatureTable.getCellForEvent(event);
-
-        if (cell != null) {
-            // Suppress clicks if the user is actually selecting the
-            //  check box
-            //
-            if (cell.getCellIndex() > 0) {
-                selectedRow = cell.getRowIndex();
-            }
-        }
-
-        return selectedRow;
-    }
-
-    public List<Integer> getSelectedRows() {
-        List<Integer> selectedRows = new ArrayList<Integer>();
-
-        for (int i = 0; i < dashboardTemperatureTable.getRowCount(); ++i) {
-            CheckBox checkBox = (CheckBox)dashboardTemperatureTable.getWidget(i, 0);
-            if (checkBox.getValue()) {
-                selectedRows.add(i);
-            }
-        }
-
-        return selectedRows;
-    }
+     JSNI allows us to use native JS code inside JAVA
+     */
+    private static native void js() /*-{
+        $wnd.jQuery('.chosen-select').chosen();
+    }-*/;
 
     public Widget asWidget() {
         return this;

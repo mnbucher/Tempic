@@ -17,13 +17,8 @@ import java.util.List;
  * Created by michaelziorjen on 04.11.16.
  */
 public class CountryPresenter implements Presenter {
-    List<TemperatureData> temperatureData;
     public interface Display {
-        HasClickHandlers getList();
-        void setData(List<String> data);
-        void setTemperatureTableData(ArrayList<TemperatureData> temperatureData);
-        int getClickedRow(ClickEvent event);
-        List<Integer> getSelectedRows();
+        void setCountryNames(ArrayList<String> countryNames);
         Widget asWidget();
     }
 
@@ -41,6 +36,7 @@ public class CountryPresenter implements Presenter {
         Binds the interactions in the view to the presenter / eventbus
      */
     public void bind() {
+
     }
     /*
         Renders the view (adds the view to the root DOM Element specified by the AppController
@@ -55,14 +51,13 @@ public class CountryPresenter implements Presenter {
         Gets the data from the model
      */
     private void fetchCountryData() {
-        rpcService.getTemperatureData(new AsyncCallback<ArrayList<TemperatureData>>() {
-            public void onSuccess(ArrayList<TemperatureData> result) {
-
+        rpcService.getCountryNames(new AsyncCallback<ArrayList<String>>() {
+            public void onSuccess(ArrayList<String> result) {
                 // pass the Data to the View
-                display.setTemperatureTableData(result);
+                display.setCountryNames(result);
             }
             public void onFailure(Throwable caught) {
-                Window.alert("Unable to fetch the worlds temperature data");
+                Window.alert("Unable to fetch the Country names data");
             }
         });
     }

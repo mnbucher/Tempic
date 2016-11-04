@@ -53,6 +53,31 @@ public class TempicServiceImpl extends RemoteServiceServlet implements TempicSer
         //temperatureDataArrayList.add(new TemperatureData(new Date(System.currentTimeMillis()), 1239.32, 12304.23, "t1234est", "coun4213try", 5534.12, 123.54234));
         return temperatureDataArrayList;
     }
+    /*
+        Returns all the Names of the Countries from the DB in Ascending Order.
+     */
+    public ArrayList<String> getCountryNames() {
+        ArrayList<String> countryNames = new ArrayList<>();
+
+        String selectSql = "SELECT country FROM temperature_data GROUP BY country ASC";
+        String url = "jdbc:mysql://104.199.57.151/tempic";
+        try { Class.forName("com.mysql.jdbc.Driver");
+        } catch(ClassNotFoundException e) {
+            //return null;
+        }
+        try {
+            Connection conn = DriverManager.getConnection(url,"root","T3mp!C_Y0L0");
+
+            ResultSet rs = conn.prepareStatement(selectSql).executeQuery();
+            while (rs.next()) {
+                String countryName = rs.getString("country");
+                countryNames.add(countryName);
+            }
+        } catch(SQLException e) {
+
+        }
+        return countryNames;
+    }
 
     public String testConnection()  {
         String output = "Shit didn't work";

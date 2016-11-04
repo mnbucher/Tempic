@@ -8,4 +8,5 @@ import java.util.ArrayList;
 public interface TempicServiceAsync {
     void getMessage(String msg, AsyncCallback<String> async);
     void getTemperatureData(AsyncCallback<ArrayList<TemperatureData>> callback);
+    void getCountryNames(AsyncCallback<ArrayList<String>> callback);
 }
