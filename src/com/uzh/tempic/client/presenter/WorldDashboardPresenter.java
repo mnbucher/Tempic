@@ -67,39 +67,13 @@ public class WorldDashboardPresenter implements Presenter {
     private void fetchWorldDashboardData() {
         rpcService.getTemperatureData(new AsyncCallback<ArrayList<TemperatureData>>() {
             public void onSuccess(ArrayList<TemperatureData> result) {
-                Window.alert(result.toString());
+                //Window.alert(result.toString());
                 display.setTemperatureTableData(result);
             }
             public void onFailure(Throwable caught) {
                 Window.alert("Unable to fetch the worlds temperature data");
             }
         });
-        /*rpcService.getMessage("test", new AsyncCallback<String>() {
-            public void onSuccess(String result) {
-                Window.alert(result);
-            }
-            public void onFailure(Throwable caught) {
-                Window.alert("Unable to get the message");
-            }
-        });*/
-       /* rpcService.getWorldDashboardData(new AsyncCallback<ArrayList<TemperatureData>>() {
-            public void onSuccess(ArrayList<TemperatureData> result) {
-                contactDetails = result;
-                sortContactDetails();
-                List<String> data = new ArrayList<String>();
-
-                for (int i = 0; i < result.size(); ++i) {
-                    data.add(contactDetails.get(i).getDisplayName());
-                }
-
-                display.setData(data);
-            }
-
-            public void onFailure(Throwable caught) {
-                Window.alert("Error fetching contact details");
-            }
-        });
-        */
     }
 
 }
