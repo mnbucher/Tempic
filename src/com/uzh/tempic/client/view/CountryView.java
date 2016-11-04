@@ -6,15 +6,7 @@ import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.TextColumn;
-import com.google.gwt.user.client.ui.CheckBox;
-import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.FlexTable;
-import com.google.gwt.user.client.ui.HTMLTable;
-import com.google.gwt.user.client.ui.HorizontalPanel;
-import com.google.gwt.user.client.ui.Hyperlink;
-import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.VerticalPanel;
-import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.user.client.ui.*;
 import com.google.gwt.view.client.ListDataProvider;
 import com.uzh.tempic.client.presenter.CountryPresenter;
 import com.uzh.tempic.client.presenter.WorldDashboardPresenter;
@@ -28,10 +20,14 @@ public class CountryView extends Composite implements CountryPresenter.Display {
     private HorizontalPanel wrapperTable;
     private VerticalPanel navTable;
     private VerticalPanel contentWrapperTable;
-    private VerticalPanel dashboardTable;
+    private VerticalPanel countryTable;
     private HorizontalPanel filterSection;
     private FlexTable dashboardTemperatureTable;
     private CellTable temperatureDataTable;
+    private ListBox countryListBox;
+    private ListBox fromYearListBox;
+    private ListBox toYearListBox;
+    private ListBox uncertaintyListBox;
 
     public CountryView() {
 
@@ -63,29 +59,59 @@ public class CountryView extends Composite implements CountryPresenter.Display {
         currentViewLabel.getElement().setId("currentViewLabel");
         contentWrapperTable.add(currentViewLabel);
 
-        // ADD DASHBOARD WRAPPER
-        dashboardTable = new VerticalPanel();
-        dashboardTable.getElement().setId("dashboard_wrapper");
+
+        // TODO: Implement Dropdown Changes
+        // TODO: Fill with actual data
+        countryListBox = new ListBox();
+        countryListBox.addItem("Switzerland");
+        countryListBox.addItem("Russia");
+        contentWrapperTable.add(countryListBox);
+
+        // ADD Country WRAPPER
+        countryTable = new VerticalPanel();
+        countryTable.getElement().setId("dashboard_wrapper");
 
         // ADD FILTER BAR TO DASHBOARD_WRAPPER
         filterSection = new HorizontalPanel();
+        filterSection.setStyleName("filterSection");
 
-        // TODO: Change to real filters
-        Label filterYearStart = new Label ("filterYearStart");
-        Label filterYearEnd = new Label ("filterYearEnd");
-        Label filterMaxUncertainity = new Label ("filterMaxUncertainity");
+        Label filterYearStart = new Label ("From:");
+        fromYearListBox = new ListBox();
+        fromYearListBox.addItem("1995");
+        fromYearListBox.addItem("1996");
+
+
+
+        Label filterYearEnd = new Label ("To:");
+
+
+        toYearListBox = new ListBox();
+        toYearListBox.addItem("1997");
+        toYearListBox.addItem("1998");
+
+        Label filterMaxUncertainity = new Label ("Uncertainty:");
+        uncertaintyListBox = new ListBox();
+        uncertaintyListBox.addItem("< 3");
+        uncertaintyListBox.addItem("< 1");
+
         filterSection.add(filterYearStart);
+        filterSection.add(fromYearListBox);
         filterSection.add(filterYearEnd);
+        filterSection.add(toYearListBox);
         filterSection.add(filterMaxUncertainity);
-        filterSection.getElement().setId("dashboard_filterSection");
-        dashboardTable.add(filterSection);
+        filterSection.add(uncertaintyListBox);
+
+
+
+        filterSection.getElement().setId("country_filterSection");
+        countryTable.add(filterSection);
 
         // ADD TABLE WITH REAL TEMPERATURE DATA TO DASHBOARD_WRAPPER
         dashboardTemperatureTable = new FlexTable();
         dashboardTemperatureTable.getElement().setId("dashboard_temperatureTable");
-        dashboardTable.add(dashboardTemperatureTable);
+        countryTable.add(dashboardTemperatureTable);
 
-        contentWrapperTable.add(dashboardTable);
+        contentWrapperTable.add(countryTable);
 
         wrapperTable.add(contentWrapperTable);
 
@@ -146,7 +172,7 @@ public class CountryView extends Composite implements CountryPresenter.Display {
         temperatureDataTable.addColumn(longitudeColumn, "Longitude");
         temperatureDataTable.addColumn(latitudeColumn, "Latitude");
         // Add it to the panel.
-        dashboardTable.add(temperatureDataTable);
+        countryTable.add(temperatureDataTable);
     }
 
     /*
