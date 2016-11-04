@@ -183,6 +183,22 @@ public class CountryView extends Composite implements CountryPresenter.Display {
         js();
     }
 
+    public void setTemperatureData(ArrayList<TemperatureData> temperatureData) {
+        if(temperatureData == null) { return; }
+        // Create a data provider.
+        ListDataProvider<TemperatureData> dataProvider = new ListDataProvider<TemperatureData>();
+
+        // Connect the table to the data provider.
+        dataProvider.addDataDisplay(temperatureDataTable);
+
+        // Push the data into the widget.
+        //temperatureDataTable.setRowData(0, temperatureData);
+        List<TemperatureData> tempData = dataProvider.getList();
+        for (TemperatureData tData : temperatureData) {
+            tempData.add(tData);
+        }
+    }
+
     @Override
     public void onAttach() {
         super.onAttach();

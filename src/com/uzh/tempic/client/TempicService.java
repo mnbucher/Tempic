@@ -14,6 +14,7 @@ public interface TempicService extends RemoteService {
 
     ArrayList<TemperatureData> getTemperatureData();
     ArrayList<String> getCountryNames();
+    ArrayList<TemperatureData> getDataForCountries(ArrayList<String> countryNames);
 
     /**
      * Utility/Convenience class.

@@ -19,6 +19,7 @@ import java.util.List;
 public class CountryPresenter implements Presenter {
     public interface Display {
         void setCountryNames(ArrayList<String> countryNames);
+        void setTemperatureData(ArrayList<TemperatureData> result);
         Widget asWidget();
     }
 
@@ -46,6 +47,7 @@ public class CountryPresenter implements Presenter {
         container.clear();
         container.add(display.asWidget());
         fetchCountryData();
+        fetchTemperatureData();
     }
     /*
         Gets the data from the model
@@ -57,8 +59,24 @@ public class CountryPresenter implements Presenter {
                 display.setCountryNames(result);
             }
             public void onFailure(Throwable caught) {
-                Window.alert("Unable to fetch the Country names data");
+                Window.alert("Unable to fetch the country names.");
             }
+        });
+    }
+
+    private void fetchTemperatureData() {
+        ArrayList<String> defaultNames = new ArrayList<String>();
+        defaultNames.add("Zurich");
+        rpcService.getDataForCountries(defaultNames, new AsyncCallback<ArrayList<TemperatureData>>() {
+            public void onSuccess(ArrayList<TemperatureData> result) {
+                display.setTemperatureData(result);
+            }
+
+            public void onFailure(Throwable caught) {
+                Window.alert("Unable to fetch the temperature data for the countries.");
+            }
+
+
         });
     }
 
