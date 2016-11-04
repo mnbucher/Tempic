@@ -1,3 +1,7 @@
+.filterSection {
+    border: 1px solid red;
+}
+
 .filterSection .gwt-Label {
     margin-right: 10px;
 }
