@@ -75,7 +75,11 @@ body, td, a, div, .p {
 }
 
 #nav {
+    width: 25vw;
+}
 
+#content_wrapper {
+    width: 75vw;
 }
 
 .nav_td {
