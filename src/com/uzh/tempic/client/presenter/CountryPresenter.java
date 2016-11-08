@@ -1,7 +1,5 @@
 package com.uzh.tempic.client.presenter;
 
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -11,11 +9,11 @@ import com.uzh.tempic.client.TempicServiceAsync;
 import com.uzh.tempic.shared.TemperatureData;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Arrays;
+import java.util.logging.Logger;
 
-/**
- * Created by michaelziorjen on 04.11.16.
- */
+import static java.util.logging.Level.SEVERE;
+
 public class CountryPresenter implements Presenter {
     public interface Display {
         void setCountryNames(ArrayList<String> countryNames);
@@ -66,9 +64,12 @@ public class CountryPresenter implements Presenter {
 
     private void fetchTemperatureData() {
         ArrayList<String> defaultNames = new ArrayList<String>();
-        defaultNames.add("Zurich");
+        defaultNames.addAll(Arrays.asList("China", "Chile", "Brazil", "Burma"));
         rpcService.getDataForCountries(defaultNames, new AsyncCallback<ArrayList<TemperatureData>>() {
             public void onSuccess(ArrayList<TemperatureData> result) {
+                Logger logger = Logger.getLogger("NameOfYourLogger");
+                logger.log(SEVERE, result.toString());
+
                 display.setTemperatureData(result);
             }
 

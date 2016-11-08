@@ -1,15 +1,21 @@
 package com.uzh.tempic.client.view;
 
 import com.google.gwt.cell.client.NumberCell;
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.HasClickHandlers;
+import com.google.gwt.event.dom.client.ChangeEvent;
+import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.TextColumn;
-import com.google.gwt.user.client.ui.*;
+import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.Hyperlink;
+import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.ListBox;
+import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.ListDataProvider;
 import com.uzh.tempic.client.presenter.CountryPresenter;
-import com.uzh.tempic.client.presenter.WorldDashboardPresenter;
 import com.uzh.tempic.shared.TemperatureData;
 
 import java.util.ArrayList;
@@ -64,6 +70,14 @@ public class CountryView extends Composite implements CountryPresenter.Display {
         countryListBox = new ListBox();
         countryListBox.setMultipleSelect(true);
         countryListBox.setStyleName("chosen-select");
+
+        countryListBox.addChangeHandler(new ChangeHandler() {
+            @Override
+            public void onChange(ChangeEvent event) {
+                onChangeBody(countryListBox);
+            }
+        });
+
         contentWrapperTable.add(countryListBox);
 
         // ADD Country WRAPPER
@@ -181,6 +195,10 @@ public class CountryView extends Composite implements CountryPresenter.Display {
             countryListBox.addItem(countryNames.get(i));
         }
         js();
+    }
+
+    public void onChangeBody(ListBox lb) {
+        setTemperatureData(countryListBox.getSelectedValue());
     }
 
     public void setTemperatureData(ArrayList<TemperatureData> temperatureData) {

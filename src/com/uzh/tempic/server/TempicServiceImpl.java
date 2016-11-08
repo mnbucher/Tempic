@@ -75,7 +75,7 @@ public class TempicServiceImpl extends RemoteServiceServlet implements TempicSer
         return countryNames;
     }
     /*
-        Doesnt work yet because of IN statement
+        Doesn't work yet because of IN statement
      */
     public ArrayList<TemperatureData> getDataForCountries(ArrayList<String> countryNames) {
         ArrayList<TemperatureData> temperatureData = new ArrayList<>();
@@ -83,10 +83,10 @@ public class TempicServiceImpl extends RemoteServiceServlet implements TempicSer
 
         String inStatement = "";
         for(int i = 0; i < countryNames.size() - 1; i++) {
-            inStatement = inStatement.concat("?,");
+            inStatement = inStatement.concat("'" + countryNames.get(i) + "',");
         }
-        inStatement = inStatement.concat("?");
-        String selectSql = "SELECT * FROM temperature_data WHERE country IN(" + inStatement + ")  ORDER BY country ASC dt ASC";
+        inStatement = inStatement.concat("'" + countryNames.get(countryNames.size()-1) + "'");
+        String selectSql = "SELECT * FROM temperature_data WHERE country IN(" + inStatement + ") ORDER BY country ASC, dt ASC";
         String url = "jdbc:mysql://104.199.57.151/tempic";
         try { Class.forName("com.mysql.jdbc.Driver");
         } catch(ClassNotFoundException e) {
@@ -96,7 +96,7 @@ public class TempicServiceImpl extends RemoteServiceServlet implements TempicSer
             Connection conn = DriverManager.getConnection(url,"root","T3mp!C_Y0L0");
             PreparedStatement getData = conn.prepareStatement(selectSql);
             for(int i = 0; i < countryNames.size(); i++) {
-                getData.setString(i,countryNames.get(i));
+                //getData.setString(i,countryNames.get(i));
             }
 
             ResultSet rs = getData.executeQuery();
