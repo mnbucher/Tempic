@@ -1,5 +1,8 @@
 package com.uzh.tempic.client.presenter;
 
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -18,6 +21,7 @@ public class CountryPresenter implements Presenter {
     public interface Display {
         void setCountryNames(ArrayList<String> countryNames);
         void setTemperatureData(ArrayList<TemperatureData> result);
+        HasClickHandlers getFilterButton();
         Widget asWidget();
     }
 
@@ -35,7 +39,11 @@ public class CountryPresenter implements Presenter {
         Binds the interactions in the view to the presenter / eventbus
      */
     public void bind() {
-
+        display.getFilterButton().addClickHandler(new ClickHandler() {
+            public void onClick(ClickEvent event) {
+                Window.alert("Button clicked, yayy!");
+            }
+        });
     }
     /*
         Renders the view (adds the view to the root DOM Element specified by the AppController

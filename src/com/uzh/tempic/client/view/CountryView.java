@@ -3,6 +3,7 @@ package com.uzh.tempic.client.view;
 import com.google.gwt.cell.client.NumberCell;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
+import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.TextColumn;
@@ -152,7 +153,9 @@ public class CountryView extends Composite implements CountryPresenter.Display {
         countryTable.add(temperatureDataTable);
     }
 
-
+    public HasClickHandlers getFilterButton() {
+        return filterBtn;
+    }
 
     public void setCountryNames(ArrayList<String> countryNames) {
         for (int i = 0; i < countryNames.size(); ++i) {

@@ -23,3 +23,28 @@ Models are shared on the server and on the client. They belong to the package **
 
 ### Views
 All Views belong to the package **com.uzh.client.view**.
+
+### Handling Events
+Every UI element that the presenter should now about (in order to react to events) should be returned by a function declared inside the presenter's **display interface**:
+```java
+public interface Display {
+    HasClickHandlers getFilterButton();
+}
+```
+
+In the presenter's **bind** method we can then attach an event handler to the UI elements returned by the view:
+```java
+public void bind() {
+    display.getFilterButton().addClickHandler(new ClickHandler() {
+        public void onClick(ClickEvent event) {
+            Window.alert("Button clicked, yayy!");
+        }
+    });
+}
+```
+In the view itself we need to define a function which returns the object to the presenter:
+```java
+public HasClickHandlers getFilterButton() {
+    return filterBtn;
+}
+```
