@@ -33,9 +33,9 @@ public class WorldMapPresenter implements Presenter {
 
     private final TempicServiceAsync rpcService;
     private final HandlerManager eventBus;
-    private final WorldMapPresenter.Display display;
+    private final Display display;
 
-    public WorldMapPresenter(TempicServiceAsync rpcService, HandlerManager eventBus, WorldMapPresenter.Display view) {
+    public WorldMapPresenter(TempicServiceAsync rpcService, HandlerManager eventBus, Display view) {
         this.rpcService = rpcService;
         this.eventBus = eventBus;
         this.display = view;

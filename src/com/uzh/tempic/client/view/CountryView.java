@@ -31,36 +31,9 @@ public class CountryView extends Composite implements CountryPresenter.Display {
 
     public CountryView() {
 
-        // SPLIT BETWEEN NAV AND CONTENT
-        wrapperTable = new HorizontalPanel();
+        // CREATE NAV AND APPLY LAYOUT
+        WrapperTable wrapperTable = new WrapperTable("country");
         initWidget(wrapperTable);
-        wrapperTable.setWidth("100%");
-        wrapperTable.getElement().setId("tempic_wrapper");
-
-        // CREATE NAV AND ADD TO TEMPIC_WRAPPER
-        navTable = new VerticalPanel();
-        navTable.getElement().setId("nav");
-        Label logo = new Label("Tempic");
-        Hyperlink linkDashboard = new Hyperlink("Dashboard", "dashboard");
-        Hyperlink linkCountry = new Hyperlink("Country", "country");
-        Hyperlink linkWorldmap = new Hyperlink("Worldmap", "worldmap");
-        navTable.add(logo);
-        navTable.add(linkDashboard);
-        navTable.add(linkCountry);
-        navTable.add(linkWorldmap);
-        wrapperTable.add(navTable);
-
-        // CREATE CONTENT_WRAPPER AND ADD TO TEMPIC_WRAPPER
-        contentWrapperTable = new VerticalPanel();
-        contentWrapperTable.getElement().setId("content_wrapper");
-
-        // ADD LABEL FOR CURRENT VIEW
-        Label currentViewLabel = new Label("Country");
-        currentViewLabel.getElement().setId("currentViewLabel");
-        contentWrapperTable.add(currentViewLabel);
-
-
-
 
         // ADD Country WRAPPER
         countryTable = new VerticalPanel();
@@ -117,9 +90,7 @@ public class CountryView extends Composite implements CountryPresenter.Display {
         dashboardTemperatureTable.getElement().setId("dashboard_temperatureTable");
         countryTable.add(dashboardTemperatureTable);
 
-        contentWrapperTable.add(countryTable);
-
-        wrapperTable.add(contentWrapperTable);
+        wrapperTable.contentWrapperTable.add(countryTable);
 
         // Create a CellTable.
         temperatureDataTable = new CellTable<>();

@@ -23,18 +23,35 @@ body, td, a, div, .p {
     height: 100%;
 }
 
-#nav {
-    width: 25vw;
+#currentViewLabel {
+    font-size: 1.309em;
+    padding: 1.118em 2em;
+    border-bottom: 1px solid #c2c2c2;
 }
 
 #content_wrapper {
     width: 75vw;
 }
 
-.nav_td {
-    background-color: #303030;
-    color: #ffffff;
+#dashboard_wrapper {
+    padding: 2.618em;
+    display: block;
     overflow: hidden;
+    background-color: #f2f2f2;
+}
+
+#dashboard_wrapper tbody:first-child {
+    background-color: #fff;
+    padding: 2em;
+    display: block;
+    border: 1px solid #e2e2e2;
+    border-radius: 5px;
+}
+
+#dashboard_wrapper tbody tr td table tbody:first-child {
+    padding: 0;
+    border: none;
+    border-radius: none;
 }
 
 .contentWrapper_td {

@@ -20,10 +20,9 @@ public class WorldMapView extends Composite implements WorldMapPresenter.Display
 
     public WorldMapView(){
 
-        DecoratorPanel contentTableDecorator = new DecoratorPanel();
-        initWidget(contentTableDecorator);
-        contentTableDecorator.setWidth("100%");
-        contentTableDecorator.setWidth("18em");
+        // CREATE NAV AND APPLY LAYOUT
+        WrapperTable wrapperTable = new WrapperTable("worldmap");
+        initWidget(wrapperTable);
 
         contentTable = new FlexTable();
         contentTable.setWidth("100%");
@@ -40,7 +39,7 @@ public class WorldMapView extends Composite implements WorldMapPresenter.Display
         contentTable.getCellFormatter().addStyleName(0, 0, "worldDashboard-ListMenu");
         contentTable.setWidget(0, 0, hPanel);
 
-        contentTableDecorator.add(contentTable);
+        wrapperTable.contentWrapperTable.add(contentTable);
 
     }
 

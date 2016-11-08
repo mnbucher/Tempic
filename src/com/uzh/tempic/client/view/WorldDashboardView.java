@@ -26,9 +26,9 @@ public class WorldDashboardView extends Composite implements WorldDashboardPrese
     // private final Button addButton;
     // private final Button deleteButton;
 
-    private HorizontalPanel wrapperTable;
-    private VerticalPanel navTable;
-    private VerticalPanel contentWrapperTable;
+   // private HorizontalPanel wrapperTable;
+   // private VerticalPanel navTable;
+   // private VerticalPanel contentWrapperTable;
     private VerticalPanel dashboardTable;
     private HorizontalPanel filterSection;
     private FlexTable dashboardTemperatureTable;
@@ -36,33 +36,9 @@ public class WorldDashboardView extends Composite implements WorldDashboardPrese
 
     public WorldDashboardView() {
 
-        // SPLIT BETWEEN NAV AND CONTENT
-        wrapperTable = new HorizontalPanel();
+        // CREATE NAV AND APPLY LAYOUT
+        WrapperTable wrapperTable = new WrapperTable("dashboard");
         initWidget(wrapperTable);
-        wrapperTable.setWidth("100%");
-        wrapperTable.getElement().setId("tempic_wrapper");
-
-        // CREATE NAV AND ADD TO TEMPIC_WRAPPER
-        navTable = new VerticalPanel();
-        navTable.getElement().setId("nav");
-        Label logo = new Label("Tempic");
-        Hyperlink linkDashboard = new Hyperlink("Dashboard", "dashboard");
-        Hyperlink linkCountry = new Hyperlink("Country", "country");
-        Hyperlink linkWorldmap = new Hyperlink("Worldmap", "worldmap");
-        navTable.add(logo);
-        navTable.add(linkDashboard);
-        navTable.add(linkCountry);
-        navTable.add(linkWorldmap);
-        wrapperTable.add(navTable);
-
-        // CREATE CONTENT_WRAPPER AND ADD TO TEMPIC_WRAPPER
-        contentWrapperTable = new VerticalPanel();
-        contentWrapperTable.getElement().setId("content_wrapper");
-
-        // ADD LABEL FOR CURRENT VIEW
-        Label currentViewLabel = new Label("Dashboard");
-        currentViewLabel.getElement().setId("currentViewLabel");
-        contentWrapperTable.add(currentViewLabel);
 
         // ADD DASHBOARD WRAPPER
         dashboardTable = new VerticalPanel();
@@ -86,9 +62,8 @@ public class WorldDashboardView extends Composite implements WorldDashboardPrese
         dashboardTemperatureTable.getElement().setId("dashboard_temperatureTable");
         dashboardTable.add(dashboardTemperatureTable);
 
-        contentWrapperTable.add(dashboardTable);
-
-        wrapperTable.add(contentWrapperTable);
+        wrapperTable.contentWrapperTable.add(dashboardTable);
+        //wrapperTable.add(contentWrapperTable);
 
         // Create a CellTable.
         temperatureDataTable = new CellTable<>();
@@ -148,6 +123,7 @@ public class WorldDashboardView extends Composite implements WorldDashboardPrese
         temperatureDataTable.addColumn(latitudeColumn, "Latitude");
         // Add it to the panel.
         dashboardTable.add(temperatureDataTable);
+
     }
 
     /*
