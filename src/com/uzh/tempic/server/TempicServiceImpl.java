@@ -77,7 +77,7 @@ public class TempicServiceImpl extends RemoteServiceServlet implements TempicSer
     /*
         Doesn't work yet because of IN statement
      */
-    public ArrayList<TemperatureData> getDataForCountries(ArrayList<String> countryNames) {
+    public ArrayList<TemperatureData> getDataForCountries(ArrayList<String> countryNames) throws Throwable {
         ArrayList<TemperatureData> temperatureData = new ArrayList<>();
 
 
@@ -90,7 +90,7 @@ public class TempicServiceImpl extends RemoteServiceServlet implements TempicSer
         String url = "jdbc:mysql://104.199.57.151/tempic";
         try { Class.forName("com.mysql.jdbc.Driver");
         } catch(ClassNotFoundException e) {
-            //return null;
+            throw(new Throwable("Error:" + e.getMessage()));
         }
         try {
             Connection conn = DriverManager.getConnection(url,"root","T3mp!C_Y0L0");

@@ -74,10 +74,8 @@ public class CountryPresenter implements Presenter {
             }
 
             public void onFailure(Throwable caught) {
-                Window.alert("Unable to fetch the temperature data for the countries.");
+                Window.alert("Error: " + caught.getMessage());
             }
-
-
         });
     }
 
