@@ -5,6 +5,11 @@ In order to connect to the Google Cloud SQL Server when running the app locally 
 We restricted the access to the server to prevent other users from querying our database.
 So any IP in the range between **89.206.0.0** and **89.206.255.255** is able to query the database (given the correct credentials were used.)
 
+## Edit Database
+In order to edit the database you'll need a MySQL Client ([Sequel Pro Mac](https://www.sequelpro.com/) or [MySQL Workbench Mac / Windows](https://dev.mysql.com/downloads/workbench/)).
+The access credentials are stored in the dropbox under **passwords.txt**. 
+
+
 ## Database Structure
 The database currently only has one table with the following columns:
 ![alt text](https://raw.githubusercontent.com/mnbucher/Tempic/master/docs/database_structure.png "Tempic Database Structure")

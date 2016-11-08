@@ -5,8 +5,10 @@ import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.ui.HasWidgets;
+import com.uzh.tempic.client.presenter.CountryPresenter;
 import com.uzh.tempic.client.presenter.Presenter;
 import com.uzh.tempic.client.presenter.WorldDashboardPresenter;
+import com.uzh.tempic.client.view.CountryView;
 import com.uzh.tempic.client.view.WorldDashboardView;
 import com.uzh.tempic.client.presenter.WorldMapPresenter;
 import com.uzh.tempic.client.view.WorldMapView;
@@ -80,9 +82,8 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
                 presenter = new WorldDashboardPresenter(rpcService, eventBus, new WorldDashboardView());
             }
 
-            // TODO: CHANGE TO SINGLEVIEW WHEN VIEW WAS CREATED (MICHI)
             if (token.equals("country")) {
-                presenter = new WorldMapPresenter(rpcService, eventBus, new WorldMapView());
+                presenter = new CountryPresenter(rpcService, eventBus, new CountryView());
             }
 
             if (token.equals("worldmap")) {
