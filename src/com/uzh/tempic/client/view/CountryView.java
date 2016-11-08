@@ -71,13 +71,6 @@ public class CountryView extends Composite implements CountryPresenter.Display {
         countryListBox.setMultipleSelect(true);
         countryListBox.setStyleName("chosen-select");
 
-        countryListBox.addChangeHandler(new ChangeHandler() {
-            @Override
-            public void onChange(ChangeEvent event) {
-                onChangeBody(countryListBox);
-            }
-        });
-
         contentWrapperTable.add(countryListBox);
 
         // ADD Country WRAPPER
@@ -195,10 +188,6 @@ public class CountryView extends Composite implements CountryPresenter.Display {
             countryListBox.addItem(countryNames.get(i));
         }
         js();
-    }
-
-    public void onChangeBody(ListBox lb) {
-        setTemperatureData(countryListBox.getSelectedValue());
     }
 
     public void setTemperatureData(ArrayList<TemperatureData> temperatureData) {
