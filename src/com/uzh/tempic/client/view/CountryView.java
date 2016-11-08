@@ -6,14 +6,7 @@ import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.TextColumn;
-import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.FlexTable;
-import com.google.gwt.user.client.ui.HorizontalPanel;
-import com.google.gwt.user.client.ui.Hyperlink;
-import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.ListBox;
-import com.google.gwt.user.client.ui.VerticalPanel;
-import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.user.client.ui.*;
 import com.google.gwt.view.client.ListDataProvider;
 import com.uzh.tempic.client.presenter.CountryPresenter;
 import com.uzh.tempic.shared.TemperatureData;
@@ -34,6 +27,7 @@ public class CountryView extends Composite implements CountryPresenter.Display {
     private ListBox fromYearListBox;
     private ListBox toYearListBox;
     private ListBox uncertaintyListBox;
+    private Button filterBtn;
 
     public CountryView() {
 
@@ -66,12 +60,7 @@ public class CountryView extends Composite implements CountryPresenter.Display {
         contentWrapperTable.add(currentViewLabel);
 
 
-        // TODO: Implement Dropdown Changes
-        countryListBox = new ListBox();
-        countryListBox.setMultipleSelect(true);
-        countryListBox.setStyleName("chosen-select");
 
-        contentWrapperTable.add(countryListBox);
 
         // ADD Country WRAPPER
         countryTable = new VerticalPanel();
@@ -80,6 +69,13 @@ public class CountryView extends Composite implements CountryPresenter.Display {
         // ADD FILTER BAR TO DASHBOARD_WRAPPER
         filterSection = new HorizontalPanel();
         filterSection.setStyleName("filterSection");
+
+        // TODO: Implement Dropdown Changes
+        countryListBox = new ListBox();
+        countryListBox.setMultipleSelect(true);
+        countryListBox.setStyleName("chosen-select");
+
+
 
         Label filterYearStart = new Label ("From:");
         fromYearListBox = new ListBox();
@@ -99,13 +95,17 @@ public class CountryView extends Composite implements CountryPresenter.Display {
         uncertaintyListBox.addItem("< 3");
         uncertaintyListBox.addItem("< 1");
 
-        // between 0.04 and
+
+        filterBtn = new Button("Filter");
+
+        filterSection.add(countryListBox);
         filterSection.add(filterYearStart);
         filterSection.add(fromYearListBox);
         filterSection.add(filterYearEnd);
         filterSection.add(toYearListBox);
         filterSection.add(filterMaxUncertainity);
         filterSection.add(uncertaintyListBox);
+        filterSection.add(filterBtn);
 
 
 
