@@ -15,8 +15,8 @@ The database currently only has one table with the following columns:
 ![alt text](https://raw.githubusercontent.com/mnbucher/Tempic/master/docs/database_structure.png "Tempic Database Structure")
 
 ## Project Structure
-### Presentators
-All Presentators belong to the package **com.uzh.client.presenter** and implement the **presenter** interface
+### Presenters
+All Presenters belong to the package **com.uzh.client.presenter** and implement the **presenter** interface
 
 ### Models
 Models are shared on the server and on the client. They belong to the package **com.uzh.client.shared**.

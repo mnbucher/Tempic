@@ -157,6 +157,19 @@ public class CountryView extends Composite implements CountryPresenter.Display {
         return filterBtn;
     }
 
+    public ListBox getCountryListBox() {
+        return countryListBox;
+    }
+
+    public ListBox getFromYearListBox() {
+        return fromYearListBox;
+    }
+    public ListBox getToYearListBox() {
+        return toYearListBox;
+    }
+    public ListBox getUncertaintyListBox() {
+        return uncertaintyListBox;
+    }
     public void setCountryNames(ArrayList<String> countryNames) {
         for (int i = 0; i < countryNames.size(); ++i) {
             countryListBox.addItem(countryNames.get(i));

@@ -7,6 +7,7 @@ import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.HasWidgets;
+import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.uzh.tempic.client.TempicServiceAsync;
 import com.uzh.tempic.shared.TemperatureData;
@@ -22,6 +23,10 @@ public class CountryPresenter implements Presenter {
         void setCountryNames(ArrayList<String> countryNames);
         void setTemperatureData(ArrayList<TemperatureData> result);
         HasClickHandlers getFilterButton();
+        ListBox getCountryListBox();
+        ListBox getFromYearListBox();
+        ListBox getToYearListBox();
+        ListBox getUncertaintyListBox();
         Widget asWidget();
     }
 
@@ -41,7 +46,30 @@ public class CountryPresenter implements Presenter {
     public void bind() {
         display.getFilterButton().addClickHandler(new ClickHandler() {
             public void onClick(ClickEvent event) {
-                Window.alert("Button clicked, yayy!");
+                /* Since GWT doesn't return more than one element from the list box we need to iterate trough all of the items in the list box */
+                ListBox countryListBox = display.getCountryListBox();
+                ListBox fromYearListBox = display.getFromYearListBox();
+                ListBox toYearListBox = display.getToYearListBox();
+                ListBox uncertaintyListBox = display.getUncertaintyListBox();
+
+                ArrayList<String> selectedValues = new ArrayList<>();
+                int fromYear = Integer.parseInt(fromYearListBox.getSelectedValue());
+                int toYear = Integer.parseInt(toYearListBox.getSelectedValue());
+                /* TODO: implement uncertainty */
+
+                for (int i = 0, l = countryListBox.getItemCount(); i < l; i++) {
+                    if (countryListBox.isItemSelected(i)) {
+                        selectedValues.add(countryListBox.getValue(i));
+                    }
+                }
+                if(selectedValues.size() == 0) {
+                    Window.alert("Please select at least one country.");
+                } else if(toYear < fromYear || fromYear > toYear) {
+                    Window.alert("Please select a valid time range.");
+                } else {
+                    /* TODO: Connect to TempicServiceImpl as soon as Sebi is done with it */
+                    Window.alert("Countries: " + selectedValues.toString() + " From: " + fromYear + " To: " + toYear);
+                }
             }
         });
     }
@@ -58,6 +86,16 @@ public class CountryPresenter implements Presenter {
     /*
         Gets the data from the model
      */
+    private void fetchTemperatureData(ArrayList<String> countries, int fromYear, int toYear) {
+
+    }
+    private void fetchTemperatureData(String country, int fromYear, int toYear) {
+        ArrayList countries;
+        countries = new ArrayList<String>();
+        countries.add(country);
+        this.fetchTemperatureData(countries,fromYear,toYear);
+    }
+
     private void fetchCountryData() {
         rpcService.getCountryNames(new AsyncCallback<ArrayList<String>>() {
             public void onSuccess(ArrayList<String> result) {
