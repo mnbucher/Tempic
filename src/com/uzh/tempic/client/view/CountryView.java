@@ -6,13 +6,16 @@ import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.Column;
+import com.google.gwt.user.cellview.client.ColumnSortEvent;
 import com.google.gwt.user.cellview.client.TextColumn;
 import com.google.gwt.user.client.ui.*;
 import com.google.gwt.view.client.ListDataProvider;
+import com.uzh.tempic.client.Tempic;
 import com.uzh.tempic.client.presenter.CountryPresenter;
 import com.uzh.tempic.shared.TemperatureData;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 public class CountryView extends Composite implements CountryPresenter.Display {
@@ -106,6 +109,8 @@ public class CountryView extends Composite implements CountryPresenter.Display {
                 return temperatureData.getCountry();
             }
         };
+        countryColumn.setSortable(true);
+
         // Create City column.
         TextColumn<TemperatureData> cityColumn = new TextColumn<TemperatureData>() {
             @Override
@@ -113,20 +118,26 @@ public class CountryView extends Composite implements CountryPresenter.Display {
                 return temperatureData.getCity();
             }
         };
-        // Create Longitude column.
+        cityColumn.setSortable(true);
+
+        // Create avg Temperature column.
         Column<TemperatureData, Number> avgTempColumn = new Column<TemperatureData, Number>(new NumberCell()) {
             @Override
             public Number getValue(TemperatureData temperatureData) {
                 return temperatureData.getAvgTemperature();
             }
         };
-        // Create Latitude column.
+        avgTempColumn.setSortable(true);
+
+        // Create uncertainity column.
         Column<TemperatureData, Number> avgTempUncertaintyColumn = new Column<TemperatureData, Number>(new NumberCell()) {
             @Override
             public Number getValue(TemperatureData temperatureData) {
                 return temperatureData.getAvgTemperatureUncertainty();
             }
         };
+        avgTempUncertaintyColumn.setSortable(true);
+
         // Create Longitude column.
         TextColumn<TemperatureData> longitudeColumn = new TextColumn<TemperatureData>() {
             @Override
@@ -134,6 +145,8 @@ public class CountryView extends Composite implements CountryPresenter.Display {
                 return temperatureData.getLongitude();
             }
         };
+        longitudeColumn.setSortable(false);
+
         // Create Latitude column.
         TextColumn<TemperatureData> latitudeColumn = new TextColumn<TemperatureData>() {
             @Override
@@ -141,6 +154,7 @@ public class CountryView extends Composite implements CountryPresenter.Display {
                 return temperatureData.getLatitude();
             }
         };
+        latitudeColumn.setSortable(false);
 
         // Add the columns.
         temperatureDataTable.addColumn(countryColumn, "Country");
@@ -151,6 +165,8 @@ public class CountryView extends Composite implements CountryPresenter.Display {
         temperatureDataTable.addColumn(latitudeColumn, "Latitude");
         // Add it to the panel.
         countryTable.add(temperatureDataTable);
+
+
     }
 
     public HasClickHandlers getFilterButton() {
@@ -191,6 +207,78 @@ public class CountryView extends Composite implements CountryPresenter.Display {
         for (TemperatureData tData : temperatureData) {
             tempData.add(tData);
         }
+        // Add a County ColumnSortEvent.ListHandler to connect sorting to the List
+        ColumnSortEvent.ListHandler<TemperatureData> countryColumnSortHandler = new ColumnSortEvent.ListHandler<TemperatureData>(tempData);
+        countryColumnSortHandler.setComparator(temperatureDataTable.getColumn(0), new Comparator<TemperatureData>(){
+            public int compare(TemperatureData a, TemperatureData b){
+                if (a == b){
+                    return 0;
+                }
+                if (a != null){
+                    return (b != null) ? a.getCountry().compareTo(b.getCountry()) : 1;
+                }
+                return -1;
+            }
+        });
+        // Add the Sorthandler to the Table
+        temperatureDataTable.addColumnSortHandler(countryColumnSortHandler);
+        // We know that the data is sorted alphabetically by default.
+        temperatureDataTable.getColumnSortList().push(temperatureDataTable.getColumn(0));
+
+        // Add a City ColumnSortEvent.ListHandler to connect sorting to the List
+        ColumnSortEvent.ListHandler<TemperatureData> cityColumnSortHandler = new ColumnSortEvent.ListHandler<TemperatureData>(tempData);
+        cityColumnSortHandler.setComparator(temperatureDataTable.getColumn(1), new Comparator<TemperatureData>(){
+            public int compare(TemperatureData a, TemperatureData b){
+                if (a == b){
+                    return 0;
+                }
+                if (a != null){
+                    return (b != null) ? a.getCity().compareTo(b.getCity()) : 1;
+                }
+                return -1;
+            }
+        });
+        // Add the Sorthandler to the Table
+        temperatureDataTable.addColumnSortHandler(cityColumnSortHandler);
+        // We know that the data is sorted alphabetically by default.
+        temperatureDataTable.getColumnSortList().push(temperatureDataTable.getColumn(1));
+
+        // Add a AvgTemperature ColumnSortEvent.ListHandler to connect sorting to the List
+        ColumnSortEvent.ListHandler<TemperatureData> avgTempColumnSortHandler = new ColumnSortEvent.ListHandler<TemperatureData>(tempData);
+        avgTempColumnSortHandler.setComparator(temperatureDataTable.getColumn(2), new Comparator<TemperatureData>(){
+            public int compare(TemperatureData a, TemperatureData b){
+                if (a == b){
+                    return 0;
+                }
+                if (a != null){
+                    return (b != null) ? a.getAvgTemperature().compareTo(b.getAvgTemperature()) : 1;
+                }
+                return -1;
+            }
+        });
+        // Add the Sorthandler to the Table
+        temperatureDataTable.addColumnSortHandler(avgTempColumnSortHandler);
+        // We know that the data is sorted increasing by default.
+        temperatureDataTable.getColumnSortList().push(temperatureDataTable.getColumn(2));
+
+        // Add a MeasurementError ColumnSortEvent.ListHandler to connect sorting to the List
+        ColumnSortEvent.ListHandler<TemperatureData> measurementErrColumnSortHandler = new ColumnSortEvent.ListHandler<TemperatureData>(tempData);
+        measurementErrColumnSortHandler.setComparator(temperatureDataTable.getColumn(3), new Comparator<TemperatureData>(){
+            public int compare(TemperatureData a, TemperatureData b){
+                if (a == b){
+                    return 0;
+                }
+                if (a != null){
+                    return (b != null) ? a.getAvgTemperatureUncertainty().compareTo(b.getAvgTemperatureUncertainty()) : 1;
+                }
+                return -1;
+            }
+        });
+        // Add the Sorthandler to the Table
+        temperatureDataTable.addColumnSortHandler(measurementErrColumnSortHandler);
+        // We know that the data is sorted increasing by default.
+        temperatureDataTable.getColumnSortList().push(temperatureDataTable.getColumn(3));
+
     }
 
     @Override
