@@ -14,9 +14,6 @@ import com.uzh.tempic.shared.TemperatureData;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.logging.Logger;
-
-import static java.util.logging.Level.SEVERE;
 
 public class CountryPresenter implements Presenter {
     public interface Display {
@@ -114,9 +111,6 @@ public class CountryPresenter implements Presenter {
         defaultNames.addAll(Arrays.asList("China", "Chile", "Brazil", "Burma"));
         rpcService.getDataForCountries(defaultNames, new AsyncCallback<ArrayList<TemperatureData>>() {
             public void onSuccess(ArrayList<TemperatureData> result) {
-                Logger logger = Logger.getLogger("NameOfYourLogger");
-                logger.log(SEVERE, result.toString());
-
                 display.setTemperatureData(result);
             }
 
