@@ -78,6 +78,7 @@ public class WorldDashboardView extends Composite implements WorldDashboardPrese
                 return temperatureData.getCountry();
             }
         };
+
         // Create City column.
         TextColumn<TemperatureData> cityColumn = new TextColumn<TemperatureData>() {
             @Override
@@ -85,20 +86,32 @@ public class WorldDashboardView extends Composite implements WorldDashboardPrese
                 return temperatureData.getCity();
             }
         };
-        // Create Longitude column.
+
+        // Create date column.
+        TextColumn<TemperatureData> dateColumn = new TextColumn<TemperatureData>() {
+            @Override
+            public String getValue(TemperatureData temperatureData) {
+                return temperatureData.getDate().toString();
+            }
+        };
+        dateColumn.setSortable(false);
+
+        // Create avg temperature column.
         Column<TemperatureData, Number> avgTempColumn = new Column<TemperatureData, Number>(new NumberCell()) {
             @Override
             public Number getValue(TemperatureData temperatureData) {
                 return temperatureData.getAvgTemperature();
             }
         };
-        // Create Latitude column.
+
+        // Create avg temperature uncertainty column.
         Column<TemperatureData, Number> avgTempUncertaintyColumn = new Column<TemperatureData, Number>(new NumberCell()) {
             @Override
             public Number getValue(TemperatureData temperatureData) {
                 return temperatureData.getAvgTemperatureUncertainty();
             }
         };
+
         // Create Longitude column.
         TextColumn<TemperatureData> longitudeColumn = new TextColumn<TemperatureData>() {
             @Override
@@ -106,6 +119,7 @@ public class WorldDashboardView extends Composite implements WorldDashboardPrese
                 return temperatureData.getLongitude();
             }
         };
+
         // Create Latitude column.
         TextColumn<TemperatureData> latitudeColumn = new TextColumn<TemperatureData>() {
             @Override
@@ -119,6 +133,7 @@ public class WorldDashboardView extends Composite implements WorldDashboardPrese
         temperatureDataTable.addColumn(cityColumn, "City");
         temperatureDataTable.addColumn(avgTempColumn, "Average Temp");
         temperatureDataTable.addColumn(avgTempUncertaintyColumn, "Uncertainty");
+        temperatureDataTable.addColumn(dateColumn, "Date");
         temperatureDataTable.addColumn(longitudeColumn, "Longitude");
         temperatureDataTable.addColumn(latitudeColumn, "Latitude");
         // Add it to the panel.

@@ -13,7 +13,7 @@ import com.google.gwt.view.client.ListDataProvider;
 import com.uzh.tempic.client.Tempic;
 import com.uzh.tempic.client.presenter.CountryPresenter;
 import com.uzh.tempic.shared.TemperatureData;
-
+import java.util.Date;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -138,6 +138,15 @@ public class CountryView extends Composite implements CountryPresenter.Display {
         };
         avgTempUncertaintyColumn.setSortable(true);
 
+        // Create date column.
+        TextColumn<TemperatureData> dateColumn = new TextColumn<TemperatureData>() {
+            @Override
+            public String getValue(TemperatureData temperatureData) {
+                return temperatureData.getDate().toString();
+            }
+        };
+        dateColumn.setSortable(false);
+
         // Create Longitude column.
         TextColumn<TemperatureData> longitudeColumn = new TextColumn<TemperatureData>() {
             @Override
@@ -161,6 +170,7 @@ public class CountryView extends Composite implements CountryPresenter.Display {
         temperatureDataTable.addColumn(cityColumn, "City");
         temperatureDataTable.addColumn(avgTempColumn, "Average Temp");
         temperatureDataTable.addColumn(avgTempUncertaintyColumn, "Uncertainty");
+        temperatureDataTable.addColumn(dateColumn, "Date");
         temperatureDataTable.addColumn(longitudeColumn, "Longitude");
         temperatureDataTable.addColumn(latitudeColumn, "Latitude");
         // Add it to the panel.

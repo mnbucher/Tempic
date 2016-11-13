@@ -125,3 +125,18 @@ td.worldDashboard-ListName {
     width: 100%;
 }
 
+.com-google-gwt-user-cellview-client-CellTable-Style-cellTableHeader {
+    border: 1px solid #d2d2d2 !important;
+    background-color: #f2f2f2;
+    padding: 0.5em 1.25em !important;
+    text-shadow: none !important;
+    color: #333 !important;
+}
+
+.com-google-gwt-user-cellview-client-CellTable-Style-cellTableCell {
+    padding: 0.5em 1em !important;
+}
+
+.com-google-gwt-user-cellview-client-CellTable-Style-cellTableSortableHeader:hover {
+    background-color: #e2e2e2;
+}
