@@ -55,7 +55,7 @@ public class CountryPresenter implements Presenter {
                 ArrayList<String> selectedValues = new ArrayList<>();
                 int fromYear = Integer.parseInt(fromYearListBox.getSelectedValue());
                 int toYear = Integer.parseInt(toYearListBox.getSelectedValue());
-                /* TODO: implement uncertainty */
+                double uncertainty = Double.parseDouble(uncertaintyListBox.getSelectedValue());
 
                 for (int i = 0, l = countryListBox.getItemCount(); i < l; i++) {
                     if (countryListBox.isItemSelected(i)) {
@@ -67,8 +67,9 @@ public class CountryPresenter implements Presenter {
                 } else if(toYear < fromYear || fromYear > toYear) {
                     Window.alert("Please select a valid time range.");
                 } else {
-                    /* TODO: Connect to TempicServiceImpl as soon as Sebi is done with it */
-                    Window.alert("Countries: " + selectedValues.toString() + " From: " + fromYear + " To: " + toYear);
+
+                    Window.alert("Countries: " + selectedValues.toString() + " From: " + fromYear + " To: " + toYear + " Uncertainty: " + uncertainty);
+                    fetchTemperatureDataFiltered(selectedValues, fromYear, toYear, uncertainty);
                 }
             }
         });
@@ -125,4 +126,12 @@ public class CountryPresenter implements Presenter {
         });
     }
 
+    private void fetchTemperatureDataFiltered(ArrayList<String> countries, int from, int to, double uncertainty) {
+        rpcService.getTemperatureDataFiltered(countries, from, to, uncertainty, new AsyncCallback<ArrayList<TemperatureData>>() {
+            public void onSuccess(ArrayList<TemperatureData> result) {
+                display.setTemperatureData(result);
+            }
+            public void onFailure(Throwable caught) { Window.alert("An error occurred while fetching the filtered temperature data:" + caught.getMessage()); }
+        });
+    }
 }

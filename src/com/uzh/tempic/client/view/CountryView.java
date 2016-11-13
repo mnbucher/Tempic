@@ -69,8 +69,8 @@ public class CountryView extends Composite implements CountryPresenter.Display {
 
         Label filterMaxUncertainity = new Label ("Uncertainty:");
         uncertaintyListBox = new ListBox();
-        uncertaintyListBox.addItem("< 3");
-        uncertaintyListBox.addItem("< 1");
+        uncertaintyListBox.addItem("< 3", "3");
+        uncertaintyListBox.addItem("< 1", "1");
 
 
         filterBtn = new Button("Filter");
@@ -187,8 +187,8 @@ public class CountryView extends Composite implements CountryPresenter.Display {
         return uncertaintyListBox;
     }
     public void setCountryNames(ArrayList<String> countryNames) {
-        for (int i = 0; i < countryNames.size(); ++i) {
-            countryListBox.addItem(countryNames.get(i));
+        for(String countryName : countryNames) {
+            countryListBox.addItem(countryName);
         }
         js();
     }

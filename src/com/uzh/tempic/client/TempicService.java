@@ -5,6 +5,7 @@ import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 import com.uzh.tempic.shared.TemperatureData;
 
+import java.sql.Array;
 import java.util.ArrayList;
 
 @RemoteServiceRelativePath("tempicService")
@@ -15,6 +16,8 @@ public interface TempicService extends RemoteService {
     ArrayList<TemperatureData> getTemperatureData();
     ArrayList<String> getCountryNames();
     ArrayList<TemperatureData> getDataForCountries(ArrayList<String> countryNames) throws Throwable;
+
+    ArrayList<TemperatureData> getTemperatureDataFiltered(ArrayList<String> countryNames, int from, int to, double uncertainty);
 
     /**
      * Utility/Convenience class.
