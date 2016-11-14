@@ -1,3 +1,11 @@
+/*
+
+
+    IMPORTANT: This class is still under construction (WIP).
+
+
+ */
+
 package com.uzh.tempic.client.presenter;
 
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -38,17 +46,17 @@ public class CityPresenter implements Presenter {
         this.display = view;
     }
 
-    // TODO: IMPLEMENT THIS SHIT
+    // TODO: IMPLEMENT THIS
     public void bind(){
 
     }
 
-    // TODO: IMPLEMENT THIS SHIT
+    // TODO: IMPLEMENT THIS
     public void fetchCityData(){
 
     }
 
-    // TODO: IMPLEMENT THIS SHIT
+    // TODO: IMPLEMENT THIS
     public void fetchTemperatureData(){
 
     }

@@ -26,6 +26,10 @@ import java.util.List;
 
 public class WorldDashboardPresenter implements Presenter {
     List<TemperatureData> temperatureData;
+
+    /**
+        The view that is driven by this presenter must implement this interface.
+    */
     public interface Display {
        // HasClickHandlers getAddButton();
        // HasClickHandlers getDeleteButton();
@@ -48,23 +52,14 @@ public class WorldDashboardPresenter implements Presenter {
     }
 
     /*
-        Binds the interactions in the view to the presenter / eventbus
+        WIP: Binds the interactions in the view to the presenter / eventbus
      */
     public void bind() {
-        /*display.getAddButton().addClickHandler(new ClickHandler() {
-            public void onClick(ClickEvent event) {
-                // eventBus.fireEvent(new AddContactEvent());
-            }
-        });
 
-        display.getDeleteButton().addClickHandler(new ClickHandler() {
-            public void onClick(ClickEvent event) {
-                // deleteSelectedContacts();
-            }
-        });*/
     }
+
     /*
-        Renders the view
+        WIP: Renders the view
      */
     public void go(final HasWidgets container) {
         bind();
