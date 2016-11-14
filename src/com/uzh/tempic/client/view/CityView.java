@@ -101,7 +101,7 @@ public class CityView extends Composite implements CityPresenter.Display{
         temperatureDataTable = new CellTable<>();
 
         // Set Range to something higher than 15
-        temperatureDataTable.setVisibleRange(1, 500);
+        temperatureDataTable.setVisibleRange(0, 500);
 
         // Create Country column.
         TextColumn<TemperatureData> countryColumn = new TextColumn<TemperatureData>() {
