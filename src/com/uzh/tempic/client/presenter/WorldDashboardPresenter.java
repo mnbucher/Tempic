@@ -66,7 +66,7 @@ public class WorldDashboardPresenter implements Presenter {
     /*
         Renders the view
      */
-    public void go(final HasWidgets container) {
+    public void go(final HasWidgets container) throws Throwable {
         bind();
         container.clear();
         container.add(display.asWidget());
@@ -76,7 +76,7 @@ public class WorldDashboardPresenter implements Presenter {
      * Calls the TempicService with a predefined set of parameters
      * to asynchronously load and display a initial set of data.
      */
-    private void fetchWorldDashboardData() {
+    private void fetchWorldDashboardData() throws Throwable {
         ArrayList<String> initialCountries = new ArrayList<String>();
         initialCountries.addAll(Arrays.asList("Angola"));
         rpcService.getTemperatureDataFiltered(initialCountries, 1900, 2000, 3, 100, new AsyncCallback<ArrayList<TemperatureData>>() {

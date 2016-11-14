@@ -67,7 +67,11 @@ public class CountryPresenter implements Presenter {
                 } else if(toYear < fromYear || fromYear > toYear) {
                     Window.alert("Please select a valid time range.");
                 } else {
-                    fetchTemperatureDataFiltered(selectedValues, fromYear, toYear, uncertainty, 100);
+                    try {
+                        fetchTemperatureDataFiltered(selectedValues, fromYear, toYear, uncertainty, 100);
+                    } catch (Throwable throwable) {
+                        throwable.printStackTrace();
+                    }
                 }
             }
         });
@@ -75,7 +79,7 @@ public class CountryPresenter implements Presenter {
     /*
         Renders the view (adds the view to the root DOM Element specified by the AppController
      */
-    public void go(final HasWidgets container) {
+    public void go(final HasWidgets container) throws Throwable {
         bind();
         container.clear();
         container.add(display.asWidget());
@@ -86,7 +90,7 @@ public class CountryPresenter implements Presenter {
     /**
      * Calls the TempicService and loads all countries in the database.
      */
-    private void fetchCountryData() {
+    private void fetchCountryData() throws Throwable {
         rpcService.getCountryNames(new AsyncCallback<ArrayList<String>>() {
             public void onSuccess(ArrayList<String> result) {
                 // pass the Data to the View
@@ -102,7 +106,7 @@ public class CountryPresenter implements Presenter {
      * Calls the TempicService with a predefined set of parameters
      * to asynchronously load and display a initial set of data.
      */
-    private void fetchTemperatureData() {
+    private void fetchTemperatureData() throws Throwable {
         ArrayList<String> initialCountries = new ArrayList<String>();
         initialCountries.addAll(Arrays.asList("China", "Chile", "Brazil", "Burma"));
         int limitTo = 100;
@@ -127,7 +131,7 @@ public class CountryPresenter implements Presenter {
      * @param uncertainty The acceptable uncertainty
      * @param limitTo The amount of rows that should be loaded
      */
-    private void fetchTemperatureDataFiltered(ArrayList<String> countries, int from, int to, double uncertainty, int limitTo) {
+    private void fetchTemperatureDataFiltered(ArrayList<String> countries, int from, int to, double uncertainty, int limitTo) throws Throwable {
         rpcService.getTemperatureDataFiltered(countries, from, to, uncertainty, limitTo, new AsyncCallback<ArrayList<TemperatureData>>() {
             public void onSuccess(ArrayList<TemperatureData> result) {
                 display.setTemperatureData(result);
