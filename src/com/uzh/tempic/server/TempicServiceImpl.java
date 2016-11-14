@@ -24,7 +24,7 @@ public class TempicServiceImpl extends RemoteServiceServlet implements TempicSer
             // Check the System properties to determine if we are running on appengine or not
             // Google App Engine sets a few system properties that will reliably be present on a remote
             // instance.
-            url = "jdbc:google:mysql://tempic-uzh:europe-west1:tempic-db/tempic"; 
+            url = "jdbc:google:mysql://tempic-uzh:europe-west1:tempic-db/tempic";
             try {
                 // Load the class that provides the new "jdbc:google:mysql://" prefix.
                 Class.forName("com.mysql.jdbc.GoogleDriver");
@@ -73,6 +73,8 @@ public class TempicServiceImpl extends RemoteServiceServlet implements TempicSer
                         rs.getString("longitude"));
                 tempData.add(tempEntry);
             }
+            rs.close();
+            conn.close();
         } catch(SQLException e) {
 
         }
@@ -94,6 +96,8 @@ public class TempicServiceImpl extends RemoteServiceServlet implements TempicSer
                 String countryName = rs.getString("country");
                 countryNames.add(countryName);
             }
+            rs.close();
+            conn.close();
         } catch(SQLException e) {}
         return countryNames;
     }
