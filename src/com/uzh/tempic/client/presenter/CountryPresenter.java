@@ -16,6 +16,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class CountryPresenter implements Presenter {
+    /**
+     * All the UI Elements the Presenter should know about and which must be implemented by the view are defined in the following display interface.
+     */
     public interface Display {
         void setCountryNames(ArrayList<String> countryNames);
         void setTemperatureData(ArrayList<TemperatureData> result);
