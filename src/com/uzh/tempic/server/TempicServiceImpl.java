@@ -24,24 +24,27 @@ public class TempicServiceImpl extends RemoteServiceServlet implements TempicSer
             // Check the System properties to determine if we are running on appengine or not
             // Google App Engine sets a few system properties that will reliably be present on a remote
             // instance.
-            url = System.getProperty("ae-cloudsql.cloudsql-database-url");
+            url = "jdbc:google:mysql://tempic-uzh:europe-west1:tempic-db/tempic"; 
             try {
                 // Load the class that provides the new "jdbc:google:mysql://" prefix.
                 Class.forName("com.mysql.jdbc.GoogleDriver");
+                conn = DriverManager.getConnection(url,"root","T3mp!C_Y0L0");
             } catch (ClassNotFoundException e) {
                 throw new Throwable("Error loading Google JDBC Driver", e);
+            } catch (SQLException e) {
+                throw new Throwable("SQL Error: " + e.getMessage(),e);
             }
         } else {
             // Set the url with the local MySQL database connection url when running locally
             url = "jdbc:mysql://104.199.57.151/tempic";
+            try {
+                Class.forName("com.mysql.jdbc.Driver");
+                conn = DriverManager.getConnection(url,"root","T3mp!C_Y0L0");
+            } catch(SQLException e) {
+                throw new Throwable("SQL error", e);
+            }
         }
-        try {
-            Class.forName("com.mysql.jdbc.Driver");
-            conn = DriverManager.getConnection(url,"root","T3mp!C_Y0L0");
-        } catch(SQLException e) {
-            throw new Throwable("SQL error", e);
-            // Handle error in frontend, by checking for null value
-        }
+
         return conn;
     }
 
@@ -70,7 +73,9 @@ public class TempicServiceImpl extends RemoteServiceServlet implements TempicSer
                         rs.getString("longitude"));
                 tempData.add(tempEntry);
             }
-        } catch(SQLException e) {}
+        } catch(SQLException e) {
+
+        }
         return tempData;
     }
 
