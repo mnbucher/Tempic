@@ -34,6 +34,8 @@ public class TempicServiceImpl extends RemoteServiceServlet implements TempicSer
      * Executes the given (SQL) query and returns a ready-to-use
      * ArrayList of TemperatureData.
      *
+     * @pre the query parameter is a valid SQL statement
+     * @post the return value tempData is the SQLs result
      * @param query the sql statement to execute
      * @return ArrayList of TemperatureData from the DB
      */
@@ -80,6 +82,8 @@ public class TempicServiceImpl extends RemoteServiceServlet implements TempicSer
      * Creates and executes a sql query and returns the result
      * as a TemperatureData ArrayList using the provided parameters.
      *
+     * @pre -
+     * @post the returned value corresponds to the actual result of the query formed with the parameters
      * @param countryNames A ArrayList containing all countryNames as Strings
      * @param from The starting year of the data set
      * @param to The last year (inclusive) of the data set
