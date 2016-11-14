@@ -1,17 +1,13 @@
 package com.uzh.tempic.test;
-
 import com.uzh.tempic.shared.TemperatureData;
 import junit.framework.TestCase;
 
 import java.util.Date;
 
-import static org.junit.Assert.*;
-
 /**
  * Created by Robin on 14.11.2016.
  */
-public class TemperatureDataTest extends TestCase{
-
+public class TemperatureDataTest extends TestCase {
 
     /* Set a Test for the Temperature Data Class */
     public void testTemperatureData(){
@@ -25,12 +21,13 @@ public class TemperatureDataTest extends TestCase{
         TemperatureData test = new TemperatureData(date, avgTemperature, avgTemperatureUncertainty, city, country, latitude, longitude);
 
         assertEquals(date, test.getDate());
-        assertEquals(avgTemperature, test.getAvgTemperature());
-        assertEquals(avgTemperatureUncertainty, test.getAvgTemperatureUncertainty());
+        assertEquals(avgTemperature, test.getAvgTemperature(), 0.001);
+        assertEquals(avgTemperatureUncertainty, test.getAvgTemperatureUncertainty(), 0.001);
         assertEquals(city, test.getCity());
         assertEquals(country, test.getCountry());
         assertEquals(latitude, test.getLatitude());
         assertEquals(longitude, test.getLongitude());
     }
+
 
 }
