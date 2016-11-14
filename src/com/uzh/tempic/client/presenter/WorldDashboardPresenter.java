@@ -62,8 +62,9 @@ public class WorldDashboardPresenter implements Presenter {
         container.add(display.asWidget());
         fetchWorldDashboardData();
     }
-    /*
-        Gets the data from the model
+    /**
+     * Calls the TempicService with a predefined set of parameters
+     * to asynchronously load and display a initial set of data.
      */
     private void fetchWorldDashboardData() {
         ArrayList<String> initialCountries = new ArrayList<String>();
