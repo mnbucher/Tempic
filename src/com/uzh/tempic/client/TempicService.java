@@ -10,11 +10,8 @@ import java.util.ArrayList;
 
 @RemoteServiceRelativePath("tempicService")
 public interface TempicService extends RemoteService {
-    ArrayList<TemperatureData> getTemperatureData();
     ArrayList<String> getCountryNames();
-    ArrayList<TemperatureData> getDataForCountries(ArrayList<String> countryNames) throws Throwable;
-
-    ArrayList<TemperatureData> getTemperatureDataFiltered(ArrayList<String> countryNames, int from, int to, double uncertainty);
+    ArrayList<TemperatureData> getTemperatureDataFiltered(ArrayList<String> countryNames, int from, int to, double uncertainty, int limitTo);
 
     /**
      * Utility/Convenience class.

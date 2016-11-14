@@ -40,7 +40,7 @@ public class CountryPresenter implements Presenter {
     /*
         Binds the interactions in the view to the presenter / eventbus
      */
-    public void bind() {
+    private void bind() {
         display.getFilterButton().addClickHandler(new ClickHandler() {
             public void onClick(ClickEvent event) {
                 /* Since GWT doesn't return more than one element from the list box we need to iterate trough all of the items in the list box */
@@ -64,9 +64,8 @@ public class CountryPresenter implements Presenter {
                 } else if(toYear < fromYear || fromYear > toYear) {
                     Window.alert("Please select a valid time range.");
                 } else {
-
                     Window.alert("Countries: " + selectedValues.toString() + " From: " + fromYear + " To: " + toYear + " Uncertainty: " + uncertainty);
-                    fetchTemperatureDataFiltered(selectedValues, fromYear, toYear, uncertainty);
+                    fetchTemperatureDataFiltered(selectedValues, fromYear, toYear, uncertainty, 100);
                 }
             }
         });
@@ -80,18 +79,6 @@ public class CountryPresenter implements Presenter {
         container.add(display.asWidget());
         fetchCountryData();
         fetchTemperatureData();
-    }
-    /*
-        Gets the data from the model
-     */
-    private void fetchTemperatureData(ArrayList<String> countries, int fromYear, int toYear) {
-
-    }
-    private void fetchTemperatureData(String country, int fromYear, int toYear) {
-        ArrayList countries;
-        countries = new ArrayList<String>();
-        countries.add(country);
-        this.fetchTemperatureData(countries,fromYear,toYear);
     }
 
     private void fetchCountryData() {
@@ -107,21 +94,21 @@ public class CountryPresenter implements Presenter {
     }
 
     private void fetchTemperatureData() {
-        ArrayList<String> defaultNames = new ArrayList<String>();
-        defaultNames.addAll(Arrays.asList("China", "Chile", "Brazil", "Burma"));
-        rpcService.getDataForCountries(defaultNames, new AsyncCallback<ArrayList<TemperatureData>>() {
+        ArrayList<String> initialCountries = new ArrayList<String>();
+        initialCountries.addAll(Arrays.asList("China", "Chile", "Brazil", "Burma"));
+        int limitTo = 100;
+        rpcService.getTemperatureDataFiltered(initialCountries, 2013, 2013, 3, limitTo, new AsyncCallback<ArrayList<TemperatureData>>() {
             public void onSuccess(ArrayList<TemperatureData> result) {
                 display.setTemperatureData(result);
             }
-
             public void onFailure(Throwable caught) {
                 Window.alert("Error: " + caught.getMessage());
             }
         });
     }
 
-    private void fetchTemperatureDataFiltered(ArrayList<String> countries, int from, int to, double uncertainty) {
-        rpcService.getTemperatureDataFiltered(countries, from, to, uncertainty, new AsyncCallback<ArrayList<TemperatureData>>() {
+    private void fetchTemperatureDataFiltered(ArrayList<String> countries, int from, int to, double uncertainty, int limitTo) {
+        rpcService.getTemperatureDataFiltered(countries, from, to, uncertainty, limitTo, new AsyncCallback<ArrayList<TemperatureData>>() {
             public void onSuccess(ArrayList<TemperatureData> result) {
                 display.setTemperatureData(result);
             }

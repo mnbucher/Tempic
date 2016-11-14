@@ -6,21 +6,12 @@ import com.uzh.tempic.shared.TemperatureData;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
 @SuppressWarnings("serial")
 public class TempicServiceImpl extends RemoteServiceServlet implements TempicService {
-
-    // Implementation of sample interface method
-    public String getMessage(String msg){
-        String output = "Hello";
-        output = output.concat("test");
-        return output.concat(msg);
-    }
-
     /**
      * Returns a SQL Connection object which can be used to
      * interact with the database.
@@ -39,13 +30,18 @@ public class TempicServiceImpl extends RemoteServiceServlet implements TempicSer
         return conn;
     }
 
-    public ArrayList<TemperatureData> getTemperatureData() {
-        ArrayList<TemperatureData> temperatureDataArrayList = new ArrayList<>();
-
-        String selectSql = "SELECT * FROM temperature_data ORDER BY dt ASC LIMIT 500";
+    /**
+     * Executes the given (SQL) query and returns a ready-to-use
+     * ArrayList of TemperatureData.
+     *
+     * @param query the sql statement to execute
+     * @return ArrayList of TemperatureData from the DB
+     */
+    private ArrayList<TemperatureData> getTemperatureDataByQuery(String query) {
+        ArrayList<TemperatureData> tempData = new ArrayList<>();
         try {
             Connection conn = getDBConnection();
-            ResultSet rs = conn.prepareStatement(selectSql).executeQuery();
+            ResultSet rs = conn.prepareStatement(query).executeQuery();
             while (rs.next()) {
                 TemperatureData tempEntry = new TemperatureData(
                         rs.getDate("dt"),
@@ -55,13 +51,16 @@ public class TempicServiceImpl extends RemoteServiceServlet implements TempicSer
                         rs.getString("country"),
                         rs.getString("latitude"),
                         rs.getString("longitude"));
-                temperatureDataArrayList.add(tempEntry);
+                tempData.add(tempEntry);
             }
         } catch(SQLException e) {}
-        return temperatureDataArrayList;
+        return tempData;
     }
-    /*
-        Returns all the Names of the Countries from the DB in Ascending Order.
+
+    /**
+     * Returns a ArrayList of names from all countries from the DB in ascending order.
+     *
+     * @return a ArrayList of Strings containing all country names
      */
     public ArrayList<String> getCountryNames() {
         ArrayList<String> countryNames = new ArrayList<>();
@@ -78,74 +77,28 @@ public class TempicServiceImpl extends RemoteServiceServlet implements TempicSer
         return countryNames;
     }
 
-    public ArrayList<TemperatureData> getDataForCountries(ArrayList<String> countryNames) throws Throwable {
-        ArrayList<TemperatureData> temperatureData = new ArrayList<>();
-
-
+    /**
+     * Creates and executes a sql query and returns the result
+     * as a TemperatureData ArrayList using the provided parameters.
+     *
+     * @param countryNames A ArrayList containing all countryNames as Strings
+     * @param from The starting year of the data set
+     * @param to The last year (inclusive) of the data set
+     * @param uncertainty The uncertainty of the temperature data entry
+     * @param limitTo The amount of results the query should be limited to
+     * @return A ArrayList containing all relevant data according to the parameters
+     */
+    public ArrayList<TemperatureData> getTemperatureDataFiltered(ArrayList<String> countryNames, int from, int to, double uncertainty, int limitTo) {
         String inStatement = "";
         for(int i = 0; i < countryNames.size() - 1; i++) {
             inStatement = inStatement.concat("'" + countryNames.get(i) + "',");
         }
         inStatement = inStatement.concat("'" + countryNames.get(countryNames.size()-1) + "'");
-        //String selectSql = "SELECT * FROM temperature_data WHERE country IN(" + inStatement + ") ORDER BY country ASC, dt ASC";
-        String selectSql = "SELECT * FROM temperature_data WHERE country IN(" + inStatement + ") AND dt BETWEEN '2000-01-01' AND '2016-11-11' ORDER BY country ASC, dt ASC LIMIT 100";
-
-        String url = "jdbc:mysql://104.199.57.151/tempic";
-        try { Class.forName("com.mysql.jdbc.Driver");
-        } catch(ClassNotFoundException e) {
-            throw(new Throwable("Error:" + e.getMessage()));
-        }
-        try {
-            Connection conn = DriverManager.getConnection(url,"root","T3mp!C_Y0L0");
-            PreparedStatement getData = conn.prepareStatement(selectSql);
-            for(int i = 0; i < countryNames.size(); i++) {
-                //getData.setString(i,countryNames.get(i));
-            }
-
-            ResultSet rs = getData.executeQuery();
-            while (rs.next()) {
-                TemperatureData tempEntry = new TemperatureData(
-                        rs.getDate("dt"),
-                        rs.getDouble("average_temperature"),
-                        rs.getDouble("average_temperature_uncertainty"),
-                        rs.getString("city"),
-                        rs.getString("country"),
-                        rs.getString("latitude"),
-                        rs.getString("longitude"));
-                temperatureData.add(tempEntry);
-            }
-        } catch(SQLException e) {
-
-        }
-        return temperatureData;
-    }
-
-    public ArrayList<TemperatureData> getTemperatureDataFiltered(ArrayList<String> countryNames, int from, int to, double uncertainty) {
-        ArrayList<TemperatureData> temperatureData = new ArrayList<>();
-        String inStatement = "";
-        for(int i = 0; i < countryNames.size() - 1; i++) {
-            inStatement = inStatement.concat("'" + countryNames.get(i) + "',");
-        }
-        inStatement = inStatement.concat("'" + countryNames.get(countryNames.size()-1) + "'");
-        String selectSql = "SELECT * FROM temperature_data WHERE country IN(" + inStatement + ") AND " +
+        String sqlQuery = "SELECT * FROM temperature_data WHERE country IN(" + inStatement + ") AND " +
                 "dt BETWEEN '" + from + "-01-01' AND '" + to + "-12-31' AND " +
                 "average_temperature_uncertainty <= '" + uncertainty + "'" +
-                "ORDER BY country ASC, dt ASC LIMIT 100";
-        try {
-            Connection conn = getDBConnection();
-            ResultSet rs = conn.prepareStatement(selectSql).executeQuery();
-            while (rs.next()) {
-                TemperatureData tempEntry = new TemperatureData(
-                        rs.getDate("dt"),
-                        rs.getDouble("average_temperature"),
-                        rs.getDouble("average_temperature_uncertainty"),
-                        rs.getString("city"),
-                        rs.getString("country"),
-                        rs.getString("latitude"),
-                        rs.getString("longitude"));
-                temperatureData.add(tempEntry);
-            }
-        } catch(SQLException e) {}
-        return temperatureData;
+                "ORDER BY country ASC, dt ASC LIMIT " + limitTo;
+
+        return getTemperatureDataByQuery(sqlQuery);
     }
 }

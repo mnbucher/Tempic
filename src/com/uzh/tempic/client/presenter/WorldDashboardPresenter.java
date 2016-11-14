@@ -11,6 +11,7 @@ import com.uzh.tempic.client.TempicServiceAsync;
 import com.uzh.tempic.shared.TemperatureData;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class WorldDashboardPresenter implements Presenter {
@@ -65,14 +66,13 @@ public class WorldDashboardPresenter implements Presenter {
         Gets the data from the model
      */
     private void fetchWorldDashboardData() {
-        rpcService.getTemperatureData(new AsyncCallback<ArrayList<TemperatureData>>() {
+        ArrayList<String> initialCountries = new ArrayList<String>();
+        initialCountries.addAll(Arrays.asList("Angola"));
+        rpcService.getTemperatureDataFiltered(initialCountries, 1900, 2000, 3, 100, new AsyncCallback<ArrayList<TemperatureData>>() {
             public void onSuccess(ArrayList<TemperatureData> result) {
-                //Window.alert(result.toString());
                 display.setTemperatureTableData(result);
             }
-            public void onFailure(Throwable caught) {
-                Window.alert("Unable to fetch the worlds temperature data");
-            }
+            public void onFailure(Throwable caught) { Window.alert("An error occurred while fetching the worlds filtered temperature data:" + caught.getMessage()); }
         });
     }
 
