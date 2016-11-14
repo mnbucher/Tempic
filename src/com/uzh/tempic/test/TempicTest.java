@@ -3,7 +3,7 @@ package com.uzh.tempic.test;
 import com.google.gwt.junit.client.GWTTestCase;
 
 /**
- * Created by michaelziorjen on 14.11.16.
+ * Work in Progress - Test not completed because classes are not done yet
  */
 public class TempicTest extends GWTTestCase {
     public String getModuleName() {
