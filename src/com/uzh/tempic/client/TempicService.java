@@ -10,9 +10,6 @@ import java.util.ArrayList;
 
 @RemoteServiceRelativePath("tempicService")
 public interface TempicService extends RemoteService {
-    /** Sample interface method of remote interface **/
-    String getMessage(String msg);
-
     ArrayList<TemperatureData> getTemperatureData();
     ArrayList<String> getCountryNames();
     ArrayList<TemperatureData> getDataForCountries(ArrayList<String> countryNames) throws Throwable;

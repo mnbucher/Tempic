@@ -6,7 +6,6 @@ import com.uzh.tempic.shared.TemperatureData;
 import java.util.ArrayList;
 
 public interface TempicServiceAsync {
-    void getMessage(String msg, AsyncCallback<String> async);
     void getTemperatureData(AsyncCallback<ArrayList<TemperatureData>> callback);
     void getCountryNames(AsyncCallback<ArrayList<String>> callback);
     void getDataForCountries(ArrayList<String> countryNames, AsyncCallback<ArrayList<TemperatureData>> callback);
