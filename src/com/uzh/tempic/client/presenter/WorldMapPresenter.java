@@ -1,7 +1,12 @@
+/*
+
+
+    IMPORTANT: This class is still under construction (WIP).
+
+
+ */
+
 package com.uzh.tempic.client.presenter;
-
-
-// TODO: Check if any libraries are not used
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -14,10 +19,6 @@ import com.uzh.tempic.client.TempicServiceAsync;
 import com.uzh.tempic.client.presenter.Presenter;
 
 import java.util.List;
-
-/**
- * Created by Martin on 2.11.16.
- */
 
 public class WorldMapPresenter implements Presenter {
 

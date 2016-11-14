@@ -1,3 +1,11 @@
+/*
+
+
+    IMPORTANT: This class is still under construction (WIP).
+
+
+ */
+
 package com.uzh.tempic.client.presenter;
 
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -105,6 +113,9 @@ public class CountryPresenter implements Presenter {
     /**
      * Calls the TempicService with a predefined set of parameters
      * to asynchronously load and display a initial set of data.
+     *
+     * @pre rpcService != null
+     * @post
      */
     private void fetchTemperatureData() throws Throwable {
         ArrayList<String> initialCountries = new ArrayList<String>();
