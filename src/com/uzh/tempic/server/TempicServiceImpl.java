@@ -65,7 +65,6 @@ public class TempicServiceImpl extends RemoteServiceServlet implements TempicSer
     public ArrayList<String> getCountryNames() {
         ArrayList<String> countryNames = new ArrayList<>();
         String selectSql = "SELECT country FROM temperature_data GROUP BY country ASC";
-
         try {
             Connection conn = getDBConnection();
             ResultSet rs = conn.prepareStatement(selectSql).executeQuery();
@@ -97,7 +96,8 @@ public class TempicServiceImpl extends RemoteServiceServlet implements TempicSer
         String sqlQuery = "SELECT * FROM temperature_data WHERE country IN(" + inStatement + ") AND " +
                 "dt BETWEEN '" + from + "-01-01' AND '" + to + "-12-31' AND " +
                 "average_temperature_uncertainty <= '" + uncertainty + "'" +
-                "ORDER BY country ASC, dt ASC LIMIT " + limitTo;
+                "ORDER BY country ASC, dt ASC " +
+                "LIMIT " + limitTo;
 
         return getTemperatureDataByQuery(sqlQuery);
     }
