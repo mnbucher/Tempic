@@ -27,6 +27,7 @@ public class CountryView extends Composite implements CountryPresenter.Display {
     private HorizontalPanel filterSection;
     private FlexTable dashboardTemperatureTable;
     private CellTable temperatureDataTable;
+    private ListDataProvider<TemperatureData> dataProvider;
     private ListBox countryListBox;
     private ListBox fromYearListBox;
     private ListBox toYearListBox;
@@ -47,12 +48,9 @@ public class CountryView extends Composite implements CountryPresenter.Display {
         filterSection = new HorizontalPanel();
         filterSection.setStyleName("filterSection");
 
-        // TODO: Implement Dropdown Changes
         countryListBox = new ListBox();
         countryListBox.setMultipleSelect(true);
         countryListBox.setStyleName("chosen-select");
-
-
 
         Label filterYearStart = new Label ("From:");
         fromYearListBox = new ListBox();
@@ -96,11 +94,13 @@ public class CountryView extends Composite implements CountryPresenter.Display {
 
         wrapperTable.contentWrapperTable.add(countryTable);
 
-        // Create a CellTable.
+        // The list data provider allows us to change the underlying list and the table will automatically be updated.
         temperatureDataTable = new CellTable<>();
+        dataProvider = new ListDataProvider<TemperatureData>();
+        dataProvider.addDataDisplay(temperatureDataTable);
 
         // Set Range to something higher than 15
-        temperatureDataTable.setVisibleRange(1, 500);
+        temperatureDataTable.setVisibleRange(0, 500);
 
         // Create Country column.
         TextColumn<TemperatureData> countryColumn = new TextColumn<TemperatureData>() {
@@ -145,25 +145,8 @@ public class CountryView extends Composite implements CountryPresenter.Display {
                 return temperatureData.getDate().toString();
             }
         };
-        dateColumn.setSortable(false);
+        dateColumn.setSortable(true);
 
-        // Create Longitude column.
-        TextColumn<TemperatureData> longitudeColumn = new TextColumn<TemperatureData>() {
-            @Override
-            public String getValue(TemperatureData temperatureData) {
-                return temperatureData.getLongitude();
-            }
-        };
-        longitudeColumn.setSortable(false);
-
-        // Create Latitude column.
-        TextColumn<TemperatureData> latitudeColumn = new TextColumn<TemperatureData>() {
-            @Override
-            public String getValue(TemperatureData temperatureData) {
-                return temperatureData.getLatitude();
-            }
-        };
-        latitudeColumn.setSortable(false);
 
         // Add the columns.
         temperatureDataTable.addColumn(countryColumn, "Country");
@@ -171,8 +154,7 @@ public class CountryView extends Composite implements CountryPresenter.Display {
         temperatureDataTable.addColumn(avgTempColumn, "Average Temp");
         temperatureDataTable.addColumn(avgTempUncertaintyColumn, "Uncertainty");
         temperatureDataTable.addColumn(dateColumn, "Date");
-        temperatureDataTable.addColumn(longitudeColumn, "Longitude");
-        temperatureDataTable.addColumn(latitudeColumn, "Latitude");
+
         // Add it to the panel.
         countryTable.add(temperatureDataTable);
 
@@ -205,20 +187,11 @@ public class CountryView extends Composite implements CountryPresenter.Display {
 
     public void setTemperatureData(ArrayList<TemperatureData> temperatureData) {
         if(temperatureData == null) { return; }
-        // Create a data provider.
-        ListDataProvider<TemperatureData> dataProvider = new ListDataProvider<TemperatureData>();
 
-        // Connect the table to the data provider.
-        dataProvider.addDataDisplay(temperatureDataTable);
+        // Fill our dataProvider with the data from the backend
+        dataProvider.setList(temperatureData);
 
-        // Push the data into the widget.
-        //temperatureDataTable.setRowData(0, temperatureData);
-        List<TemperatureData> tempData = dataProvider.getList();
-        for (TemperatureData tData : temperatureData) {
-            tempData.add(tData);
-        }
-        // Add a County ColumnSortEvent.ListHandler to connect sorting to the List
-        ColumnSortEvent.ListHandler<TemperatureData> countryColumnSortHandler = new ColumnSortEvent.ListHandler<TemperatureData>(tempData);
+        ColumnSortEvent.ListHandler<TemperatureData> countryColumnSortHandler = new ColumnSortEvent.ListHandler<TemperatureData>(dataProvider.getList());
         countryColumnSortHandler.setComparator(temperatureDataTable.getColumn(0), new Comparator<TemperatureData>(){
             public int compare(TemperatureData a, TemperatureData b){
                 if (a == b){
@@ -232,11 +205,13 @@ public class CountryView extends Composite implements CountryPresenter.Display {
         });
         // Add the Sorthandler to the Table
         temperatureDataTable.addColumnSortHandler(countryColumnSortHandler);
-        // We know that the data is sorted alphabetically by default.
+
+        // We know that the data is sorted alphabetically by country default.
         temperatureDataTable.getColumnSortList().push(temperatureDataTable.getColumn(0));
 
-        // Add a City ColumnSortEvent.ListHandler to connect sorting to the List
-        ColumnSortEvent.ListHandler<TemperatureData> cityColumnSortHandler = new ColumnSortEvent.ListHandler<TemperatureData>(tempData);
+
+        // City ColumnSortEvent.ListHandler
+        ColumnSortEvent.ListHandler<TemperatureData> cityColumnSortHandler = new ColumnSortEvent.ListHandler<TemperatureData>(dataProvider.getList());
         cityColumnSortHandler.setComparator(temperatureDataTable.getColumn(1), new Comparator<TemperatureData>(){
             public int compare(TemperatureData a, TemperatureData b){
                 if (a == b){
@@ -248,13 +223,11 @@ public class CountryView extends Composite implements CountryPresenter.Display {
                 return -1;
             }
         });
-        // Add the Sorthandler to the Table
-        temperatureDataTable.addColumnSortHandler(cityColumnSortHandler);
-        // We know that the data is sorted alphabetically by default.
-        temperatureDataTable.getColumnSortList().push(temperatureDataTable.getColumn(1));
 
-        // Add a AvgTemperature ColumnSortEvent.ListHandler to connect sorting to the List
-        ColumnSortEvent.ListHandler<TemperatureData> avgTempColumnSortHandler = new ColumnSortEvent.ListHandler<TemperatureData>(tempData);
+        temperatureDataTable.addColumnSortHandler(cityColumnSortHandler);
+
+        // AvgTemperature ColumnSortEvent.ListHandler
+        ColumnSortEvent.ListHandler<TemperatureData> avgTempColumnSortHandler = new ColumnSortEvent.ListHandler<TemperatureData>(dataProvider.getList());
         avgTempColumnSortHandler.setComparator(temperatureDataTable.getColumn(2), new Comparator<TemperatureData>(){
             public int compare(TemperatureData a, TemperatureData b){
                 if (a == b){
@@ -266,13 +239,11 @@ public class CountryView extends Composite implements CountryPresenter.Display {
                 return -1;
             }
         });
-        // Add the Sorthandler to the Table
         temperatureDataTable.addColumnSortHandler(avgTempColumnSortHandler);
-        // We know that the data is sorted increasing by default.
-        temperatureDataTable.getColumnSortList().push(temperatureDataTable.getColumn(2));
 
-        // Add a MeasurementError ColumnSortEvent.ListHandler to connect sorting to the List
-        ColumnSortEvent.ListHandler<TemperatureData> measurementErrColumnSortHandler = new ColumnSortEvent.ListHandler<TemperatureData>(tempData);
+
+        // MeasurementError ColumnSortEvent.ListHandler
+        ColumnSortEvent.ListHandler<TemperatureData> measurementErrColumnSortHandler = new ColumnSortEvent.ListHandler<TemperatureData>(dataProvider.getList());
         measurementErrColumnSortHandler.setComparator(temperatureDataTable.getColumn(3), new Comparator<TemperatureData>(){
             public int compare(TemperatureData a, TemperatureData b){
                 if (a == b){
@@ -284,10 +255,24 @@ public class CountryView extends Composite implements CountryPresenter.Display {
                 return -1;
             }
         });
-        // Add the Sorthandler to the Table
         temperatureDataTable.addColumnSortHandler(measurementErrColumnSortHandler);
-        // We know that the data is sorted increasing by default.
-        temperatureDataTable.getColumnSortList().push(temperatureDataTable.getColumn(3));
+
+        // Date ColumnSortEvent.ListHandler
+        ColumnSortEvent.ListHandler<TemperatureData> dateColumnSortHandler = new ColumnSortEvent.ListHandler<TemperatureData>(dataProvider.getList());
+        dateColumnSortHandler.setComparator(temperatureDataTable.getColumn(4), new Comparator<TemperatureData>(){
+            public int compare(TemperatureData a, TemperatureData b){
+                if (a == b){
+                    return 0;
+                }
+                if (a != null){
+                    return (b != null) ? a.getDate().compareTo(b.getDate()) : 1;
+                }
+                return -1;
+            }
+        });
+        temperatureDataTable.addColumnSortHandler(dateColumnSortHandler);
+
+
 
     }
 
