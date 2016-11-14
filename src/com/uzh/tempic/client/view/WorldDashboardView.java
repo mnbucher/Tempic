@@ -11,7 +11,6 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HTMLTable;
 import com.google.gwt.user.client.ui.HorizontalPanel;
-import com.google.gwt.user.client.ui.Hyperlink;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -69,7 +68,7 @@ public class WorldDashboardView extends Composite implements WorldDashboardPrese
         temperatureDataTable = new CellTable<>();
 
         // Set Range to something higher than 15
-        temperatureDataTable.setVisibleRange(1, 500);
+        temperatureDataTable.setVisibleRange(0, 500);
 
         // Create Country column.
         TextColumn<TemperatureData> countryColumn = new TextColumn<TemperatureData>() {
