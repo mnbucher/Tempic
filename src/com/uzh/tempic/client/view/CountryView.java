@@ -25,7 +25,6 @@ public class CountryView extends Composite implements CountryPresenter.Display {
     private VerticalPanel contentWrapperTable;
     private VerticalPanel countryTable;
     private HorizontalPanel filterSection;
-    private FlexTable dashboardTemperatureTable;
     private CellTable temperatureDataTable;
     private ListDataProvider<TemperatureData> dataProvider;
     private ListBox countryListBox;
@@ -82,20 +81,15 @@ public class CountryView extends Composite implements CountryPresenter.Display {
         filterSection.add(uncertaintyListBox);
         filterSection.add(filterBtn);
 
-
-
         filterSection.getElement().setId("country_filterSection");
         countryTable.add(filterSection);
 
-        // ADD TABLE WITH REAL TEMPERATURE DATA TO DASHBOARD_WRAPPER
-        dashboardTemperatureTable = new FlexTable();
-        dashboardTemperatureTable.getElement().setId("dashboard_temperatureTable");
-        countryTable.add(dashboardTemperatureTable);
 
-        wrapperTable.contentWrapperTable.add(countryTable);
+
 
         // The list data provider allows us to change the underlying list and the table will automatically be updated.
         temperatureDataTable = new CellTable<>();
+        temperatureDataTable.getElement().setId("temperatureTable");
         dataProvider = new ListDataProvider<TemperatureData>();
         dataProvider.addDataDisplay(temperatureDataTable);
 
@@ -157,7 +151,7 @@ public class CountryView extends Composite implements CountryPresenter.Display {
 
         // Add it to the panel.
         countryTable.add(temperatureDataTable);
-
+        wrapperTable.contentWrapperTable.add(countryTable);
 
     }
 
