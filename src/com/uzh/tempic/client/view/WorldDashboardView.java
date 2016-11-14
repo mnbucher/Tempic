@@ -1,3 +1,13 @@
+/*
+
+
+    IMPORTANT: This class is still under construction (WIP).
+
+    We don't display the section «Dashboard» in the Menu, so it isn't accessible for the user at the moment.
+
+
+ */
+
 package com.uzh.tempic.client.view;
 
 import com.google.gwt.cell.client.NumberCell;

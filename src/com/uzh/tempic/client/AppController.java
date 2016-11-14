@@ -17,8 +17,6 @@ import com.uzh.tempic.client.view.WorldMapView;
 import com.uzh.tempic.client.view.CountryView;
 import com.uzh.tempic.client.view.CityView;
 
-// TODO: ADD SINGLE PRESENTER AND VIEW HERE
-
 public class AppController implements Presenter, ValueChangeHandler<String> {
     private final HandlerManager eventBus;
     private final TempicServiceAsync rpcService;
@@ -32,32 +30,6 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 
     private void bind() {
         History.addValueChangeHandler(this);
-
-        // TODO: ADD EVENTHANDLERS TO EVENTBUS
-        /*
-        eventBus.addHandler(AddContactEvent.TYPE, new AddContactEventHandler() {
-            public void onAddContact(AddContactEvent event) {
-                doAddNewContact();
-            }
-        });
-
-        eventBus.addHandler(EditContactEvent.TYPE, new EditContactEventHandler() {
-            public void onEditContact(EditContactEvent event) {
-                doEditContact(event.getId());
-            }
-        });
-
-        eventBus.addHandler(EditContactCancelledEvent.TYPE, new EditContactCancelledEventHandler() {
-            public void onEditContactCancelled(EditContactCancelledEvent event) {
-                doEditContactCancelled();
-            }
-        });
-
-        eventBus.addHandler(ContactUpdatedEvent.TYPE, new ContactUpdatedEventHandler() {
-            public void onContactUpdated(ContactUpdatedEvent event) {
-                doContactUpdated();
-            }
-        });*/
     }
 
 
@@ -65,9 +37,9 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
 
         this.container = container;
 
-        // If Token is empty create new Item
+        // If Token is empty set Country as default page
         if ("".equals(History.getToken())) {
-            History.newItem("dashboard");
+            History.newItem("country");
         }
 
         else {
