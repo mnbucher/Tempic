@@ -31,3 +31,5 @@ www-test/
 .idea/*
 Tempic.iml
 
+#exclude deploy artifacts
+out/
