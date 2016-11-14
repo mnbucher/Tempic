@@ -5,17 +5,15 @@ import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.ui.HasWidgets;
-
+import com.uzh.tempic.client.presenter.CityPresenter;
+import com.uzh.tempic.client.presenter.CountryPresenter;
 import com.uzh.tempic.client.presenter.Presenter;
 import com.uzh.tempic.client.presenter.WorldDashboardPresenter;
 import com.uzh.tempic.client.presenter.WorldMapPresenter;
-import com.uzh.tempic.client.presenter.CountryPresenter;
-import com.uzh.tempic.client.presenter.CityPresenter;
-
+import com.uzh.tempic.client.view.CityView;
+import com.uzh.tempic.client.view.CountryView;
 import com.uzh.tempic.client.view.WorldDashboardView;
 import com.uzh.tempic.client.view.WorldMapView;
-import com.uzh.tempic.client.view.CountryView;
-import com.uzh.tempic.client.view.CityView;
 
 public class AppController implements Presenter, ValueChangeHandler<String> {
     private final HandlerManager eventBus;
@@ -72,7 +70,11 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
             }
 
             if (presenter != null) {
-                presenter.go(container);
+                try {
+                    presenter.go(container);
+                } catch (Throwable throwable) {
+                    throwable.printStackTrace();
+                }
             }
         }
 

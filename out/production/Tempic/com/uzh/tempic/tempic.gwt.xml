@@ -17,5 +17,6 @@
     <!-- Specify the path for the sources. -->
     <source path='client'/>
     <source path='shared'/>
+    <source path='test'/>
 
 </module>

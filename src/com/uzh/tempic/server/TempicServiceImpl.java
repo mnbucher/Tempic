@@ -13,18 +13,33 @@ import java.util.ArrayList;
 @SuppressWarnings("serial")
 public class TempicServiceImpl extends RemoteServiceServlet implements TempicService {
     /**
-     * Returns a SQL Connection object which can be used to
-     * interact with the database.
+     * Returns a SQL Connection object which can be used to interact with the database.
      *
      * @return the Connection object
      */
-    private Connection getDBConnection() {
+    private Connection getDBConnection() throws Throwable {
         String url = "jdbc:mysql://104.199.57.151/tempic";
         Connection conn = null;
+        if (System.getProperty("com.google.appengine.runtime.version").startsWith("Google App Engine/")) {
+            // Check the System properties to determine if we are running on appengine or not
+            // Google App Engine sets a few system properties that will reliably be present on a remote
+            // instance.
+            url = System.getProperty("ae-cloudsql.cloudsql-database-url");
+            try {
+                // Load the class that provides the new "jdbc:google:mysql://" prefix.
+                Class.forName("com.mysql.jdbc.GoogleDriver");
+            } catch (ClassNotFoundException e) {
+                throw new Throwable("Error loading Google JDBC Driver", e);
+            }
+        } else {
+            // Set the url with the local MySQL database connection url when running locally
+            url = "jdbc:mysql://104.199.57.151/tempic";
+        }
         try {
             Class.forName("com.mysql.jdbc.Driver");
             conn = DriverManager.getConnection(url,"root","T3mp!C_Y0L0");
-        } catch(ClassNotFoundException | SQLException e) {
+        } catch(SQLException e) {
+            throw new Throwable("SQL error", e);
             // Handle error in frontend, by checking for null value
         }
         return conn;
@@ -39,7 +54,7 @@ public class TempicServiceImpl extends RemoteServiceServlet implements TempicSer
      * @param query the sql statement to execute
      * @return ArrayList of TemperatureData from the DB
      */
-    private ArrayList<TemperatureData> getTemperatureDataByQuery(String query) {
+    private ArrayList<TemperatureData> getTemperatureDataByQuery(String query) throws Throwable {
         ArrayList<TemperatureData> tempData = new ArrayList<>();
         try {
             Connection conn = getDBConnection();
@@ -64,7 +79,7 @@ public class TempicServiceImpl extends RemoteServiceServlet implements TempicSer
      *
      * @return a ArrayList of Strings containing all country names
      */
-    public ArrayList<String> getCountryNames() {
+    public ArrayList<String> getCountryNames() throws Throwable {
         ArrayList<String> countryNames = new ArrayList<>();
         String selectSql = "SELECT country FROM temperature_data GROUP BY country ASC";
         try {
@@ -91,7 +106,7 @@ public class TempicServiceImpl extends RemoteServiceServlet implements TempicSer
      * @param limitTo The amount of results the query should be limited to
      * @return A ArrayList containing all relevant data according to the parameters
      */
-    public ArrayList<TemperatureData> getTemperatureDataFiltered(ArrayList<String> countryNames, int from, int to, double uncertainty, int limitTo) {
+    public ArrayList<TemperatureData> getTemperatureDataFiltered(ArrayList<String> countryNames, int from, int to, double uncertainty, int limitTo) throws Throwable {
         String inStatement = "";
         for(int i = 0; i < countryNames.size() - 1; i++) {
             inStatement = inStatement.concat("'" + countryNames.get(i) + "',");

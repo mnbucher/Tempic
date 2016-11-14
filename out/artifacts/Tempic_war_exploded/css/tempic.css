@@ -1,0 +1,142 @@
+/** Add css rules here for your application. */
+
+/* ************ */
+
+
+h1 {
+    font-size: 2em;
+    font-weight: bold;
+    text-align: center;
+}
+
+body, html {
+    width: 100%;
+    height: 100%;
+}
+
+body, td, a, div, .p {
+    font-family: arial, sans-serif
+}
+
+#tempic_app, #tempic_wrapper, #tempic {
+    width: 100%;
+    height: 100%;
+}
+
+#currentViewLabel {
+    font-size: 1.309em;
+    padding: 1.118em 2em;
+    border-bottom: 1px solid #c2c2c2;
+}
+
+#content_wrapper {
+    width: 75vw;
+}
+
+#dashboard_wrapper {
+    padding: 2.618em;
+    display: block;
+    overflow: hidden;
+    background-color: #f2f2f2;
+}
+
+#dashboard_wrapper tbody:first-child {
+    background-color: #fff;
+    padding: 2em;
+    display: block;
+    border: 1px solid #e2e2e2;
+    border-radius: 5px;
+}
+
+#dashboard_wrapper tbody tr td table tbody:first-child {
+    padding: 0;
+    border: none;
+    border-radius: none;
+}
+
+.contentWrapper_td {
+    background-color: #f7f7f7;
+}
+
+.worldDashboard-ListRow td {
+    border-bottom: 1px solid #E2E2E2;
+}
+
+table {
+    border-collapse: collapse;
+    margin: 0px;
+    padding: 0px;
+    spacing: 0px;
+}
+
+td {
+    border-collapse: collapse;
+    margin: 0px;
+    padding: 0px;
+    spacing: 0px;
+}
+
+th, td {
+    padding: 0px;
+}
+
+td.add-contact-label {
+    text-align: left;
+}
+
+.add-contact-input {
+    border: 1px solid red;
+    border-collapse: collapse;
+    margin-right: 0px;
+    margin-left: auto;
+}
+
+td.worldDashboard-NavContainer {
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+td.worldDashboard-ListMenu {
+    background-color: #D0E4F6;
+    padding-bottom: 6px;
+}
+
+td.worldDashboard-ListContainer {
+    padding-right: 10px;
+}
+
+.worldDashboard-HeaderContainer {
+    padding-right: 10px;
+}
+
+td.worldDashboard-ListCheckbox {
+    padding-right: 4px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+}
+
+td.worldDashboard-ListName {
+    padding-top: 2px;
+    padding-bottom: 2px;
+}
+
+.gwt-DecoratorPanel .middleCenter {
+    height: 100%;
+    width: 100%;
+}
+
+.com-google-gwt-user-cellview-client-CellTable-Style-cellTableHeader {
+    border: 1px solid #d2d2d2 !important;
+    background-color: #f2f2f2;
+    padding: 0.5em 1.25em !important;
+    text-shadow: none !important;
+    color: #333 !important;
+}
+
+.com-google-gwt-user-cellview-client-CellTable-Style-cellTableCell {
+    padding: 0.5em 1em !important;
+}
+
+.com-google-gwt-user-cellview-client-CellTable-Style-cellTableSortableHeader:hover {
+    background-color: #e2e2e2;
+}
