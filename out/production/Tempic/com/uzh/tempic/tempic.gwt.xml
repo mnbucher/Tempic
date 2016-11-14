@@ -6,6 +6,7 @@
 
     <!-- Frontend logging for easy debugging -->
     <inherits name="com.google.gwt.logging.Logging"/>
+    <inherits name="com.google.gwt.junit.JUnit"/>
 
     <!-- Specify the app entry point class. -->
     <entry-point class='com.uzh.tempic.client.Tempic'/>
