@@ -64,7 +64,6 @@ public class CountryPresenter implements Presenter {
                 } else if(toYear < fromYear || fromYear > toYear) {
                     Window.alert("Please select a valid time range.");
                 } else {
-                    Window.alert("Countries: " + selectedValues.toString() + " From: " + fromYear + " To: " + toYear + " Uncertainty: " + uncertainty);
                     fetchTemperatureDataFiltered(selectedValues, fromYear, toYear, uncertainty, 100);
                 }
             }
@@ -111,6 +110,9 @@ public class CountryPresenter implements Presenter {
         rpcService.getTemperatureDataFiltered(countries, from, to, uncertainty, limitTo, new AsyncCallback<ArrayList<TemperatureData>>() {
             public void onSuccess(ArrayList<TemperatureData> result) {
                 display.setTemperatureData(result);
+                if(result.size() == 0) {
+                    Window.alert("Sorry, we couldn't find any data for the specified filters. Increase the range and try again.");
+                }
             }
             public void onFailure(Throwable caught) { Window.alert("An error occurred while fetching the filtered temperature data:" + caught.getMessage()); }
         });

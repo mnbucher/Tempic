@@ -53,14 +53,14 @@ public class CountryView extends Composite implements CountryPresenter.Display {
 
         Label filterYearStart = new Label ("From:");
         fromYearListBox = new ListBox();
-        for(int i = 1743; i < 2013; i++) {
+        for(int i = 1743; i <= 2013; i++) {
             fromYearListBox.addItem(String.valueOf(i));
         }
 
         Label filterYearEnd = new Label ("To:");
 
         toYearListBox = new ListBox();
-        for(int i = 1743; i < 2013; i++) {
+        for(int i = 1743; i <= 2013; i++) {
             toYearListBox.addItem(String.valueOf(i));
         }
 
