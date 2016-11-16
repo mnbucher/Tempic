@@ -18,9 +18,9 @@ public class TempicServiceImpl extends RemoteServiceServlet implements TempicSer
      * @return the Connection object
      */
     private Connection getDBConnection() throws Throwable {
-        String url = "jdbc:mysql://104.199.57.151/tempic";
+        String url;
         Connection conn = null;
-        if (System.getProperty("com.google.appengine.runtime.version").startsWith("Google App Engine/")) {
+        if(System.getProperty("com.google.appengine.runtime.version") != null && System.getProperty("com.google.appengine.runtime.version").startsWith("Google App Engine/")) {
             // Check the System properties to determine if we are running on appengine or not
             // Google App Engine sets a few system properties that will reliably be present on a remote
             // instance.
@@ -40,6 +40,8 @@ public class TempicServiceImpl extends RemoteServiceServlet implements TempicSer
             try {
                 Class.forName("com.mysql.jdbc.Driver");
                 conn = DriverManager.getConnection(url,"root","T3mp!C_Y0L0");
+            }catch (ClassNotFoundException e) {
+                throw new Throwable("Error loading JDBC Driver", e);
             } catch(SQLException e) {
                 throw new Throwable("SQL error", e);
             }
@@ -98,7 +100,9 @@ public class TempicServiceImpl extends RemoteServiceServlet implements TempicSer
             }
             rs.close();
             conn.close();
-        } catch(SQLException e) {}
+        } catch(SQLException e) {
+            throw new Throwable("SQL Exception: ",e);
+        }
         return countryNames;
     }
 
@@ -119,7 +123,9 @@ public class TempicServiceImpl extends RemoteServiceServlet implements TempicSer
             }
             rs.close();
             conn.close();
-        } catch(SQLException e) {}
+        } catch(SQLException e) {
+            throw new Throwable("SQL Error:",e);
+        }
         return cityNames;
     }
 
