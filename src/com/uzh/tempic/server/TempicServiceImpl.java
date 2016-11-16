@@ -103,6 +103,27 @@ public class TempicServiceImpl extends RemoteServiceServlet implements TempicSer
     }
 
     /**
+     * Returns a ArrayList of names from all cities from the DB in ascending order.
+     *
+     * @return a ArrayList of Strings containing all city names
+     */
+    public ArrayList<String> getCityNames() throws Throwable {
+        ArrayList<String> cityNames = new ArrayList<>();
+        String selectSql = "SELECT city FROM temperature_data GROUP BY city ASC";
+        try {
+            Connection conn = getDBConnection();
+            ResultSet rs = conn.prepareStatement(selectSql).executeQuery();
+            while (rs.next()) {
+                String cityName = rs.getString("city");
+                cityNames.add(cityName);
+            }
+            rs.close();
+            conn.close();
+        } catch(SQLException e) {}
+        return cityNames;
+    }
+
+    /**
      * Creates and executes a sql query and returns the result
      * as a TemperatureData ArrayList using the provided parameters.
      *
