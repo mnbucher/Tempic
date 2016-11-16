@@ -32,12 +32,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class WorldDashboardView extends Composite implements WorldDashboardPresenter.Display {
-    // private final Button addButton;
-    // private final Button deleteButton;
 
-   // private HorizontalPanel wrapperTable;
-   // private VerticalPanel navTable;
-   // private VerticalPanel contentWrapperTable;
     private VerticalPanel dashboardTable;
     private HorizontalPanel filterSection;
     private FlexTable dashboardTemperatureTable;

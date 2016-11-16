@@ -140,3 +140,11 @@ td.worldDashboard-ListName {
 .com-google-gwt-user-cellview-client-CellTable-Style-cellTableSortableHeader:hover {
     background-color: #e2e2e2;
 }
+
+div#googlemap:first-child {
+    height: calc(100vh - 69px) !important;
+    width: 100% !important;
+    top: 0 !important;
+    z-index: 9999 !important;
+    position: relative !important;
+}
