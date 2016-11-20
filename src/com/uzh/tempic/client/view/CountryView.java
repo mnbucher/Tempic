@@ -33,6 +33,9 @@ public class CountryView extends Composite implements CountryPresenter.Display {
     private ListBox uncertaintyListBox;
     private Button filterBtn;
 
+    private HorizontalPanel chart;
+    private LineChart1 LineChar;
+
     public CountryView() {
 
         // CREATE NAV AND APPLY LAYOUT
@@ -85,6 +88,12 @@ public class CountryView extends Composite implements CountryPresenter.Display {
         countryTable.add(filterSection);
 
 
+        // create Line Chart instance and add it to the panel
+        chart = new HorizontalPanel();
+        LineChar = new LineChart1();
+        chart.add(LineChar);
+        chart.getElement().setId("country_linecharSection");
+        countryTable.add(chart);
 
 
         // The list data provider allows us to change the underlying list and the table will automatically be updated.
@@ -151,7 +160,9 @@ public class CountryView extends Composite implements CountryPresenter.Display {
 
         // Add it to the panel.
         countryTable.add(temperatureDataTable);
+
         wrapperTable.contentWrapperTable.add(countryTable);
+
 
     }
 
