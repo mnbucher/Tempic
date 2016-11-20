@@ -156,4 +156,25 @@ public class TempicServiceImpl extends RemoteServiceServlet implements TempicSer
 
         return getTemperatureDataByQuery(sqlQuery);
     }
+
+    public ArrayList<String> getTemperatureDataFirstRecorded() throws Throwable {
+        String sqlQuery = "SELECT td.city, AVG(td.average_temperature) as average FROM temperature_data td " +
+                "INNER JOIN(SELECT city, MIN(YEAR(dt)) minYR " +
+                "FROM temperature_data GROUP BY city) tempTD " +
+                "on td.city = tempTD.city AND YEAR(td.dt) = tempTD.minYR " +
+                "GROUP BY td.city, YEAR(td.dt);";
+        ArrayList<String> tempData = new ArrayList<>();
+        try {
+            Connection conn = getDBConnection();
+            ResultSet rs = conn.prepareStatement(sqlQuery).executeQuery();
+            while (rs.next()) {
+                String tempString = rs.getString("average").concat(rs.getString("city"));
+                tempData.add(tempString);
+            }
+            rs.close();
+            conn.close();
+        } catch(SQLException e) {
+        }
+        return tempData;
+    }
 }
