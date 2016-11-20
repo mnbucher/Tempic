@@ -1,22 +1,19 @@
 package com.uzh.tempic.client.view;
 
 import com.google.gwt.cell.client.NumberCell;
-import com.google.gwt.event.dom.client.ChangeEvent;
-import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
+import com.google.gwt.layout.client.Layout;
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.ColumnSortEvent;
 import com.google.gwt.user.cellview.client.TextColumn;
 import com.google.gwt.user.client.ui.*;
 import com.google.gwt.view.client.ListDataProvider;
-import com.uzh.tempic.client.Tempic;
 import com.uzh.tempic.client.presenter.CountryPresenter;
 import com.uzh.tempic.shared.TemperatureData;
-import java.util.Date;
+
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.List;
 
 public class CountryView extends Composite implements CountryPresenter.Display {
 
@@ -34,7 +31,7 @@ public class CountryView extends Composite implements CountryPresenter.Display {
     private Button filterBtn;
 
     private HorizontalPanel chart;
-    private LineChart1 LineChar;
+    private LineChartImpl LineChar;
 
     public CountryView() {
 
@@ -87,13 +84,12 @@ public class CountryView extends Composite implements CountryPresenter.Display {
         filterSection.getElement().setId("country_filterSection");
         countryTable.add(filterSection);
 
-
-        // create Line Chart instance and add it to the panel
-        chart = new HorizontalPanel();
-        LineChar = new LineChart1();
-        chart.add(LineChar);
-        chart.getElement().setId("country_linecharSection");
-        countryTable.add(chart);
+        LayoutPanel lineChartPanel = new LayoutPanel();
+        LineChartImpl lineChartImpl = new LineChartImpl();
+        lineChartPanel.add(lineChartImpl);
+        lineChartPanel.getElement().setId("linechart-wrapper");
+        lineChartPanel.setSize("100%", "350px");
+        countryTable.add(lineChartPanel);
 
 
         // The list data provider allows us to change the underlying list and the table will automatically be updated.
