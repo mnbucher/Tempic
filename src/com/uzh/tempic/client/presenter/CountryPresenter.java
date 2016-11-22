@@ -76,7 +76,7 @@ public class CountryPresenter implements Presenter {
                     Window.alert("Please select a valid time range.");
                 } else {
                     try {
-                        fetchTemperatureDataFiltered(selectedValues, fromYear, toYear, uncertainty, 100);
+                        fetchTemperatureDataFiltered(selectedValues, fromYear, toYear, uncertainty, 50000);
                     } catch (Throwable throwable) {
                         throwable.printStackTrace();
                     }
@@ -120,7 +120,7 @@ public class CountryPresenter implements Presenter {
     private void fetchTemperatureData() throws Throwable {
         ArrayList<String> initialCountries = new ArrayList<String>();
         initialCountries.addAll(Arrays.asList("China", "Chile", "Brazil", "Burma"));
-        int limitTo = 100;
+        int limitTo = 50000;
         rpcService.getTemperatureDataFiltered(initialCountries, 2013, 2013, 3, limitTo, new AsyncCallback<ArrayList<TemperatureData>>() {
             public void onSuccess(ArrayList<TemperatureData> result) {
                 display.setTemperatureData(result);

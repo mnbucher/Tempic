@@ -74,7 +74,7 @@ public class WorldDashboardPresenter implements Presenter {
     private void fetchWorldDashboardData() throws Throwable {
         ArrayList<String> initialCountries = new ArrayList<String>();
         initialCountries.addAll(Arrays.asList("Angola"));
-        rpcService.getTemperatureDataFiltered(initialCountries, 1900, 2000, 3, 100, new AsyncCallback<ArrayList<TemperatureData>>() {
+        rpcService.getTemperatureDataFiltered(initialCountries, 1900, 2000, 3, 50000, new AsyncCallback<ArrayList<TemperatureData>>() {
             public void onSuccess(ArrayList<TemperatureData> result) {
                 display.setTemperatureTableData(result);
             }

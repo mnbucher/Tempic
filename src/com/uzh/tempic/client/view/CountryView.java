@@ -99,7 +99,7 @@ public class CountryView extends Composite implements CountryPresenter.Display {
         dataProvider.addDataDisplay(temperatureDataTable);
 
         // Set Range to something higher than 15
-        temperatureDataTable.setVisibleRange(0, 500);
+        temperatureDataTable.setVisibleRange(0, 50000);
 
         // Create Country column.
         TextColumn<TemperatureData> countryColumn = new TextColumn<TemperatureData>() {
