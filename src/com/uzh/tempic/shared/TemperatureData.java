@@ -64,7 +64,18 @@ public class TemperatureData implements Serializable {
                 ", longitude=" + longitude +
                 '}';
     }
-
+    
+    // TODO: Write test for this function
+    public void setAvgTemperature(double avgTemperature) {
+        this.avgTemperature = avgTemperature;
+    }
+    
+    // TODO: Write test for this function
+    public void setAvgTemperatureUncertainty(double avgTemperatureUncertainty) {
+        this.avgTemperatureUncertainty = avgTemperatureUncertainty;
+    }
+        
+    
     /**
      * Parses the string coordinate value to a double decimal value
      * @pre coordinate String must have "N", "S", "W", "E" as the last character
@@ -93,4 +104,5 @@ public class TemperatureData implements Serializable {
     public double getDecimalLatitude() {
         return decimalConversion(this.latitude);
     }
+    
 }

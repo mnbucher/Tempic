@@ -69,7 +69,7 @@ public class WorldMapPresenter implements Presenter {
     // Gets the data from the model
 
     private void fetchWorldMapData() {
-       rpcService.getTemperatureDataByYear(2012,new AsyncCallback<ArrayList<TemperatureData>>() {
+       rpcService.getTemperatureDataDifference(2012,new AsyncCallback<ArrayList<TemperatureData>>() {
             public void onSuccess(ArrayList<TemperatureData> result) {
                 display.setTemperatureData(result);
             }

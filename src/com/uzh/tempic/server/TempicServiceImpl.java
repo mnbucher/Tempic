@@ -173,31 +173,51 @@ public class TempicServiceImpl extends RemoteServiceServlet implements TempicSer
     public ArrayList<TemperatureData> getTemperatureDataByYear(int year) throws TempicException {
         String sqlQuery = "SELECT MAX(dt) AS dt, city, country, latitude, longitude, AVG(average_temperature) AS average_temperature, AVG(average_temperature_uncertainty) AS average_temperature_uncertainty " +
                 "FROM temperature_data WHERE YEAR(dt) = '" + year + "' " +
-                "GROUP BY city, country, latitude, longitude, YEAR(dt);";
+                "GROUP BY city, country, latitude, longitude, YEAR(dt) ORDER BY city ASC";
         return getTemperatureDataByQuery(sqlQuery);
     }
 
-    public ArrayList<String> getTemperatureDataFirstRecorded() throws Throwable {
-        String sqlQuery = "SELECT td.city, AVG(td.average_temperature) as average FROM temperature_data td " +
-                "INNER JOIN(SELECT city, MIN(YEAR(dt)) minYR " +
-                "FROM temperature_data GROUP BY city) tempTD " +
-                "on td.city = tempTD.city AND YEAR(td.dt) = tempTD.minYR " +
-                "GROUP BY td.city, YEAR(td.dt);";
-        ArrayList<String> tempData = new ArrayList<>();
-        try {
-            Connection conn = getDBConnection();
-            ResultSet rs = conn.prepareStatement(sqlQuery).executeQuery();
-            while (rs.next()) {
-                String tempString = rs.getString("average").concat(rs.getString("city"));
-                tempData.add(tempString);
-            }
-            rs.close();
-            conn.close();
-        } catch(TempicException e) {
-            throw e;
-        } catch(SQLException e) {
-            throw new TempicException("SQL Error: " + e.getMessage());
+    /** Gets the average temperature value for each city for the first year in the dataset
+     * @pre -
+     * @post the returned value corresponds to the actual result of the query formed with the parameter
+     * @return An ArrayList containing the average temperature for the first measured year
+     * **/
+    public ArrayList<TemperatureData> getTemperatureDataFirstRecorded() throws TempicException {
+        String sqlQuery = "SELECT  MAX(dt) AS dt, td.country, td.city, td.latitude, td.longitude, AVG(td.average_temperature) as average_temperature, AVG(td.average_temperature_uncertainty) AS average_temperature_uncertainty " +
+                "FROM temperature_data td " +
+                "INNER JOIN (SELECT city, MIN(YEAR(dt)) minYR FROM temperature_data GROUP BY city) oldTD " +
+                "ON td.city = oldTD.city AND YEAR(td.dt) = oldTD.minYR " +
+                "GROUP BY td.city, td.country, td.longitude, td.latitude, YEAR(td.dt) ORDER BY city ASC";
+
+        return getTemperatureDataByQuery(sqlQuery);
+    }
+
+    /** Returns the difference between the specified year's average temperature and the first measured year for each city
+     *  and the temperature change average of the two compared years
+     * @pre year >= 1743 and year <= 2013
+     * @post the returned value corresponds to the actual result of the query formed with the parameter
+     * @param year the year to which the first year should be compared
+     * @return An ArrayList containing all the temperature data and the corresponding differences / averages
+     * **/
+
+    // TODO: Check if difference is calculated correclty
+    public ArrayList<TemperatureData> getTemperatureDataDifference(int year) throws TempicException {
+        ArrayList<TemperatureData> oldData = getTemperatureDataFirstRecorded();
+        ArrayList<TemperatureData> newData = getTemperatureDataByYear(year);
+
+        if(oldData.size() != newData.size()) {
+            throw new TempicException("Dataset mismatch. There seems to be an error in the database structure.");
         }
-        return tempData;
+        for(int i=0; i < oldData.size(); i++) {
+            if(!newData.get(i).getCity().equals(oldData.get(i).getCity())) {
+                throw new TempicException("Dataset mismatch. There seems to be an error in the database structure.");
+            }
+            double tempDiff = newData.get(i).getAvgTemperature() - oldData.get(i).getAvgTemperature();
+            double uncertainAvg = (newData.get(i).getAvgTemperatureUncertainty() + oldData.get(i).getAvgTemperatureUncertainty()) / 2;
+            newData.get(i).setAvgTemperature(tempDiff);
+            newData.get(i).setAvgTemperatureUncertainty(uncertainAvg);
+
+        }
+        return newData;
     }
 }

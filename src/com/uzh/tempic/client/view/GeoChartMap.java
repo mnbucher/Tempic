@@ -5,60 +5,40 @@ import com.google.gwt.user.client.ui.DockLayoutPanel;
 import com.googlecode.gwt.charts.client.ChartLoader;
 import com.googlecode.gwt.charts.client.ChartPackage;
 import com.googlecode.gwt.charts.client.DataTable;
+import com.googlecode.gwt.charts.client.geochart.GeoChart;
+import com.googlecode.gwt.charts.client.geochart.GeoChartColorAxis;
+import com.googlecode.gwt.charts.client.geochart.GeoChartOptions;
 import com.googlecode.gwt.charts.client.map.Map;
 import com.googlecode.gwt.charts.client.map.MapOptions;
+import com.googlecode.gwt.charts.client.options.DisplayMode;
 import com.googlecode.gwt.charts.client.options.MapType;
 import com.googlecode.gwt.charts.client.util.ChartHelper;
 import com.uzh.tempic.shared.TemperatureData;
 
 import java.util.ArrayList;
 
-public class GoogleMap extends DockLayoutPanel {
+public class GeoChartMap extends DockLayoutPanel {
 
-    private Map chart;
+    private GeoChart geoChart;
 
-    public GoogleMap() {
+    public GeoChartMap() {
         super(Unit.PX);
         initialize();
     }
 
     private void initialize() {
-        ChartLoader chartLoader = new ChartLoader(ChartPackage.MAP);
+        ChartLoader chartLoader = new ChartLoader(ChartPackage.GEOCHART);
         chartLoader.loadApi(new Runnable() {
 
             @Override
             public void run() {
                 // Create and attach the chart
-                chart = new Map();
-                add(chart);
+                geoChart = new GeoChart();
+                add(geoChart);
             }
         });
     }
 
-    /** Converts temperature values into hex colorcodes
-     * @pre: temperature should be between -20 and 40
-     * @post: retrieve a sixdigit hexcode as string
-     * @param temperature a double with the temperature that should be converted
-     * @return HexString with the color value for the specified temperature
-     */
-    public String temperatureToHexValue(double temperature){
-         String hex;
-         int R;
-         int B;
-         int G = 0;
-         temperature = temperature +20;
-         if (temperature <= 30){
-             R = (int) Math.round(temperature * 225 /30);
-             B = 225;
-         }
-         else {
-             R = 225;
-             B = (int) Math.round(225 - (temperature * 225 /30));
-         }
-         hex = Integer.toHexString(R).concat("00").concat(Integer.toHexString(B));
-
-    return hex;
-    }
 
     /** Updates the map with the specified temperatureData
      * @pre temperatureData ArrayList must contain only one entry per city
@@ -68,21 +48,22 @@ public class GoogleMap extends DockLayoutPanel {
      */
     public void setTemperatureData(ArrayList<TemperatureData> temperatureData) {
         Object[][] data = new Object[temperatureData.size() + 1][4];
-        data[0] = new Object[]{"Lat","Long", "Temperature","Icon"};
+        data[0] = new Object[]{"Lat","Long", "Temperature", "Uncertainty"};
 
         for(int i = 1; i < temperatureData.size(); i++) {
             data[i][0] = temperatureData.get(i).getDecimalLatitude();
             data[i][1] = temperatureData.get(i).getDecimalLongitude();
-            data[i][2] = temperatureData.get(i).getCity() + ": \n" + temperatureData.get(i).getAvgTemperature().toString() + " ° C";
+            data[i][2] = temperatureData.get(i).getAvgTemperature();
+            data[i][3] = temperatureData.get(i).getAvgTemperatureUncertainty();
         }
 
         DataTable dataTable = ChartHelper.arrayToDataTable(data);
-        MapOptions options = MapOptions.create();
-        options.setShowTip(true);
-        options.setUseMapTypeControl(true);
-        options.setZoomLevel(3);
-        options.setMapType(MapType.HYBRID);
-        chart.draw(dataTable,options);
+        GeoChartOptions options = GeoChartOptions.create();
+        options.setDisplayMode(DisplayMode.MARKERS);
+        GeoChartColorAxis geoChartColorAxis = GeoChartColorAxis.create();
+        geoChartColorAxis.setColors("green", "yellow", "red");
+        options.setColorAxis(geoChartColorAxis);
+        geoChart.draw(dataTable,options);
     }
 }
 

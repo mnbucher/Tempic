@@ -16,6 +16,7 @@ public class WorldMapView extends Composite implements WorldMapPresenter.Display
     private VerticalPanel dashboardTable;
     private final Button yearSlider;
     private GoogleMap googleMap;
+    private GeoChartMap geoChart;
 
     public WorldMapView(){
 
@@ -23,10 +24,16 @@ public class WorldMapView extends Composite implements WorldMapPresenter.Display
         WrapperTable wrapperTable = new WrapperTable("worldmap");
         initWidget(wrapperTable);
 
+
         // Create GoogleMap Class and add it to the panel
         googleMap = new GoogleMap();
         googleMap.getElement().setId("googlemap");
         wrapperTable.contentWrapperTable.add(googleMap);
+
+        /*
+        geoChart = new GeoChartMap();
+        geoChart.getElement().setId("googlemap");
+        wrapperTable.contentWrapperTable.add(geoChart);*/
 
         // Create & add custom slider to the view
         yearSlider =  new Button("Slider for years");
@@ -42,6 +49,7 @@ public class WorldMapView extends Composite implements WorldMapPresenter.Display
         if (temperatureData == null) {
             return;
         }
+        //geoChart.setTemperatureData(temperatureData);
         googleMap.setTemperatureData(temperatureData);
     }
 
