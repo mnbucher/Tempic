@@ -64,4 +64,33 @@ public class TemperatureData implements Serializable {
                 ", longitude=" + longitude +
                 '}';
     }
+
+    /**
+     * Parses the string coordinate value to a double decimal value
+     * @pre coordinate String must have "N", "S", "W", "E" as the last character
+     * @post -
+     * @param coordinate A string which contains the coordinates and the direction
+     * @return decimal value of coordinate
+     */
+
+    // TODO: Write Test for this function
+    private double decimalConversion(String coordinate) {
+        Double decimalCoordinate = 0.0;
+        String dir = coordinate.substring(-1);
+        coordinate = coordinate.substring(0,coordinate.length() - 1);
+        if(dir == "E" || dir == "N") {
+            decimalCoordinate = Double.parseDouble(coordinate);
+        } else if(dir == "W" || dir == "S") {
+            decimalCoordinate = -1 * Double.parseDouble(coordinate);
+        }
+        return decimalCoordinate;
+    }
+    // TODO: Write Test for this function
+    public double getDecimalLongitude() {
+        return decimalConversion(this.longitude);
+    }
+    // TODO: Write Test for this function
+    public double getDecimalLatitude() {
+        return decimalConversion(this.latitude);
+    }
 }

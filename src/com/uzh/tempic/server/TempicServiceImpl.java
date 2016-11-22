@@ -3,6 +3,7 @@ package com.uzh.tempic.server;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import com.uzh.tempic.client.TempicService;
 import com.uzh.tempic.shared.TemperatureData;
+import com.uzh.tempic.shared.TempicException;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -17,7 +18,7 @@ public class TempicServiceImpl extends RemoteServiceServlet implements TempicSer
      *
      * @return the Connection object
      */
-    private Connection getDBConnection() throws Throwable {
+    private Connection getDBConnection() throws TempicException {
         String url;
         Connection conn = null;
         if(System.getProperty("com.google.appengine.runtime.version") != null && System.getProperty("com.google.appengine.runtime.version").startsWith("Google App Engine/")) {
@@ -30,9 +31,9 @@ public class TempicServiceImpl extends RemoteServiceServlet implements TempicSer
                 Class.forName("com.mysql.jdbc.GoogleDriver");
                 conn = DriverManager.getConnection(url,"root","T3mp!C_Y0L0");
             } catch (ClassNotFoundException e) {
-                throw new Throwable("Error loading Google JDBC Driver", e);
+                throw new TempicException("Error loading Google JDBC Driver: " + e.getMessage());
             } catch (SQLException e) {
-                throw new Throwable("SQL Error: " + e.getMessage(),e);
+                throw new TempicException("SQL Error: " + e.getMessage());
             }
         } else {
             // Set the url with the local MySQL database connection url when running locally
@@ -41,9 +42,9 @@ public class TempicServiceImpl extends RemoteServiceServlet implements TempicSer
                 Class.forName("com.mysql.jdbc.Driver");
                 conn = DriverManager.getConnection(url,"root","T3mp!C_Y0L0");
             }catch (ClassNotFoundException e) {
-                throw new Throwable("Error loading JDBC Driver", e);
+                throw new TempicException("Error loading Google JDBC Driver: " + e.getMessage());
             } catch(SQLException e) {
-                throw new Throwable("SQL error", e);
+                throw new TempicException("SQL Error: " + e.getMessage());
             }
         }
 
@@ -59,7 +60,7 @@ public class TempicServiceImpl extends RemoteServiceServlet implements TempicSer
      * @param query the sql statement to execute
      * @return ArrayList of TemperatureData from the DB
      */
-    private ArrayList<TemperatureData> getTemperatureDataByQuery(String query) throws Throwable {
+    private ArrayList<TemperatureData> getTemperatureDataByQuery(String query) throws TempicException {
         ArrayList<TemperatureData> tempData = new ArrayList<>();
         try {
             Connection conn = getDBConnection();
@@ -77,8 +78,10 @@ public class TempicServiceImpl extends RemoteServiceServlet implements TempicSer
             }
             rs.close();
             conn.close();
+        } catch(TempicException e) {
+            throw e;
         } catch(SQLException e) {
-
+            throw new TempicException("SQL Error: " + e.getMessage());
         }
         return tempData;
     }
@@ -88,7 +91,7 @@ public class TempicServiceImpl extends RemoteServiceServlet implements TempicSer
      *
      * @return a ArrayList of Strings containing all country names
      */
-    public ArrayList<String> getCountryNames() throws Throwable {
+    public ArrayList<String> getCountryNames() throws TempicException {
         ArrayList<String> countryNames = new ArrayList<>();
         String selectSql = "SELECT country FROM temperature_data GROUP BY country ASC";
         try {
@@ -100,8 +103,10 @@ public class TempicServiceImpl extends RemoteServiceServlet implements TempicSer
             }
             rs.close();
             conn.close();
+        } catch(TempicException e) {
+            throw e;
         } catch(SQLException e) {
-            throw new Throwable("SQL Exception: ",e);
+            throw new TempicException("SQL Error: " + e.getMessage());
         }
         return countryNames;
     }
@@ -111,7 +116,7 @@ public class TempicServiceImpl extends RemoteServiceServlet implements TempicSer
      *
      * @return a ArrayList of Strings containing all city names
      */
-    public ArrayList<String> getCityNames() throws Throwable {
+    public ArrayList<String> getCityNames() throws TempicException {
         ArrayList<String> cityNames = new ArrayList<>();
         String selectSql = "SELECT city FROM temperature_data GROUP BY city ASC";
         try {
@@ -123,8 +128,10 @@ public class TempicServiceImpl extends RemoteServiceServlet implements TempicSer
             }
             rs.close();
             conn.close();
+        } catch(TempicException e) {
+          throw e;
         } catch(SQLException e) {
-            throw new Throwable("SQL Error:",e);
+            throw new TempicException("SQL Error: " + e.getMessage());
         }
         return cityNames;
     }
@@ -142,7 +149,7 @@ public class TempicServiceImpl extends RemoteServiceServlet implements TempicSer
      * @param limitTo The amount of results the query should be limited to
      * @return A ArrayList containing all relevant data according to the parameters
      */
-    public ArrayList<TemperatureData> getTemperatureDataFiltered(ArrayList<String> countryNames, int from, int to, double uncertainty, int limitTo) throws Throwable {
+    public ArrayList<TemperatureData> getTemperatureDataFiltered(ArrayList<String> countryNames, int from, int to, double uncertainty, int limitTo) throws TempicException {
         String inStatement = "";
         for(int i = 0; i < countryNames.size() - 1; i++) {
             inStatement = inStatement.concat("'" + countryNames.get(i) + "',");
@@ -154,6 +161,19 @@ public class TempicServiceImpl extends RemoteServiceServlet implements TempicSer
                 "ORDER BY country ASC, dt ASC " +
                 "LIMIT " + limitTo;
 
+        return getTemperatureDataByQuery(sqlQuery);
+    }
+
+    /** Gets the average temperature values for each city for one year
+     * @pre year >= 1743 and year <= 2013
+     * @post the returned value corresponds to the actual result of the query formed with the parameter
+     * @param year the year of which the temperature data should be returned
+     * @return An ArrayList containing all the relevant data according to the parameter
+     * **/
+    public ArrayList<TemperatureData> getTemperatureDataByYear(int year) throws TempicException {
+        String sqlQuery = "SELECT MAX(dt) AS dt, city, country, latitude, longitude, AVG(average_temperature) AS average_temperature, AVG(average_temperature_uncertainty) AS average_temperature_uncertainty " +
+                "FROM temperature_data WHERE YEAR(dt) = '" + year + "' " +
+                "GROUP BY city, country, latitude, longitude, YEAR(dt);";
         return getTemperatureDataByQuery(sqlQuery);
     }
 
@@ -173,7 +193,10 @@ public class TempicServiceImpl extends RemoteServiceServlet implements TempicSer
             }
             rs.close();
             conn.close();
+        } catch(TempicException e) {
+            throw e;
         } catch(SQLException e) {
+            throw new TempicException("SQL Error: " + e.getMessage());
         }
         return tempData;
     }

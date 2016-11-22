@@ -13,22 +13,22 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Widget;
 import com.uzh.tempic.client.TempicServiceAsync;
 import com.uzh.tempic.client.presenter.Presenter;
+import com.uzh.tempic.shared.TemperatureData;
+import com.uzh.tempic.shared.TempicException;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class WorldMapPresenter implements Presenter {
 
     public interface Display {
         HasClickHandlers getYearSlider();
-        //HasClickHandlers getDeleteButton();
-        //HasClickHandlers getList();
-        //void setData(List<String> data);
-        //int getClickedRow(ClickEvent event);
-        //List<Integer> getSelectedRows();
+        void setTemperatureData(ArrayList<TemperatureData> temperatureData);
         Widget asWidget();
     }
 
@@ -69,24 +69,16 @@ public class WorldMapPresenter implements Presenter {
     // Gets the data from the model
 
     private void fetchWorldMapData() {
-       /* rpcService.getWorldDashboardData(new AsyncCallback<ArrayList<TemperatureData>>() {
+       rpcService.getTemperatureDataByYear(2012,new AsyncCallback<ArrayList<TemperatureData>>() {
             public void onSuccess(ArrayList<TemperatureData> result) {
-                contactDetails = result;
-                sortContactDetails();
-                List<String> data = new ArrayList<String>();
-
-                for (int i = 0; i < result.size(); ++i) {
-                    data.add(contactDetails.get(i).getDisplayName());
-                }
-
-                display.setData(data);
+                display.setTemperatureData(result);
             }
 
             public void onFailure(Throwable caught) {
-                Window.alert("Error fetching contact details");
+                Window.alert(caught.getMessage());
             }
         });
-        */
+
     }
 
 }

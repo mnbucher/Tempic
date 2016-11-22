@@ -87,7 +87,7 @@ public class CountryPresenter implements Presenter {
     /*
         Renders the view (adds the view to the root DOM Element specified by the AppController
      */
-    public void go(final HasWidgets container) throws Throwable {
+    public void go(final HasWidgets container) {
         bind();
         container.clear();
         container.add(display.asWidget());
@@ -98,7 +98,7 @@ public class CountryPresenter implements Presenter {
     /**
      * Calls the TempicService and loads all countries in the database.
      */
-    private void fetchCountryData() throws Throwable {
+    private void fetchCountryData() {
         rpcService.getCountryNames(new AsyncCallback<ArrayList<String>>() {
             public void onSuccess(ArrayList<String> result) {
                 // pass the Data to the View
@@ -117,7 +117,7 @@ public class CountryPresenter implements Presenter {
      * @pre rpcService != null
      * @post
      */
-    private void fetchTemperatureData() throws Throwable {
+    private void fetchTemperatureData() {
         ArrayList<String> initialCountries = new ArrayList<String>();
         initialCountries.addAll(Arrays.asList("China", "Chile", "Brazil", "Burma"));
         int limitTo = 50000;
@@ -142,7 +142,7 @@ public class CountryPresenter implements Presenter {
      * @param uncertainty The acceptable uncertainty
      * @param limitTo The amount of rows that should be loaded
      */
-    private void fetchTemperatureDataFiltered(ArrayList<String> countries, int from, int to, double uncertainty, int limitTo) throws Throwable {
+    private void fetchTemperatureDataFiltered(ArrayList<String> countries, int from, int to, double uncertainty, int limitTo) {
         rpcService.getTemperatureDataFiltered(countries, from, to, uncertainty, limitTo, new AsyncCallback<ArrayList<TemperatureData>>() {
             public void onSuccess(ArrayList<TemperatureData> result) {
                 display.setTemperatureData(result);

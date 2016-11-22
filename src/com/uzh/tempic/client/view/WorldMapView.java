@@ -6,6 +6,7 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.user.client.ui.*;
 import com.uzh.tempic.client.presenter.WorldMapPresenter;
+import com.uzh.tempic.shared.TemperatureData;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,8 +33,16 @@ public class WorldMapView extends Composite implements WorldMapPresenter.Display
 
     }
 
+    public GoogleMap getGoogleMap() { return googleMap; }
     public HasClickHandlers getYearSlider() {
         return yearSlider;
+    }
+
+    public void setTemperatureData(ArrayList<TemperatureData> temperatureData) {
+        if (temperatureData == null) {
+            return;
+        }
+        googleMap.setTemperatureData(temperatureData);
     }
 
     public Widget asWidget() {
