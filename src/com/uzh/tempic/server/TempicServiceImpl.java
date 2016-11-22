@@ -200,7 +200,8 @@ public class TempicServiceImpl extends RemoteServiceServlet implements TempicSer
      * @return An ArrayList containing all the temperature data and the corresponding differences / averages
      * **/
 
-    // TODO: Check if difference is calculated correclty
+    // TODO: Check if difference is calculated correctly
+    // TODO: Do comparison in SQL so no "mismatch" error can occur
     public ArrayList<TemperatureData> getTemperatureDataDifference(int year) throws TempicException {
         ArrayList<TemperatureData> oldData = getTemperatureDataFirstRecorded();
         ArrayList<TemperatureData> newData = getTemperatureDataByYear(year);

@@ -2,22 +2,21 @@ package com.uzh.tempic.client.view;
 
 // TODO: Check if any libraries are not used
 
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.user.client.ui.*;
 import com.uzh.tempic.client.presenter.WorldMapPresenter;
+import com.uzh.tempic.client.widget.slider.Slider;
+import com.uzh.tempic.client.widget.slider.SliderListener;
 import com.uzh.tempic.shared.TemperatureData;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class WorldMapView extends Composite implements WorldMapPresenter.Display {
 
     private VerticalPanel dashboardTable;
-    private final Button yearSlider;
     private GoogleMap googleMap;
     private GeoChartMap geoChart;
-
+    private Slider yearSlider;
+    private Label yearSliderLabel;
     public WorldMapView(){
 
         // CREATE NAV AND APPLY LAYOUT
@@ -36,14 +35,26 @@ public class WorldMapView extends Composite implements WorldMapPresenter.Display
         wrapperTable.contentWrapperTable.add(geoChart);*/
 
         // Create & add custom slider to the view
-        yearSlider =  new Button("Slider for years");
+
+        FlowPanel sliderWrapper = new FlowPanel();
+        sliderWrapper.getElement().setId("sliderwrapper");
+        Label sliderLabel = new Label("Year:");
+        yearSliderLabel = new Label("2012");
+        yearSliderLabel.addStyleName("slider-values");
+        yearSlider = new Slider("slider",1743,2013,2012);
+        sliderWrapper.add(sliderLabel);
+        sliderWrapper.add(yearSliderLabel);
+        sliderWrapper.add(yearSlider);
+
+        wrapperTable.contentWrapperTable.add(sliderWrapper);
 
     }
 
     public GoogleMap getGoogleMap() { return googleMap; }
-    public HasClickHandlers getYearSlider() {
-        return yearSlider;
-    }
+
+    public Slider getYearSlider() { return yearSlider; }
+    public Label getYearSliderLabel() { return yearSliderLabel; }
+
 
     public void setTemperatureData(ArrayList<TemperatureData> temperatureData) {
         if (temperatureData == null) {
