@@ -4,9 +4,13 @@
     <!-- Inherit the core Web Toolkit stuff. -->
     <inherits name='com.google.gwt.user.User'/>
 
+
     <!-- Frontend logging for easy debugging -->
     <inherits name="com.google.gwt.logging.Logging"/>
     <inherits name="com.google.gwt.junit.JUnit"/>
+
+    <!-- Specify the gwt charts framwork. -->
+    <inherits name="com.googlecode.gwt.charts.Charts" />
 
     <!-- Specify the app entry point class. -->
     <entry-point class='com.uzh.tempic.client.Tempic'/>

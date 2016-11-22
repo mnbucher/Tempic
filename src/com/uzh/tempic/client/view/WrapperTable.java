@@ -28,19 +28,16 @@ public class WrapperTable extends HorizontalPanel {
         //Hyperlink linkDashboard = new Hyperlink("Dashboard", "dashboard");
         Hyperlink linkWorldmap = new Hyperlink("Worldmap", "worldmap");
         Hyperlink linkCountry = new Hyperlink("Country", "country");
-        Hyperlink linkCity = new Hyperlink("City", "city");
 
         //if(currentView == "dashboard") { linkDashboard.getElement().setId("active"); }
         if(currentView == "worldmap") { linkWorldmap.getElement().setId("active"); }
         else if(currentView == "country") { linkCountry.getElement().setId("active"); }
-        else if(currentView == "city") { linkCity.getElement().setId("active"); }
 
         navTable.add(logo);
         navTable.add(placeholder);
         //navTable.add(linkDashboard);
         navTable.add(linkWorldmap);
         navTable.add(linkCountry);
-        navTable.add(linkCity);
         super.add(navTable);
 
         // CREATE CONTENT_WRAPPER AND ADD TO TEMPIC_WRAPPER
