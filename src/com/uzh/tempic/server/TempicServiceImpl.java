@@ -219,7 +219,7 @@ public class TempicServiceImpl extends RemoteServiceServlet implements TempicSer
             while (rs.next()) {
                 TemperatureData tempEntry = new TemperatureData(
                         rs.getDate("dt"),
-                        rs.getDouble("average_temperature") - rs.getDouble("average_temperature_new"),
+                        rs.getDouble("average_temperature_new") - rs.getDouble("average_temperature"),
                         (rs.getDouble("average_temperature_uncertainty") + rs.getDouble("average_temperature_uncertainty_new")) / 2,
                         rs.getString("city"),
                         rs.getString("country"),
