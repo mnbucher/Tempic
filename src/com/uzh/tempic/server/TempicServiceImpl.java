@@ -203,22 +203,37 @@ public class TempicServiceImpl extends RemoteServiceServlet implements TempicSer
     // TODO: Check if difference is calculated correctly
     // TODO: Do comparison in SQL so no "mismatch" error can occur
     public ArrayList<TemperatureData> getTemperatureDataDifference(int year) throws TempicException {
-        ArrayList<TemperatureData> oldData = getTemperatureDataFirstRecorded();
-        ArrayList<TemperatureData> newData = getTemperatureDataByYear(year);
+        String sqlQuery = "SELECT MAX(dt) AS dt, td.country, td.city, td.latitude, td.longitude, AVG(td.average_temperature) as average_temperature, AVG(td.average_temperature_uncertainty) AS average_temperature_uncertainty, MAX(newTD.dt_new) as dt_new, MAX(newTD.average_temperature_new) as average_temperature_new, MAX(newTD.average_temperature_uncertainty_new) as average_temperature_uncertainty_new " +
+                "FROM temperature_data td " +
+                "INNER JOIN (SELECT city, MIN(YEAR(dt)) minYR FROM temperature_data GROUP BY city) oldTD " +
+                "ON td.city = oldTD.city AND YEAR(td.dt) = oldTD.minYR " +
+                "INNER JOIN (SELECT city, MAX(dt) as dt_new, AVG(average_temperature) AS average_temperature_new, AVG(average_temperature_uncertainty) AS average_temperature_uncertainty_new FROM temperature_data WHERE YEAR(dt) = '" + year + "' GROUP BY city, YEAR(dt)) newTD " +
+                "ON td.city = newTD.city " +
+                "GROUP BY td.city, td.country, td.longitude, td.latitude, YEAR(td.dt) ORDER BY city ASC";
 
-        if(oldData.size() != newData.size()) {
-            throw new TempicException("Dataset mismatch. There seems to be an error in the database structure.");
-        }
-        for(int i=0; i < oldData.size(); i++) {
-            if(!newData.get(i).getCity().equals(oldData.get(i).getCity())) {
-                throw new TempicException("Dataset mismatch. There seems to be an error in the database structure.");
+
+        ArrayList<TemperatureData> tempData = new ArrayList<>();
+        try {
+            Connection conn = getDBConnection();
+            ResultSet rs = conn.prepareStatement(sqlQuery).executeQuery();
+            while (rs.next()) {
+                TemperatureData tempEntry = new TemperatureData(
+                        rs.getDate("dt"),
+                        rs.getDouble("average_temperature") - rs.getDouble("average_temperature_new"),
+                        (rs.getDouble("average_temperature_uncertainty") + rs.getDouble("average_temperature_uncertainty_new")) / 2,
+                        rs.getString("city"),
+                        rs.getString("country"),
+                        rs.getString("latitude"),
+                        rs.getString("longitude"));
+                tempData.add(tempEntry);
             }
-            double tempDiff = newData.get(i).getAvgTemperature() - oldData.get(i).getAvgTemperature();
-            double uncertainAvg = (newData.get(i).getAvgTemperatureUncertainty() + oldData.get(i).getAvgTemperatureUncertainty()) / 2;
-            newData.get(i).setAvgTemperature(tempDiff);
-            newData.get(i).setAvgTemperatureUncertainty(uncertainAvg);
-
+            rs.close();
+            conn.close();
+        } catch(TempicException e) {
+            throw e;
+        } catch(SQLException e) {
+            throw new TempicException("SQL Error: " + e.getMessage());
         }
-        return newData;
+        return tempData;
     }
 }
