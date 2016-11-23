@@ -2,12 +2,18 @@ package com.uzh.tempic.client.view;
 
 import com.google.gwt.cell.client.NumberCell;
 import com.google.gwt.event.dom.client.HasClickHandlers;
-import com.google.gwt.layout.client.Layout;
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.ColumnSortEvent;
 import com.google.gwt.user.cellview.client.TextColumn;
-import com.google.gwt.user.client.ui.*;
+import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.LayoutPanel;
+import com.google.gwt.user.client.ui.ListBox;
+import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.ListDataProvider;
 import com.uzh.tempic.client.presenter.CountryPresenter;
 import com.uzh.tempic.shared.TemperatureData;
@@ -32,6 +38,9 @@ public class CountryView extends Composite implements CountryPresenter.Display {
 
     private HorizontalPanel chart;
     private LineChartImpl LineChar;
+
+    LayoutPanel lineChartPanel;
+    LineChartImpl lineChartImpl;
 
     public CountryView() {
 
@@ -84,8 +93,8 @@ public class CountryView extends Composite implements CountryPresenter.Display {
         filterSection.getElement().setId("country_filterSection");
         countryTable.add(filterSection);
 
-        LayoutPanel lineChartPanel = new LayoutPanel();
-        LineChartImpl lineChartImpl = new LineChartImpl();
+        lineChartImpl = new LineChartImpl();
+        lineChartPanel = new LayoutPanel();
         lineChartPanel.add(lineChartImpl);
         lineChartPanel.getElement().setId("linechart-wrapper");
         lineChartPanel.setSize("100%", "350px");
@@ -188,7 +197,7 @@ public class CountryView extends Composite implements CountryPresenter.Display {
 
     public void setTemperatureData(ArrayList<TemperatureData> temperatureData) {
         if(temperatureData == null) { return; }
-
+        lineChartImpl.setTemperatureData(temperatureData);
         // Fill our dataProvider with the data from the backend
         dataProvider.setList(temperatureData);
 
