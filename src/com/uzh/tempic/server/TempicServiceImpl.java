@@ -41,8 +41,8 @@ public class TempicServiceImpl extends RemoteServiceServlet implements TempicSer
             try {
                 Class.forName("com.mysql.jdbc.Driver");
                 conn = DriverManager.getConnection(url,"root","T3mp!C_Y0L0");
-            }catch (ClassNotFoundException e) {
-                throw new TempicException("Error loading Google JDBC Driver: " + e.getMessage());
+            } catch (ClassNotFoundException e) {
+                throw new TempicException("Error loading MySQL JDBC Driver: " + e.getMessage());
             } catch(SQLException e) {
                 throw new TempicException("SQL Error: " + e.getMessage());
             }
