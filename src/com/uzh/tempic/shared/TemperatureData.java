@@ -2,6 +2,7 @@ package com.uzh.tempic.shared;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Objects;
 
 public class TemperatureData implements Serializable {
     private Date date;
@@ -89,9 +90,9 @@ public class TemperatureData implements Serializable {
         Double decimalCoordinate = 0.0;
         String dir = coordinate.substring(-1);
         coordinate = coordinate.substring(0,coordinate.length() - 1);
-        if(dir == "E" || dir == "N") {
+        if(Objects.equals(dir, "E") || Objects.equals(dir, "N")) {
             decimalCoordinate = Double.parseDouble(coordinate);
-        } else if(dir == "W" || dir == "S") {
+        } else if(Objects.equals(dir, "W") || Objects.equals(dir, "S")) {
             decimalCoordinate = -1 * Double.parseDouble(coordinate);
         }
         return decimalCoordinate;
