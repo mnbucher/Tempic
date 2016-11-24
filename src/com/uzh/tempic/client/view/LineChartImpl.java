@@ -49,80 +49,46 @@ public class LineChartImpl extends DockLayoutPanel {
 
     public void setTemperatureData(ArrayList<TemperatureData> temperatureData) {
 
-        Map<String, ArrayList<TemperatureData>> citiesMap = new HashMap<>();
-        Set<Date> datesSet = new HashSet<>();
+        Set<Date> datesSet = new HashSet<>();  // stores the date columns
+        Set<String> citiesSet = new HashSet<>(); // stores the city columns
+
 
         for(int i = 0; i < temperatureData.size(); i++) {
-            citiesMap.putIfAbsent(temperatureData.get(i).getCity(), new ArrayList<TemperatureData>());
-            citiesMap.get(temperatureData.get(i).getCity()).add(temperatureData.get(i));
             datesSet.add(temperatureData.get(i).getDate());
+            citiesSet.add(temperatureData.get(i).getCity());
         }
 
         DataTable dataTable = DataTable.create();
-        dataTable.addColumn(ColumnType.DATE, "Date");
+        dataTable.addColumn(ColumnType.DATE, "Date"); // Adds first date column
 
-        for (String key : citiesMap.keySet()) {
-            dataTable.addColumn(ColumnType.NUMBER, key);
-        }
-        dataTable.addRows(datesSet.size());
 
-        List<Date> sortedDates = new ArrayList(datesSet);
+        ArrayList<Date> sortedDates = new ArrayList(datesSet);
         Collections.sort(sortedDates);
 
-        for (int i = 0; i < sortedDates.size(); i++) {
+        ArrayList<String> sortedCities = new ArrayList(citiesSet);
+        Collections.sort(sortedCities);
+
+
+        for (String sortedCity : sortedCities) { // adds a column for every country
+            dataTable.addColumn(ColumnType.NUMBER, sortedCity);
+        }
+
+        dataTable.addRows(datesSet.size()); // sets amount of rows
+
+        for (int i = 0; i < sortedDates.size(); i++) { // add a row for each date
             dataTable.setValue(i, 0, sortedDates.get(i));
         }
-        int col = 1;
-        for (ArrayList<TemperatureData> tempList : citiesMap.values()) {
-            for(int i = 0; i < tempList.size(); i++) {
-                int row = sortedDates.indexOf(tempList.get(i).getDate());
-                dataTable.setValue(row,col,tempList.get(i).getAvgTemperature());
-            }
-            col++;
+
+        for (TemperatureData tempData : temperatureData) {
+            int row = sortedDates.indexOf(tempData.getDate());
+            int col = sortedCities.indexOf(tempData.getCity()) + 1;
+            dataTable.setValue(row, col, tempData.getAvgTemperature());
         }
 
-        /*ArrayList<ArrayList<Double>> allCountryData = new ArrayList<>();
-        for (String country : countries) {
-            ArrayList<Double> countryData = new ArrayList<>();
-            for (TemperatureData aTemperatureData : temperatureData) {
-                if(aTemperatureData.getCountry().equals(country)) {
-                    countryData.add(aTemperatureData.getAvgTemperature());
-                }
-            }
-            allCountryData.add(countryData);
-        }*/
-        //String[] countries = new String[]{"Austria"};
-        //int[] years = new int[]{2003, 2004, 2005, 2006, 2007, 2008};
-        int[][] values = new int[][]{{1336060, 1538156, 1576579, 1600652, 1968113, 1901067}};
-        /*ArrayList<Date> dates = new ArrayList<>();
-        dates.add(new Date());
-        dates.add(new Date());
-        dates.add(new Date());
-        dates.add(new Date());
-        dates.add(new Date());
-        dates.add(new Date());*/
-
-        // Prepare the data
-        //DataTable dataTable = ChartHelper.arrayToDataTable(data);
-        //dataTable.addColumn(ColumnType.DATE, "Date");
-        /*
-        for (String country : countries) {
-            dataTable.addColumn(ColumnType.NUMBER, country);
-        }
-        dataTable.addRows(dateSet.size());
-        for (int i = 0; i < dateSet.size(); i++) {
-            dataTable.setValue(i, 0, dateSet.toArray()[i]);
-        }
-        for (int col = 0; col < values.length; col++) {
-            for (int row = 0; row < values[col].length; row++) {
-                dataTable.setValue(row, col + 1, values[col][row]);
-            }
-        }*/
 
         // Set options
         LineChartOptions options = LineChartOptions.create();
         options.setBackgroundColor("#f0f0f0");
-        //options.setFontName("Tahoma");
         options.setTitle("Average temperature over time");
         options.setHAxis(HAxis.create("Date"));
         options.setVAxis(VAxis.create("Temperature"));

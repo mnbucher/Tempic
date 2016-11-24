@@ -2,10 +2,7 @@ package com.uzh.tempic.client.view;
 
 import com.google.gwt.cell.client.NumberCell;
 import com.google.gwt.event.dom.client.HasClickHandlers;
-import com.google.gwt.user.cellview.client.CellTable;
-import com.google.gwt.user.cellview.client.Column;
-import com.google.gwt.user.cellview.client.ColumnSortEvent;
-import com.google.gwt.user.cellview.client.TextColumn;
+import com.google.gwt.user.cellview.client.*;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HorizontalPanel;
@@ -36,6 +33,7 @@ public class CountryView extends Composite implements CountryPresenter.Display {
     private ListBox uncertaintyListBox;
     private ListBox aggregateListBox;
     private Button filterBtn;
+    private SimplePager pager;
 
     private HorizontalPanel chart;
     private LineChartImpl LineChar;
@@ -206,7 +204,7 @@ public class CountryView extends Composite implements CountryPresenter.Display {
     }
 
     public void setTemperatureData(ArrayList<TemperatureData> temperatureData) {
-        if(temperatureData == null) { return; }
+        if(temperatureData.size() == 0) { return; } // Don't update view if there's no data
         lineChartImpl.setTemperatureData(temperatureData);
         // Fill our dataProvider with the data from the backend
         dataProvider.setList(temperatureData);
