@@ -124,7 +124,8 @@ public class CountryPresenter implements Presenter {
         ArrayList<String> initialCountries = new ArrayList<String>();
         initialCountries.addAll(Arrays.asList("China", "Chile", "Brazil", "Burma"));
         int limitTo = 50000;
-        rpcService.getTemperatureDataFiltered(initialCountries, 2013, 2013, 3, limitTo, "month", new AsyncCallback<ArrayList<TemperatureData>>() {
+        int maxUncertainty = 100;
+        rpcService.getTemperatureDataFiltered(initialCountries, 2013, 2013, maxUncertainty, limitTo, "month", new AsyncCallback<ArrayList<TemperatureData>>() {
             public void onSuccess(ArrayList<TemperatureData> result) {
                 display.setTemperatureData(result);
             }

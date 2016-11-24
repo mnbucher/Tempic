@@ -75,8 +75,10 @@ public class CountryView extends Composite implements CountryPresenter.Display {
 
         Label filterMaxUncertainity = new Label ("Uncertainty:");
         uncertaintyListBox = new ListBox();
+        uncertaintyListBox.addItem("All", "100");
+        uncertaintyListBox.addItem("< 10", "10");
+        uncertaintyListBox.addItem("< 5", "5");
         uncertaintyListBox.addItem("< 3", "3");
-        uncertaintyListBox.addItem("< 1", "1");
 
         Label filterAggregateDate = new Label ("Aggregate By:");
         aggregateListBox = new ListBox();

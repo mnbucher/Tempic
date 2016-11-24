@@ -169,7 +169,7 @@ public class TempicServiceImpl extends RemoteServiceServlet implements TempicSer
         String sqlQuery = "SELECT MAX(dt) AS dt, AVG(average_temperature) AS average_temperature, " +
                 "AVG(average_temperature_uncertainty) as average_temperature_uncertainty, city, country, latitude, " +
                 "longitude  FROM temperature_data WHERE country IN  (" + inStatement + ") AND " +
-                "dt BETWEEN '" + from + "-01-01' AND '" + to + "-12-31' AND " +
+                "YEAR(dt) BETWEEN '" + from + "' AND '" + to + "' AND " +
                 "average_temperature_uncertainty <= '" + uncertainty + "'" +
                 "GROUP BY " + groupyBy + ", city, country, latitude, longitude " +
                 "ORDER BY country ASC, dt ASC " +
