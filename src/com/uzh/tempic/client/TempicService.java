@@ -11,7 +11,7 @@ import java.util.ArrayList;
 @RemoteServiceRelativePath("tempicService")
 public interface TempicService extends RemoteService {
     ArrayList<String> getCountryNames() throws TempicException;
-    ArrayList<TemperatureData> getTemperatureDataFiltered(ArrayList<String> countryNames, int from, int to, double uncertainty, int limitTo) throws TempicException;
+    ArrayList<TemperatureData> getTemperatureDataFiltered(ArrayList<String> countryNames, int from, int to, double uncertainty, int limitTo, String aggregateBy) throws TempicException;
     ArrayList<TemperatureData> getTemperatureDataByYear(int year) throws TempicException;
     ArrayList<TemperatureData> getTemperatureDataDifference(int year) throws TempicException;
 

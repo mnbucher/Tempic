@@ -147,17 +147,31 @@ public class TempicServiceImpl extends RemoteServiceServlet implements TempicSer
      * @param to The last year (inclusive) of the data set
      * @param uncertainty The uncertainty of the temperature data entry
      * @param limitTo The amount of results the query should be limited to
+     * @param aggregateBy Whether the data should be aggregated by month or year (String "month" or "year")
      * @return A ArrayList containing all relevant data according to the parameters
      */
-    public ArrayList<TemperatureData> getTemperatureDataFiltered(ArrayList<String> countryNames, int from, int to, double uncertainty, int limitTo) throws TempicException {
+    public ArrayList<TemperatureData> getTemperatureDataFiltered(ArrayList<String> countryNames, int from, int to, double uncertainty, int limitTo, String aggregateBy) throws TempicException {
         String inStatement = "";
         for(int i = 0; i < countryNames.size() - 1; i++) {
             inStatement = inStatement.concat("'" + countryNames.get(i) + "',");
         }
         inStatement = inStatement.concat("'" + countryNames.get(countryNames.size()-1) + "'");
-        String sqlQuery = "SELECT * FROM temperature_data WHERE country IN(" + inStatement + ") AND " +
+
+        String groupyBy = "dt";
+        if(aggregateBy.equals("year")) { groupyBy = "YEAR(dt)"; }
+
+        /*String sqlQuery = "SELECT * FROM temperature_data WHERE country IN(" + inStatement + ") AND " +
                 "dt BETWEEN '" + from + "-01-01' AND '" + to + "-12-31' AND " +
                 "average_temperature_uncertainty <= '" + uncertainty + "'" +
+                "ORDER BY country ASC, dt ASC " +
+                "LIMIT " + limitTo;*/
+
+        String sqlQuery = "SELECT MAX(dt) AS dt, AVG(average_temperature) AS average_temperature, " +
+                "AVG(average_temperature_uncertainty) as average_temperature_uncertainty, city, country, latitude, " +
+                "longitude  FROM temperature_data WHERE country IN  (" + inStatement + ") AND " +
+                "dt BETWEEN '" + from + "-01-01' AND '" + to + "-12-31' AND " +
+                "average_temperature_uncertainty <= '" + uncertainty + "'" +
+                "GROUP BY " + groupyBy + ", city, country, latitude, longitude " +
                 "ORDER BY country ASC, dt ASC " +
                 "LIMIT " + limitTo;
 

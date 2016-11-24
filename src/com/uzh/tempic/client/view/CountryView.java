@@ -34,6 +34,7 @@ public class CountryView extends Composite implements CountryPresenter.Display {
     private ListBox fromYearListBox;
     private ListBox toYearListBox;
     private ListBox uncertaintyListBox;
+    private ListBox aggregateListBox;
     private Button filterBtn;
 
     private HorizontalPanel chart;
@@ -78,6 +79,10 @@ public class CountryView extends Composite implements CountryPresenter.Display {
         uncertaintyListBox.addItem("< 3", "3");
         uncertaintyListBox.addItem("< 1", "1");
 
+        Label filterAggregateDate = new Label ("Aggregate By:");
+        aggregateListBox = new ListBox();
+        aggregateListBox.addItem("Month", "month");
+        aggregateListBox.addItem("Year", "year");
 
         filterBtn = new Button("Filter");
 
@@ -88,11 +93,13 @@ public class CountryView extends Composite implements CountryPresenter.Display {
         filterSection.add(toYearListBox);
         filterSection.add(filterMaxUncertainity);
         filterSection.add(uncertaintyListBox);
+        filterSection.add(filterAggregateDate);
+        filterSection.add(aggregateListBox);
         filterSection.add(filterBtn);
 
         filterSection.getElement().setId("country_filterSection");
         countryTable.add(filterSection);
-
+        countryTable.setSize("100%","auto");
         lineChartImpl = new LineChartImpl();
         lineChartPanel = new LayoutPanel();
         lineChartPanel.add(lineChartImpl);
@@ -187,6 +194,9 @@ public class CountryView extends Composite implements CountryPresenter.Display {
     }
     public ListBox getUncertaintyListBox() {
         return uncertaintyListBox;
+    }
+    public ListBox getAggregateListBox() {
+        return aggregateListBox;
     }
     public void setCountryNames(ArrayList<String> countryNames) {
         for(String countryName : countryNames) {

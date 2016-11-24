@@ -28,7 +28,7 @@ public class TempicServiceImplTest extends TestCase {
     }
 
     /**
-     * Tests the {@link TempicServiceImpl#getTemperatureDataFiltered(ArrayList, int, int, double, int)} ()} method with
+     * Tests the {@link TempicServiceImpl#getTemperatureDataFiltered(ArrayList, int, int, double, int, String)} ()} method with
      * predefined test parameters, which should return exactly 9000 entries from the database.
      *
      * @pre TempicServiceImpl and its dependencies must be available, the database must be working and data present
@@ -40,7 +40,7 @@ public class TempicServiceImplTest extends TestCase {
         countries.addAll(Arrays.asList("China", "Brazil"));
         ArrayList<TemperatureData> temperatureData;
         try {
-            temperatureData = tempicService.getTemperatureDataFiltered(countries, 1497, 2015, 3, 9000);
+            temperatureData = tempicService.getTemperatureDataFiltered(countries, 1497, 2015, 3, 9000, "month");
             assertEquals(9000, temperatureData.size());
         } catch (TempicException e) {
             fail(e.getMessage());

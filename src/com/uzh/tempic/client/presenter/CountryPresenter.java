@@ -35,6 +35,7 @@ public class CountryPresenter implements Presenter {
         ListBox getFromYearListBox();
         ListBox getToYearListBox();
         ListBox getUncertaintyListBox();
+        ListBox getAggregateListBox();
         Widget asWidget();
     }
 
@@ -59,11 +60,13 @@ public class CountryPresenter implements Presenter {
                 ListBox fromYearListBox = display.getFromYearListBox();
                 ListBox toYearListBox = display.getToYearListBox();
                 ListBox uncertaintyListBox = display.getUncertaintyListBox();
+                ListBox aggregateListBox = display.getAggregateListBox();
 
                 ArrayList<String> selectedValues = new ArrayList<>();
                 int fromYear = Integer.parseInt(fromYearListBox.getSelectedValue());
                 int toYear = Integer.parseInt(toYearListBox.getSelectedValue());
                 double uncertainty = Double.parseDouble(uncertaintyListBox.getSelectedValue());
+                String aggregateBy = aggregateListBox.getSelectedValue();
 
                 for (int i = 0, l = countryListBox.getItemCount(); i < l; i++) {
                     if (countryListBox.isItemSelected(i)) {
@@ -76,7 +79,7 @@ public class CountryPresenter implements Presenter {
                     Window.alert("Please select a valid time range.");
                 } else {
                     try {
-                        fetchTemperatureDataFiltered(selectedValues, fromYear, toYear, uncertainty, 50000);
+                        fetchTemperatureDataFiltered(selectedValues, fromYear, toYear, uncertainty, 50000, aggregateBy);
                     } catch (Throwable throwable) {
                         throwable.printStackTrace();
                     }
@@ -121,7 +124,7 @@ public class CountryPresenter implements Presenter {
         ArrayList<String> initialCountries = new ArrayList<String>();
         initialCountries.addAll(Arrays.asList("China", "Chile", "Brazil", "Burma"));
         int limitTo = 50000;
-        rpcService.getTemperatureDataFiltered(initialCountries, 2013, 2013, 3, limitTo, new AsyncCallback<ArrayList<TemperatureData>>() {
+        rpcService.getTemperatureDataFiltered(initialCountries, 2013, 2013, 3, limitTo, "month", new AsyncCallback<ArrayList<TemperatureData>>() {
             public void onSuccess(ArrayList<TemperatureData> result) {
                 display.setTemperatureData(result);
             }
@@ -135,15 +138,15 @@ public class CountryPresenter implements Presenter {
      * Calls the TempicService with the provided parameters and asynchronously
      * loads the corresponding data and - if successful - fills the table
      * otherwise an error message is displayed.
-     *
      * @param countries A ArrayList containing all country names
      * @param from The starting year to load
      * @param to The last year to load
      * @param uncertainty The acceptable uncertainty
      * @param limitTo The amount of rows that should be loaded
+     * @param aggregateBy Whether the data should be aggregated by year or month (String "month" or "year")
      */
-    private void fetchTemperatureDataFiltered(ArrayList<String> countries, int from, int to, double uncertainty, int limitTo) {
-        rpcService.getTemperatureDataFiltered(countries, from, to, uncertainty, limitTo, new AsyncCallback<ArrayList<TemperatureData>>() {
+    private void fetchTemperatureDataFiltered(ArrayList<String> countries, int from, int to, double uncertainty, int limitTo, String aggregateBy) {
+        rpcService.getTemperatureDataFiltered(countries, from, to, uncertainty, limitTo, aggregateBy, new AsyncCallback<ArrayList<TemperatureData>>() {
             public void onSuccess(ArrayList<TemperatureData> result) {
                 display.setTemperatureData(result);
                 if(result.size() == 0) {
