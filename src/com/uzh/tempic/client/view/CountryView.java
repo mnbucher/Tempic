@@ -1,6 +1,7 @@
 package com.uzh.tempic.client.view;
 
 import com.google.gwt.cell.client.NumberCell;
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.user.cellview.client.*;
 import com.google.gwt.user.client.ui.Button;
@@ -112,8 +113,15 @@ public class CountryView extends Composite implements CountryPresenter.Display {
         dataProvider = new ListDataProvider<TemperatureData>();
         dataProvider.addDataDisplay(temperatureDataTable);
 
-        // Set Range to something higher than 15
-        temperatureDataTable.setVisibleRange(0, 50000);
+        // How many items should be display on one table page
+        temperatureDataTable.setVisibleRange(0, 50);
+
+
+        // Create a Pager to control the table.
+        SimplePager.Resources pagerResources = GWT.create(SimplePager.Resources.class);
+        pager = new SimplePager(SimplePager.TextLocation.CENTER, pagerResources, false, 0, true);
+        pager.setDisplay(temperatureDataTable);
+
 
         // Create Country column.
         TextColumn<TemperatureData> countryColumn = new TextColumn<TemperatureData>() {
@@ -170,6 +178,7 @@ public class CountryView extends Composite implements CountryPresenter.Display {
 
         // Add it to the panel.
         countryTable.add(temperatureDataTable);
+        countryTable.add(pager);
 
         wrapperTable.contentWrapperTable.add(countryTable);
 
