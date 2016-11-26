@@ -11,6 +11,7 @@
 
     <!-- Specify the gwt charts framwork. -->
     <inherits name="com.googlecode.gwt.charts.Charts" />
+    <inherits name="com.google.gwt.maps.Maps"/>
 
     <!-- Specify the app entry point class. -->
     <entry-point class='com.uzh.tempic.client.Tempic'/>

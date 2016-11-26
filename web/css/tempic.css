@@ -18,6 +18,10 @@ body, td, a, div, .p {
     font-family: "Source Sans Pro", sans-serif;
 }
 
+strong,b {
+    font-weight: 600;
+}
+
 #tempic_app, #tempic_wrapper, #tempic {
     width: 100%;
     height: 100%;

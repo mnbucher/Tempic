@@ -2,6 +2,7 @@ package com.uzh.tempic.client.view;
 
 // TODO: Check if any libraries are not used
 
+import com.google.gwt.maps.client.LoadApi;
 import com.google.gwt.user.client.ui.*;
 import com.uzh.tempic.client.presenter.WorldMapPresenter;
 import com.uzh.tempic.client.widget.slider.Slider;
@@ -13,7 +14,7 @@ import java.util.ArrayList;
 public class WorldMapView extends Composite implements WorldMapPresenter.Display {
 
     private VerticalPanel dashboardTable;
-    private GoogleMap googleMap;
+    private GoogleMapV3 googleMap;
     private GeoChartMap geoChart;
     private Slider yearSlider;
     private Label yearSliderLabel;
@@ -25,7 +26,7 @@ public class WorldMapView extends Composite implements WorldMapPresenter.Display
 
 
         // Create GoogleMap Class and add it to the panel
-        googleMap = new GoogleMap();
+        googleMap = new GoogleMapV3();
         googleMap.getElement().setId("googlemap");
         wrapperTable.contentWrapperTable.add(googleMap);
 
@@ -48,9 +49,12 @@ public class WorldMapView extends Composite implements WorldMapPresenter.Display
 
         wrapperTable.contentWrapperTable.add(sliderWrapper);
 
+
     }
 
-    public GoogleMap getGoogleMap() { return googleMap; }
+
+
+    public GoogleMapV3 getGoogleMap() { return googleMap; }
 
     public Slider getYearSlider() { return yearSlider; }
     public Label getYearSliderLabel() { return yearSliderLabel; }
