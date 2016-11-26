@@ -15,7 +15,7 @@ body, html {
 }
 
 body, td, a, div, .p {
-    font-family: arial, sans-serif
+    font-family: "Source Sans Pro", sans-serif;
 }
 
 #tempic_app, #tempic_wrapper, #tempic {
@@ -30,14 +30,14 @@ body, td, a, div, .p {
 }
 
 #content_wrapper {
-    width: 75vw;
+    width: 82vw;
 }
 
 #dashboard_wrapper {
     padding: 2.618em;
     display: block;
     overflow: hidden;
-    background-color: #f2f2f2;
+    background-color: #f5f8f9;
 }
 
 #dashboard_wrapper tbody:first-child {
@@ -147,4 +147,17 @@ div#googlemap:first-child {
     top: 0 !important;
     z-index: 9999 !important;
     position: relative !important;
+}
+
+#temperatureTable {
+    width: 100%;
+}
+
+/* fucking bug */
+table#dashboard_wrapper {
+    width: auto !important;
+}
+
+#dashboard_wrapper tr td {
+    width: 100vw;
 }

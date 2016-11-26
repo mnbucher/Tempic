@@ -1,9 +1,6 @@
 package com.uzh.tempic.client.view;
 
-import com.google.gwt.user.client.ui.HorizontalPanel;
-import com.google.gwt.user.client.ui.Hyperlink;
-import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.user.client.ui.*;
 
 public class WrapperTable extends HorizontalPanel {
 
@@ -18,7 +15,7 @@ public class WrapperTable extends HorizontalPanel {
         // CREATE NAV AND ADD TO TEMPIC_WRAPPER
         navTable = new VerticalPanel();
         navTable.getElement().setId("nav");
-        Label logo = new Label("Tempic");
+        Label logo = new Label("tempic");
         logo.getElement().setId("logo");
 
         // Placeholder for Layout (Tables FTW)
@@ -33,11 +30,16 @@ public class WrapperTable extends HorizontalPanel {
         if(currentView == "worldmap") { linkWorldmap.getElement().setId("active"); }
         else if(currentView == "country") { linkCountry.getElement().setId("active"); }
 
+        // Copyright
+        HTML copyright = new HTML("<p class='copyright_uzh'>© 2016 Department of Informatics, University of Zurich. All rights reserved.</p><p class='datasource'>Source of raw data: <a href='http://www.berkeleyearth.org' target='_blank'>berkeleyearth.org</a></p>");
+        copyright.getElement().setId("copyright");
+
         navTable.add(logo);
         navTable.add(placeholder);
-        //navTable.add(linkDashboard);
         navTable.add(linkWorldmap);
         navTable.add(linkCountry);
+        navTable.add(copyright);
+
         super.add(navTable);
 
         // CREATE CONTENT_WRAPPER AND ADD TO TEMPIC_WRAPPER
