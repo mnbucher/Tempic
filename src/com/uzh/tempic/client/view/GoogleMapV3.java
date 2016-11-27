@@ -16,9 +16,6 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
-import com.googlecode.gwt.charts.client.DataTable;
-import com.googlecode.gwt.charts.client.options.MapType;
-import com.googlecode.gwt.charts.client.util.ChartHelper;
 import com.uzh.tempic.shared.TemperatureData;
 
 import java.util.ArrayList;
@@ -51,7 +48,7 @@ public class GoogleMapV3 extends Composite {
 
         mapWidget = new MapWidget(opts);
         pWidget.add(mapWidget);
-        mapWidget.setSize("700px", "100px");
+        mapWidget.setSize("100%", "600px");
 
         InfoWindowOptions iwOptions = InfoWindowOptions.newInstance();
         infoWindow = InfoWindow.newInstance(iwOptions);

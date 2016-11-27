@@ -2,11 +2,13 @@ package com.uzh.tempic.client.view;
 
 // TODO: Check if any libraries are not used
 
-import com.google.gwt.maps.client.LoadApi;
-import com.google.gwt.user.client.ui.*;
+import com.google.gwt.event.logical.shared.AttachEvent;
+import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.user.client.ui.Widget;
 import com.uzh.tempic.client.presenter.WorldMapPresenter;
 import com.uzh.tempic.client.widget.slider.Slider;
-import com.uzh.tempic.client.widget.slider.SliderListener;
 import com.uzh.tempic.shared.TemperatureData;
 
 import java.util.ArrayList;
@@ -17,7 +19,6 @@ public class WorldMapView extends Composite implements WorldMapPresenter.Display
     private GoogleMapV3 googleMap;
     private GeoChartMap geoChart;
     private Slider yearSlider;
-    private Label yearSliderLabel;
     public WorldMapView(){
 
         // CREATE NAV AND APPLY LAYOUT
@@ -39,14 +40,17 @@ public class WorldMapView extends Composite implements WorldMapPresenter.Display
 
         FlowPanel sliderWrapper = new FlowPanel();
         sliderWrapper.getElement().setId("sliderwrapper");
-        Label sliderLabel = new Label("Year:");
-        yearSliderLabel = new Label("2012");
-        yearSliderLabel.addStyleName("slider-values");
         yearSlider = new Slider("slider",1743,2013,2012);
-        sliderWrapper.add(sliderLabel);
-        sliderWrapper.add(yearSliderLabel);
-        sliderWrapper.add(yearSlider);
 
+         yearSlider.addAttachHandler(new AttachEvent.Handler() {
+
+            @Override
+            public void onAttachOrDetach(AttachEvent event) {
+                yearSlider.getElement().getFirstChildElement().setInnerText("2012");
+            }
+        });
+
+        sliderWrapper.add(yearSlider);
         wrapperTable.contentWrapperTable.add(sliderWrapper);
 
 
@@ -57,8 +61,6 @@ public class WorldMapView extends Composite implements WorldMapPresenter.Display
     public GoogleMapV3 getGoogleMap() { return googleMap; }
 
     public Slider getYearSlider() { return yearSlider; }
-    public Label getYearSliderLabel() { return yearSliderLabel; }
-
 
     public void setTemperatureData(ArrayList<TemperatureData> temperatureData) {
         if (temperatureData == null) {
