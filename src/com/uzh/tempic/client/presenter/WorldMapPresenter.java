@@ -8,32 +8,24 @@
 
 package com.uzh.tempic.client.presenter;
 
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.HasWidgets;
-import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
 import com.uzh.tempic.client.TempicServiceAsync;
-import com.uzh.tempic.client.presenter.Presenter;
 import com.uzh.tempic.client.widget.slider.Slider;
 import com.uzh.tempic.client.widget.slider.SliderEvent;
 import com.uzh.tempic.client.widget.slider.SliderListener;
 import com.uzh.tempic.shared.TemperatureData;
-import com.uzh.tempic.shared.TempicException;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class WorldMapPresenter implements Presenter {
 
     public interface Display {
         void setTemperatureData(ArrayList<TemperatureData> temperatureData);
         Slider getYearSlider();
-        Label getYearSliderLabel();
         Widget asWidget();
     }
 
@@ -49,7 +41,6 @@ public class WorldMapPresenter implements Presenter {
 
 
     // Binds the interactions in the view to the presenter / eventbus
-
     public void bind() {
         display.getYearSlider().addListener(new SliderListener(){
             @Override
@@ -57,12 +48,18 @@ public class WorldMapPresenter implements Presenter {
 
             }
 
+            /**
+             * Updates the text inside the slider handle to the value of the slider
+             * @param e SliderEvent
+             * @return
+             */
             @Override
             public boolean onSlide(SliderEvent e)
             {
                 Slider source = e.getSource();
+
                 if (source == display.getYearSlider()) {
-                    display.getYearSliderLabel().setText("" + e.getValues()[0]);
+                    source.getElement().getFirstChildElement().setInnerText("" + e.getValues()[0]);
                 }
                 return true;
             }
