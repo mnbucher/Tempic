@@ -9,7 +9,7 @@ public class TempicTest extends GWTTestCase {
     public String getModuleName() {
         return "com.uzh.tempic.Tempic";
     }
-    public void testSimple() {
-        assertTrue(true);
-    }
+    //public void testSimple() {
+        //assertTrue(true);
+   // }
 }
