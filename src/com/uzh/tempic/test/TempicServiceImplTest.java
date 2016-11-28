@@ -22,6 +22,25 @@ public class TempicServiceImplTest extends TestCase {
             ArrayList<String> countryNames = tempicService.getCountryNames();
             assertEquals(49, countryNames.size());
 
+
+        } catch (TempicException e) {
+            fail(e.getMessage());
+        }
+    }
+
+    /**
+     * Tests the {@link TempicServiceImpl#getCityNames()} ()} method,
+     * which should return all 100 country names from the database.
+     *
+     * @pre TempicServiceImpl and its dependencies must be available, the database must be working and data present
+     * @post The test is passed if every distinct country name is returned
+     */
+    public void testGetCityNames() {
+        TempicServiceImpl tempicService = new TempicServiceImpl();
+        try {
+            assertEquals(100, tempicService.getCityNames().size());
+
+
         } catch (TempicException e) {
             fail(e.getMessage());
         }
