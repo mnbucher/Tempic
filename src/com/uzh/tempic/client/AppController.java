@@ -66,9 +66,9 @@ public class AppController implements Presenter, ValueChangeHandler<String> {
             if (presenter != null) {
                 try {
                     presenter.go(container);
-                } catch (Throwable throwable) {
-                    throwable.printStackTrace();
-                }
+               } catch (Throwable throwable) {
+                  throwable.printStackTrace();
+               }
             }
         }
 

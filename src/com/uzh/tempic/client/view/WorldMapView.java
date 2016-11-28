@@ -42,11 +42,13 @@ public class WorldMapView extends Composite implements WorldMapPresenter.Display
         sliderWrapper.getElement().setId("sliderwrapper");
         yearSlider = new Slider("slider",1743,2013,2012);
 
-         yearSlider.addAttachHandler(new AttachEvent.Handler() {
+        yearSlider.addAttachHandler(new AttachEvent.Handler() {
 
             @Override
             public void onAttachOrDetach(AttachEvent event) {
-                yearSlider.getElement().getFirstChildElement().setInnerText("2012");
+                if (event.isAttached()) {
+                    yearSlider.getElement().getFirstChildElement().setInnerText("2012");
+                }
             }
         });
 

@@ -70,7 +70,9 @@ public class GoogleMapV3 extends Composite {
             }
         };
 
-        LoadApi.go(onLoad, loadLibraries, sensor);
+        String otherParams = "key=AIzaSyD-JL6QlH5Z5isI2Tur1KEfBYjcAALnh_E";
+
+        LoadApi.go(onLoad, loadLibraries, sensor, otherParams);
     }
 
     private void drawMarker(Double lat, Double lng, HTML infoWindowHTML) {
