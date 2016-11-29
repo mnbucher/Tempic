@@ -60,7 +60,7 @@ strong,b {
 #currentViewLabel {
     font-size: 1.309em;
     padding: 1.118em 2em;
-    border-bottom: 1px solid #c2c2c2;
+    border-bottom: 1px solid #d7d7d7;
 }
 
 #content_wrapper {
@@ -176,9 +176,6 @@ td.worldDashboard-ListName {
     background-color: #e2e2e2;
 }
 
-
-}
-
 #temperatureTable {
     width: 100%;
 }
@@ -190,4 +187,14 @@ table#dashboard_wrapper {
 
 #dashboard_wrapper tr td {
     width: 100vw;
+}
+
+td.com-google-gwt-user-cellview-client-SimplePager-Style-button.com-google-gwt-user-cellview-client-SimplePager-Style-disabledButton, td.com-google-gwt-user-cellview-client-SimplePager-Style-button.com-google-gwt-user-cellview-client-SimplePager-Style-disabledButton,
+td.com-google-gwt-user-cellview-client-SimplePager-Style-pageDetails, td.com-google-gwt-user-cellview-client-SimplePager-Style-button, td.com-google-gwt-user-cellview-client-SimplePager-Style-button {
+    padding-top: 3em;
+    padding-bottom: 1em;
+}
+
+#linechart-wrapper {
+    margin: 1em 0 2em 0;
 }

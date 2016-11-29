@@ -34,7 +34,7 @@ CSS FILE FOR NAVIGATION - CREATED BY MARTIN B.
 /* PADDINGS */
 
 #nav tbody tr td {
-    padding: 1.309em 2.618em;
+    padding: 1.309em 2.618em 0.5em;
 }
 
 #nav tbody tr:first-child {
@@ -51,24 +51,43 @@ CSS FILE FOR NAVIGATION - CREATED BY MARTIN B.
 
 #nav tbody tr td .gwt-Hyperlink a {
     text-decoration: none;
-    font-size: 1.1em;
+    font-size: 1.2em;
     color: #333;
     color: #71778a;
-    padding: 0.8em 2em;
+    padding: 0.8em 1em 0.8em 0em;
+    line-height: 1.8;
     border-radius: 10px;
     /* color: #599fff; */
+}
+
+#nav tbody tr td .gwt-Hyperlink a:hover {
+    color: #ddd;
+}
+
+.country_link a {
+    line-height: 1 !important;
 }
 
 #nav tbody tr td .gwt-Hyperlink#active a{
     color: #2a62bc;
     color: #ffffff;
-    background-color: #141518;
+    //background-color: #141518;
 }
 
 #logo {
     font-size: 1.618em;
     color: #fff;
     font-weight: 600;
+}
+
+.worldmap_link:before {
+    content: "\1F30E";
+    margin-right: 1em;
+}
+
+.country_link:before {
+    content: "\1F4CB";
+    margin-right: 1em;
 }
 
 #copyright {

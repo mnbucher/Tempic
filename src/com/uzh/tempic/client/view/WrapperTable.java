@@ -1,5 +1,6 @@
 package com.uzh.tempic.client.view;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.ui.*;
 
 public class WrapperTable extends HorizontalPanel {
@@ -15,6 +16,8 @@ public class WrapperTable extends HorizontalPanel {
         // CREATE NAV AND ADD TO TEMPIC_WRAPPER
         navTable = new VerticalPanel();
         navTable.getElement().setId("nav");
+
+        // Set Logo
         Label logo = new Label("tempic");
         logo.getElement().setId("logo");
 
@@ -22,9 +25,11 @@ public class WrapperTable extends HorizontalPanel {
         Label placeholder = new Label("");
         placeholder.getElement().setId("navi_placeholder");
 
-        //Hyperlink linkDashboard = new Hyperlink("Dashboard", "dashboard");
-        Hyperlink linkWorldmap = new Hyperlink("Worldmap", "worldmap");
-        Hyperlink linkCountry = new Hyperlink("Country", "country");
+        Hyperlink linkWorldmap = new Hyperlink("Explore", "worldmap");
+        linkWorldmap.addStyleName("worldmap_link");
+
+        Hyperlink linkCountry = new Hyperlink("Analyze", "country");
+        linkCountry.addStyleName("country_link");
 
         //if(currentView == "dashboard") { linkDashboard.getElement().setId("active"); }
         if(currentView == "worldmap") { linkWorldmap.getElement().setId("active"); }
