@@ -51,7 +51,7 @@ public class WorldMapPresenter implements Presenter {
             /**
              * Updates the text inside the slider handle to the value of the slider
              * @param e SliderEvent
-             * @return
+             * @return boolean whether the slide event was successful or not
              */
             @Override
             public boolean onSlide(SliderEvent e)

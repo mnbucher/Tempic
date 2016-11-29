@@ -1,63 +1,112 @@
 package com.uzh.tempic.client.view;
 
-import com.google.gwt.dom.client.Style.Unit;
-import com.google.gwt.user.client.ui.DockLayoutPanel;
-import com.googlecode.gwt.charts.client.ChartLoader;
-import com.googlecode.gwt.charts.client.ChartPackage;
-import com.googlecode.gwt.charts.client.DataTable;
-import com.googlecode.gwt.charts.client.map.Map;
-import com.googlecode.gwt.charts.client.map.MapOptions;
-import com.googlecode.gwt.charts.client.options.MapType;
-import com.googlecode.gwt.charts.client.util.ChartHelper;
+import com.google.gwt.maps.client.LoadApi;
+import com.google.gwt.maps.client.MapOptions;
+import com.google.gwt.maps.client.MapTypeId;
+import com.google.gwt.maps.client.MapWidget;
+import com.google.gwt.maps.client.base.LatLng;
+import com.google.gwt.maps.client.events.MouseEvent;
+import com.google.gwt.maps.client.events.click.ClickMapEvent;
+import com.google.gwt.maps.client.events.click.ClickMapHandler;
+import com.google.gwt.maps.client.overlays.InfoWindow;
+import com.google.gwt.maps.client.overlays.InfoWindowOptions;
+import com.google.gwt.maps.client.overlays.Marker;
+import com.google.gwt.maps.client.overlays.MarkerOptions;
+import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.SimplePanel;
+import com.google.gwt.user.client.ui.VerticalPanel;
 import com.uzh.tempic.shared.TemperatureData;
 
 import java.util.ArrayList;
 
-public class GoogleMap extends DockLayoutPanel {
+/**
+ * Created by michaelziorjen on 26.11.16.
+ */
+public class GoogleMapV3 extends Composite {
 
-    private Map chart;
+    private VerticalPanel pWidget;
+    private MapWidget mapWidget;
+    private InfoWindow infoWindow;
 
-    public GoogleMap() {
-        super(Unit.PX);
-        initialize();
+    private ArrayList<Marker> markerList = new ArrayList<>();
+
+    public GoogleMapV3() {
+        pWidget = new VerticalPanel();
+        initWidget(pWidget);
+
+        loadMapApi();
     }
 
-    private void initialize() {
-        ChartLoader chartLoader = new ChartLoader(ChartPackage.MAP);
-        chartLoader.loadApi(new Runnable() {
+    private void draw() {
+        pWidget.clear();
+        LatLng center = LatLng.newInstance(49.496675, -102.65625);
+        MapOptions opts = MapOptions.newInstance();
+        opts.setZoom(3);
+        opts.setCenter(center);
+        opts.setMapTypeId(MapTypeId.HYBRID);
 
+        mapWidget = new MapWidget(opts);
+        pWidget.add(mapWidget);
+        mapWidget.setSize("100%", 	(Window.getClientHeight() - 72) + "px" );
+
+        InfoWindowOptions iwOptions = InfoWindowOptions.newInstance();
+        infoWindow = InfoWindow.newInstance(iwOptions);
+    }
+
+    private void loadMapApi() {
+        boolean sensor = true;
+
+        // load all the libs for use in the maps
+        ArrayList<LoadApi.LoadLibrary> loadLibraries = new ArrayList<>();
+        loadLibraries.add(LoadApi.LoadLibrary.DRAWING);
+        loadLibraries.add(LoadApi.LoadLibrary.GEOMETRY);
+        loadLibraries.add(LoadApi.LoadLibrary.VISUALIZATION);
+
+        Runnable onLoad = new Runnable() {
             @Override
             public void run() {
-                // Create and attach the chart
-                chart = new Map();
-                add(chart);
+                draw();
+            }
+        };
+
+        String otherParams = "key=AIzaSyD-JL6QlH5Z5isI2Tur1KEfBYjcAALnh_E";
+
+        LoadApi.go(onLoad, loadLibraries, sensor, otherParams);
+    }
+
+    private void drawMarker(Double lat, Double lng, HTML infoWindowHTML) {
+        LatLng pos = LatLng.newInstance(lat, lng);
+        MarkerOptions options = MarkerOptions.newInstance();
+        options.setPosition(pos);
+
+        final Marker marker = Marker.newInstance(options);
+        marker.setMap(mapWidget);
+        markerList.add(marker);
+
+        final HTML innerHTML = infoWindowHTML;
+
+        marker.addClickHandler(new ClickMapHandler() {
+            public void onEvent(ClickMapEvent event) {
+                drawInfoWindow(marker, event.getMouseEvent(),innerHTML);
             }
         });
     }
 
-    /** Converts temperature values into hex colorcodes
-     * @pre: temperature should be between -20 and 40
-     * @post: retrieve a sixdigit hexcode as string
-     * @param temperature a double with the temperature that should be converted
-     * @return HexString with the color value for the specified temperature
-     */
-    public String temperatureToHexValue(double temperature){
-         String hex;
-         int R;
-         int B;
-         int G = 0;
-         temperature = temperature +20;
-         if (temperature <= 30){
-             R = (int) Math.round(temperature * 225 /30);
-             B = 225;
-         }
-         else {
-             R = 225;
-             B = (int) Math.round(225 - (temperature * 225 /30));
-         }
-         hex = Integer.toHexString(R).concat("00").concat(Integer.toHexString(B));
+    protected void drawInfoWindow(final Marker marker, MouseEvent mouseEvent, HTML infoWindowHTML) {
+        if (marker == null || mouseEvent == null) {
+            return;
+        }
 
-    return hex;
+        SimplePanel vp = new SimplePanel();
+        vp.add(infoWindowHTML);
+
+        infoWindow.setContent(vp);
+
+        infoWindow.open(mapWidget, marker);
+
+
     }
 
     /** Updates the map with the specified temperatureData
@@ -67,23 +116,23 @@ public class GoogleMap extends DockLayoutPanel {
      *
      */
     public void setTemperatureData(ArrayList<TemperatureData> temperatureData) {
-        Object[][] data = new Object[temperatureData.size() + 1][4];
-        data[0] = new Object[]{"Lat","Long", "Temperature","Icon"};
+        deleteMapFromAllMarkers();
 
-        for(int i = 1; i < temperatureData.size(); i++) {
-            data[i][0] = temperatureData.get(i).getDecimalLatitude();
-            data[i][1] = temperatureData.get(i).getDecimalLongitude();
-            data[i][2] = temperatureData.get(i).getCity() + ": \n" + temperatureData.get(i).getAvgTemperature().toString() + " ° C";
+        for(int i = 0; i < temperatureData.size(); i++) {
+            HTML infoWindow = new HTML("<strong>" + temperatureData.get(i).getCity() + "</strong> <br/> Temperature Difference: " + temperatureData.get(i).getAvgTemperature().toString() + " ° C" );
+            drawMarker(temperatureData.get(i).getDecimalLatitude(),temperatureData.get(i).getDecimalLongitude(),infoWindow);
         }
-
-        DataTable dataTable = ChartHelper.arrayToDataTable(data);
-        MapOptions options = MapOptions.create();
-        options.setShowTip(true);
-        options.setUseMapTypeControl(true);
-        options.setZoomLevel(3);
-        options.setMapType(MapType.HYBRID);
-        chart.draw(dataTable,options);
     }
+
+    /**
+     * Removes all markers from the map
+     */
+    private void deleteMapFromAllMarkers() {
+        for(int i=0; i < markerList.size(); i++) {
+            this.markerList.get(i).clear();
+        }
+        markerList.clear();
+    }
+
+
 }
-
-

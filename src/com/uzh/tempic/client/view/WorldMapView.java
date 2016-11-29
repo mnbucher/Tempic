@@ -16,8 +16,7 @@ import java.util.ArrayList;
 public class WorldMapView extends Composite implements WorldMapPresenter.Display {
 
     private VerticalPanel dashboardTable;
-    private GoogleMapV3 googleMap;
-    private GeoChartMap geoChart;
+    private GoogleMap googleMap;
     private Slider yearSlider;
     public WorldMapView(){
 
@@ -27,14 +26,9 @@ public class WorldMapView extends Composite implements WorldMapPresenter.Display
 
 
         // Create GoogleMap Class and add it to the panel
-        googleMap = new GoogleMapV3();
+        googleMap = new GoogleMap();
         googleMap.getElement().setId("googlemap");
         wrapperTable.contentWrapperTable.add(googleMap);
-
-        /*
-        geoChart = new GeoChartMap();
-        geoChart.getElement().setId("googlemap");
-        wrapperTable.contentWrapperTable.add(geoChart);*/
 
         // Create & add custom slider to the view
 
@@ -43,7 +37,6 @@ public class WorldMapView extends Composite implements WorldMapPresenter.Display
         yearSlider = new Slider("slider",1743,2013,2012);
 
         yearSlider.addAttachHandler(new AttachEvent.Handler() {
-
             @Override
             public void onAttachOrDetach(AttachEvent event) {
                 if (event.isAttached()) {
@@ -60,7 +53,7 @@ public class WorldMapView extends Composite implements WorldMapPresenter.Display
 
 
 
-    public GoogleMapV3 getGoogleMap() { return googleMap; }
+    public GoogleMap getGoogleMap() { return googleMap; }
 
     public Slider getYearSlider() { return yearSlider; }
 
