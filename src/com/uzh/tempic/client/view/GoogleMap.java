@@ -24,7 +24,7 @@ import java.util.ArrayList;
 /**
  * Created by michaelziorjen on 26.11.16.
  */
-public class GoogleMapV3 extends Composite {
+public class GoogleMap extends Composite {
 
     private VerticalPanel pWidget;
     private MapWidget mapWidget;
@@ -32,7 +32,7 @@ public class GoogleMapV3 extends Composite {
 
     private ArrayList<Marker> markerList = new ArrayList<>();
 
-    public GoogleMapV3() {
+    public GoogleMap() {
         pWidget = new VerticalPanel();
         initWidget(pWidget);
 
