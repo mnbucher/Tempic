@@ -17,7 +17,7 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
-import com.uzh.tempic.shared.TemperatureData;
+import com.uzh.tempic.shared.TemperatureDataComparison;
 
 import java.util.ArrayList;
 
@@ -115,12 +115,20 @@ public class GoogleMap extends Composite {
      * @param temperatureData an ArrayList with the temperatureData objects that should be displayed
      *
      */
-    public void setTemperatureData(ArrayList<TemperatureData> temperatureData) {
+    public void setTemperatureData(ArrayList<TemperatureDataComparison> temperatureData) {
         deleteMapFromAllMarkers();
 
-        for(int i = 0; i < temperatureData.size(); i++) {
-            HTML infoWindow = new HTML("<strong>" + temperatureData.get(i).getCity() + "</strong> <br/> Temperature Difference: " + temperatureData.get(i).getAvgTemperature().toString() + " ° C" );
-            drawMarker(temperatureData.get(i).getDecimalLatitude(),temperatureData.get(i).getDecimalLongitude(),infoWindow);
+        for (TemperatureDataComparison tempComp : temperatureData) {
+            String infoWindow = "<strong>" + tempComp.getCity() + "</strong> <br/> " +
+                    "Temperature Difference: " + tempComp.getFormattedTemperatureDifferencePercent() + "<br />" +
+                    "Absolute Temperature Difference: " + tempComp.getTemperatureDifference() + "<br />" +
+                    "Start Year: " + tempComp.getYearA() + " - " + tempComp.getAvgTemperatureA() + " °C</br>" +
+                    "End Year: " + tempComp.getYearB() + " - " + tempComp.getAvgTemperatureB() + " °C</br>" +
+                    "Timespan: " + tempComp.getYearDifference() + " years";
+
+            HTML infoWindowHTML = new HTML(infoWindow);
+
+            drawMarker(tempComp.getDecimalLatitude(), tempComp.getDecimalLongitude(), infoWindowHTML);
         }
     }
 

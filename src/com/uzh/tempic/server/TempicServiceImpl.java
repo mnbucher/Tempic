@@ -3,6 +3,7 @@ package com.uzh.tempic.server;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import com.uzh.tempic.client.TempicService;
 import com.uzh.tempic.shared.TemperatureData;
+import com.uzh.tempic.shared.TemperatureDataComparison;
 import com.uzh.tempic.shared.TempicException;
 
 import java.sql.Connection;
@@ -214,7 +215,7 @@ public class TempicServiceImpl extends RemoteServiceServlet implements TempicSer
 
     // TODO: Check if difference is calculated correctly
     // TODO: Do comparison in SQL so no "mismatch" error can occur
-    public ArrayList<TemperatureData> getTemperatureDataDifference(int year) throws TempicException {
+    public ArrayList<TemperatureDataComparison> getTemperatureDataDifference(int year) throws TempicException {
         String sqlQuery = "SELECT MAX(dt) AS dt, td.country, td.city, td.latitude, td.longitude, AVG(td.average_temperature) as average_temperature, AVG(td.average_temperature_uncertainty) AS average_temperature_uncertainty, MAX(newTD.dt_new) as dt_new, MAX(newTD.average_temperature_new) as average_temperature_new, MAX(newTD.average_temperature_uncertainty_new) as average_temperature_uncertainty_new " +
                 "FROM temperature_data td " +
                 "INNER JOIN (SELECT city, MIN(YEAR(dt)) minYR FROM temperature_data GROUP BY city) oldTD " +
@@ -224,15 +225,18 @@ public class TempicServiceImpl extends RemoteServiceServlet implements TempicSer
                 "GROUP BY td.city, td.country, td.longitude, td.latitude, YEAR(td.dt) ORDER BY city ASC";
 
 
-        ArrayList<TemperatureData> tempData = new ArrayList<>();
+        ArrayList<TemperatureDataComparison> tempData = new ArrayList<>();
         try {
             Connection conn = getDBConnection();
             ResultSet rs = conn.prepareStatement(sqlQuery).executeQuery();
             while (rs.next()) {
-                TemperatureData tempEntry = new TemperatureData(
+                TemperatureDataComparison tempEntry = new TemperatureDataComparison(
                         rs.getDate("dt"),
-                        rs.getDouble("average_temperature_new") - rs.getDouble("average_temperature"),
-                        (rs.getDouble("average_temperature_uncertainty") + rs.getDouble("average_temperature_uncertainty_new")) / 2,
+                        rs.getDouble("average_temperature"),
+                        rs.getDouble("average_temperature_uncertainty"),
+                        rs.getDate("dt_new"),
+                        rs.getDouble("average_temperature_new"),
+                        rs.getDouble("average_temperature_uncertainty_new"),
                         rs.getString("city"),
                         rs.getString("country"),
                         rs.getString("latitude"),

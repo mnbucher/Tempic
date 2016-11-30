@@ -9,7 +9,7 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.uzh.tempic.client.presenter.WorldMapPresenter;
 import com.uzh.tempic.client.widget.slider.Slider;
-import com.uzh.tempic.shared.TemperatureData;
+import com.uzh.tempic.shared.TemperatureDataComparison;
 
 import java.util.ArrayList;
 
@@ -57,7 +57,7 @@ public class WorldMapView extends Composite implements WorldMapPresenter.Display
 
     public Slider getYearSlider() { return yearSlider; }
 
-    public void setTemperatureData(ArrayList<TemperatureData> temperatureData) {
+    public void setTemperatureData(ArrayList<TemperatureDataComparison> temperatureData) {
         if (temperatureData == null) {
             return;
         }

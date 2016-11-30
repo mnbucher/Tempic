@@ -17,14 +17,14 @@ import com.uzh.tempic.client.TempicServiceAsync;
 import com.uzh.tempic.client.widget.slider.Slider;
 import com.uzh.tempic.client.widget.slider.SliderEvent;
 import com.uzh.tempic.client.widget.slider.SliderListener;
-import com.uzh.tempic.shared.TemperatureData;
+import com.uzh.tempic.shared.TemperatureDataComparison;
 
 import java.util.ArrayList;
 
 public class WorldMapPresenter implements Presenter {
 
     public interface Display {
-        void setTemperatureData(ArrayList<TemperatureData> temperatureData);
+        void setTemperatureData(ArrayList<TemperatureDataComparison> temperatureData);
         Slider getYearSlider();
         Widget asWidget();
     }
@@ -92,8 +92,8 @@ public class WorldMapPresenter implements Presenter {
     // Gets the data from the model
 
     private void fetchWorldMapData(int year) {
-       rpcService.getTemperatureDataDifference(year,new AsyncCallback<ArrayList<TemperatureData>>() {
-            public void onSuccess(ArrayList<TemperatureData> result) {
+       rpcService.getTemperatureDataDifference(year,new AsyncCallback<ArrayList<TemperatureDataComparison>>() {
+            public void onSuccess(ArrayList<TemperatureDataComparison> result) {
                 display.setTemperatureData(result);
             }
 

@@ -1,5 +1,7 @@
 package com.uzh.tempic.shared;
 
+import com.google.gwt.i18n.client.DateTimeFormat;
+
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
@@ -28,6 +30,10 @@ public class TemperatureData implements Serializable {
 
     public Date getDate() {
         return date;
+    }
+
+    public int getYear() {
+        return Integer.parseInt(DateTimeFormat.getFormat( "yyyy" ).format( this.date ));
     }
 
     public Double getAvgTemperature() {
