@@ -8,10 +8,10 @@ import com.google.gwt.maps.client.base.LatLng;
 import com.google.gwt.maps.client.events.MouseEvent;
 import com.google.gwt.maps.client.events.click.ClickMapEvent;
 import com.google.gwt.maps.client.events.click.ClickMapHandler;
+import com.google.gwt.maps.client.overlays.Circle;
+import com.google.gwt.maps.client.overlays.CircleOptions;
 import com.google.gwt.maps.client.overlays.InfoWindow;
 import com.google.gwt.maps.client.overlays.InfoWindowOptions;
-import com.google.gwt.maps.client.overlays.Marker;
-import com.google.gwt.maps.client.overlays.MarkerOptions;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTML;
@@ -30,7 +30,7 @@ public class GoogleMap extends Composite {
     private MapWidget mapWidget;
     private InfoWindow infoWindow;
 
-    private ArrayList<Marker> markerList = new ArrayList<>();
+    private ArrayList<Circle> markerList = new ArrayList<>();
 
     public GoogleMap() {
         pWidget = new VerticalPanel();
@@ -76,26 +76,32 @@ public class GoogleMap extends Composite {
         LoadApi.go(onLoad, loadLibraries, sensor, otherParams);
     }
 
-    private void drawMarker(Double lat, Double lng, HTML infoWindowHTML) {
+    private void drawMarker(Double lat, Double lng, HTML infoWindowHTML, Double tempDiff) {
         LatLng pos = LatLng.newInstance(lat, lng);
-        MarkerOptions options = MarkerOptions.newInstance();
-        options.setPosition(pos);
+        CircleOptions circleOpts = CircleOptions.newInstance();
+        circleOpts.setCenter(pos);
+        String color = this.temperatureToHexValue(tempDiff);
+        circleOpts.setFillColor(color);
+        circleOpts.setFillOpacity(0.9d);
+        circleOpts.setRadius(100000);
+        circleOpts.setStrokeWeight(0);
+        circleOpts.setMap(mapWidget);
 
-        final Marker marker = Marker.newInstance(options);
-        marker.setMap(mapWidget);
-        markerList.add(marker);
+        final Circle circle = Circle.newInstance(circleOpts);
+        circle.setMap(mapWidget);
+        markerList.add(circle);
 
         final HTML innerHTML = infoWindowHTML;
 
-        marker.addClickHandler(new ClickMapHandler() {
+        circle.addClickHandler(new ClickMapHandler() {
             public void onEvent(ClickMapEvent event) {
-                drawInfoWindow(marker, event.getMouseEvent(),innerHTML);
+                drawInfoWindow(circle, event.getMouseEvent(),innerHTML);
             }
         });
     }
 
-    protected void drawInfoWindow(final Marker marker, MouseEvent mouseEvent, HTML infoWindowHTML) {
-        if (marker == null || mouseEvent == null) {
+    protected void drawInfoWindow(final Circle circle, MouseEvent mouseEvent, HTML infoWindowHTML) {
+        if (circle == null || mouseEvent == null) {
             return;
         }
 
@@ -103,8 +109,8 @@ public class GoogleMap extends Composite {
         vp.add(infoWindowHTML);
 
         infoWindow.setContent(vp);
-
-        infoWindow.open(mapWidget, marker);
+        infoWindow.setPosition(circle.getCenter());
+        infoWindow.open(mapWidget);
 
 
     }
@@ -128,7 +134,7 @@ public class GoogleMap extends Composite {
 
             HTML infoWindowHTML = new HTML(infoWindow);
 
-            drawMarker(tempComp.getDecimalLatitude(), tempComp.getDecimalLongitude(), infoWindowHTML);
+            drawMarker(tempComp.getDecimalLatitude(), tempComp.getDecimalLongitude(), infoWindowHTML, tempComp.getTemperatureDifference());
         }
     }
 
@@ -137,10 +143,56 @@ public class GoogleMap extends Composite {
      */
     private void deleteMapFromAllMarkers() {
         for(int i=0; i < markerList.size(); i++) {
-            this.markerList.get(i).clear();
+            this.markerList.get(i).setMap(null);
         }
         markerList.clear();
     }
+
+    /** To convert temperature values into hex colorcodes
+     * @pre: temperature should be between -20 and 40
+     * @param:
+     * @return: String : retrieve a sixdigit hexcode
+     * **/
+
+    public String temperatureToHexValue(double temperature){
+        double bound = 20;
+        int R;
+        int B;
+        int G = 0;
+        temperature = temperature +bound;
+        if (temperature <= bound){
+            R = (int) ((temperature * 255) /bound);
+            B = 255;
+        }
+        else {
+            R = 255;
+            B = (int) (255 - (temperature * 255 /bound));
+        }
+        String hex = toHex(R,G,B);
+        return hex;
+    }
+
+    /**
+     * Returns a web browser-friendly HEX value representing the colour in the default sRGB
+     * ColorModel.
+     *
+     * @param r red
+     * @param g green
+     * @param b blue
+     * @return a browser-friendly HEX value
+     */
+    public static String toHex(int r, int g, int b) {
+        return "#" + toBrowserHexValue(r) + toBrowserHexValue(g) + toBrowserHexValue(b);
+    }
+
+    private static String toBrowserHexValue(int number) {
+        StringBuilder builder = new StringBuilder(Integer.toHexString(number & 0xff));
+        while (builder.length() < 2) {
+            builder.append("0");
+        }
+        return builder.toString().toUpperCase();
+    }
+
 
 
 }
