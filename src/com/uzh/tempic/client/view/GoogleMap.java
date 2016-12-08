@@ -19,6 +19,7 @@ import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.uzh.tempic.shared.TemperatureDataComparison;
 
+import java.awt.*;
 import java.util.ArrayList;
 
 /**
@@ -80,7 +81,7 @@ public class GoogleMap extends Composite {
         LatLng pos = LatLng.newInstance(lat, lng);
         CircleOptions circleOpts = CircleOptions.newInstance();
         circleOpts.setCenter(pos);
-        String color = this.temperatureToHexValue(tempDiff);
+        String color = this.getColor(tempDiff);
         circleOpts.setFillColor(color);
         circleOpts.setFillOpacity(0.9d);
         circleOpts.setRadius(100000);
@@ -154,21 +155,30 @@ public class GoogleMap extends Composite {
      * @return: String : retrieve a sixdigit hexcode
      * **/
 
-    public String temperatureToHexValue(double temperature){
-        double bound = 20;
-        int R;
-        int B;
-        int G = 0;
-        temperature = temperature +bound;
-        if (temperature <= bound){
-            R = (int) ((temperature * 255) /bound);
-            B = 255;
+
+    public String getColor(double power)
+    {
+        //normalize power to a range [0,1]
+        power = power + 10;
+        power = power/20;
+        //init values
+        double blue = 0.0;
+        double red = 0.0;
+        double green = 0.0;
+        if (power<0.5) {
+            green = 1.0;
+            red = 2 * power;
         }
-        else {
-            R = 255;
-            B = (int) (255 - (temperature * 255 /bound));
+        else if (0.5<=power) {
+            red = 1.0;
+            green = 1.0 - 2 * (power - 0.5);
         }
-        String hex = toHex(R,G,B);
+        red = red * 255;
+        green = green * 255;
+        int r = (int)red;
+        int g = (int)green;
+        int b = (int)blue;
+        String hex = toHex(r, g, b);
         return hex;
     }
 
