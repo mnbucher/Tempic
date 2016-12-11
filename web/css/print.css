@@ -1,4 +1,7 @@
 @media print {
+    #dashboard_wrapper {
+        padding: 0;
+    }
     #tempic_wrapper #nav {
         display: none;
     }
