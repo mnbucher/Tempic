@@ -36,7 +36,7 @@ public class TemperatureDataComparison extends TemperatureData {
      * @return double absolute difference in degree celsius
      */
     public double getTemperatureDifference() {
-        return (this.avgTemperatureB - this.getAvgTemperatureA());
+        return (Math.round((this.avgTemperatureB - this.getAvgTemperatureA())*100.0)/100.0);
     }
 
     /** Returns the temperature difference in percent between the two compared dates
@@ -48,7 +48,7 @@ public class TemperatureDataComparison extends TemperatureData {
     }
 
     public String getFormattedTemperatureDifferencePercent() {
-        double roundedValue = (double)Math.round(this.getTemperatureDifferencePercent() * 1000d) / 1000d;
+        double roundedValue = Math.round(this.getTemperatureDifferencePercent() * 100.0) / 100.0;
         roundedValue = roundedValue * 100; // Make it appear as percent value
         String percentDiff = String.valueOf(roundedValue);
         percentDiff = percentDiff.concat("%");
@@ -60,7 +60,7 @@ public class TemperatureDataComparison extends TemperatureData {
     }
 
     public double getAvgTemperatureA() {
-        return this.getAvgTemperature();
+        return Math.round(this.getAvgTemperature()*100.0)/100.0;
     }
 
     public double getAvgTemperatureUncertaintyA() {
@@ -68,7 +68,7 @@ public class TemperatureDataComparison extends TemperatureData {
     }
 
     public double getAvgTemperatureB() {
-        return this.avgTemperatureB;
+        return Math.round(this.avgTemperatureB*100.0)/100.0;
     }
 
     public double getAvgTemperatureUncertaintyB() {
