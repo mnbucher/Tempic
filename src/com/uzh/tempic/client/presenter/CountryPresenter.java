@@ -148,7 +148,7 @@ public class CountryPresenter implements Presenter {
      * @param uncertainty The acceptable uncertainty
      * @param limitTo The amount of rows that should be loaded
      * @param aggregateBy Whether the data should be aggregated by year or month (String "month" or "year")
-     * @param groupByCityOrCountry
+     * @param groupByCityOrCountry Whether the data should be grouped by city or country (String "city" or "country")
      */
     private void fetchTemperatureDataFiltered(ArrayList<String> countries, int from, int to, double uncertainty, int limitTo, String aggregateBy, String groupByCityOrCountry) {
         rpcService.getTemperatureDataFiltered(countries, from, to, uncertainty, limitTo, aggregateBy, groupByCityOrCountry, new AsyncCallback<ArrayList<TemperatureData>>() {
