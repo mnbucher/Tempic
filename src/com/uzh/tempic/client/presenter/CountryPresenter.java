@@ -29,9 +29,11 @@ public class CountryPresenter implements Presenter {
      */
     public interface Display {
         void setCountryNames(ArrayList<String> countryNames);
+        void setCityNames(ArrayList<String> cityNames);
         void setTemperatureData(ArrayList<TemperatureData> result);
         HasClickHandlers getFilterButton();
         ListBox getCountryListBox();
+        ListBox getCityListBox();
         ListBox getFromYearListBox();
         ListBox getToYearListBox();
         ListBox getUncertaintyListBox();
@@ -58,6 +60,7 @@ public class CountryPresenter implements Presenter {
             public void onClick(ClickEvent event) {
                 /* Since GWT doesn't return more than one element from the list box we need to iterate trough all of the items in the list box */
                 ListBox countryListBox = display.getCountryListBox();
+                ListBox cityListBox = display.getCityListBox();
                 ListBox fromYearListBox = display.getFromYearListBox();
                 ListBox toYearListBox = display.getToYearListBox();
                 ListBox uncertaintyListBox = display.getUncertaintyListBox();
@@ -70,10 +73,24 @@ public class CountryPresenter implements Presenter {
                 double uncertainty = Double.parseDouble(uncertaintyListBox.getSelectedValue());
                 String aggregateBy = aggregateListBox.getSelectedValue();
                 String groupByCityOrCountry = groupByCityOrCountryListBox.getSelectedValue();
+                String searchBy = "country";
 
-                for (int i = 0, l = countryListBox.getItemCount(); i < l; i++) {
-                    if (countryListBox.isItemSelected(i)) {
-                        selectedValues.add(countryListBox.getValue(i));
+                if(countryListBox.getSelectedItemText() != null && cityListBox.getSelectedItemText() != null) {
+                    Window.alert("Please select either Countries or Cities, but not both");
+                    return;
+                } else if(countryListBox.getSelectedItemText() != null) {
+                    searchBy = "country";
+                    for (int i = 0, l = countryListBox.getItemCount(); i < l; i++) {
+                        if (countryListBox.isItemSelected(i)) {
+                            selectedValues.add(countryListBox.getValue(i));
+                        }
+                    }
+                } else {
+                    searchBy = "city";
+                    for (int i = 0, l = cityListBox.getItemCount(); i < l; i++) {
+                        if (cityListBox.isItemSelected(i)) {
+                            selectedValues.add(cityListBox.getValue(i));
+                        }
                     }
                 }
                 if(selectedValues.size() == 0) {
@@ -82,7 +99,7 @@ public class CountryPresenter implements Presenter {
                     Window.alert("Please select a valid time range.");
                 } else {
                     try {
-                        fetchTemperatureDataFiltered(selectedValues, fromYear, toYear, uncertainty, 50000, aggregateBy, groupByCityOrCountry);
+                        fetchTemperatureDataFiltered(selectedValues, searchBy, fromYear, toYear, uncertainty, 50000, aggregateBy, groupByCityOrCountry);
                     } catch (Throwable throwable) {
                         throwable.printStackTrace();
                     }
@@ -98,6 +115,7 @@ public class CountryPresenter implements Presenter {
         container.clear();
         container.add(display.asWidget());
         fetchCountryData();
+        fetchCityData();
         fetchTemperatureData();
     }
 
@@ -117,6 +135,21 @@ public class CountryPresenter implements Presenter {
     }
 
     /**
+     * Calls the TempicService and loads all countries in the database.
+     */
+    private void fetchCityData() {
+        rpcService.getCityNames(new AsyncCallback<ArrayList<String>>() {
+            public void onSuccess(ArrayList<String> result) {
+                // pass the Data to the View
+                display.setCityNames(result);
+            }
+            public void onFailure(Throwable caught) {
+                Window.alert("Unable to fetch the city names.");
+            }
+        });
+    }
+
+    /**
      * Calls the TempicService with a predefined set of parameters
      * to asynchronously load and display a initial set of data.
      *
@@ -128,7 +161,7 @@ public class CountryPresenter implements Presenter {
         initialCountries.addAll(Arrays.asList("China", "Chile", "Brazil", "Burma"));
         int limitTo = 50000;
         int maxUncertainty = 100;
-        rpcService.getTemperatureDataFiltered(initialCountries, 2013, 2013, maxUncertainty, limitTo, "month", "city", new AsyncCallback<ArrayList<TemperatureData>>() {
+        rpcService.getTemperatureDataFiltered(initialCountries, "country", 2013, 2013, maxUncertainty, limitTo, "month", "city", new AsyncCallback<ArrayList<TemperatureData>>() {
             public void onSuccess(ArrayList<TemperatureData> result) {
                 display.setTemperatureData(result);
             }
@@ -143,6 +176,7 @@ public class CountryPresenter implements Presenter {
      * loads the corresponding data and - if successful - fills the table
      * otherwise an error message is displayed.
      * @param countries A ArrayList containing all country names
+     * @param searchBy
      * @param from The starting year to load
      * @param to The last year to load
      * @param uncertainty The acceptable uncertainty
@@ -150,8 +184,8 @@ public class CountryPresenter implements Presenter {
      * @param aggregateBy Whether the data should be aggregated by year or month (String "month" or "year")
      * @param groupByCityOrCountry Whether the data should be grouped by city or country (String "city" or "country")
      */
-    private void fetchTemperatureDataFiltered(ArrayList<String> countries, int from, int to, double uncertainty, int limitTo, String aggregateBy, String groupByCityOrCountry) {
-        rpcService.getTemperatureDataFiltered(countries, from, to, uncertainty, limitTo, aggregateBy, groupByCityOrCountry, new AsyncCallback<ArrayList<TemperatureData>>() {
+    private void fetchTemperatureDataFiltered(ArrayList<String> countries, String searchBy, int from, int to, double uncertainty, int limitTo, String aggregateBy, String groupByCityOrCountry) {
+        rpcService.getTemperatureDataFiltered(countries, searchBy, from, to, uncertainty, limitTo, aggregateBy, groupByCityOrCountry, new AsyncCallback<ArrayList<TemperatureData>>() {
             public void onSuccess(ArrayList<TemperatureData> result) {
                 display.setTemperatureData(result);
                 if(result.size() == 0) {

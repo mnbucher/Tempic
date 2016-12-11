@@ -29,6 +29,7 @@ public class CountryView extends Composite implements CountryPresenter.Display {
     private CellTable temperatureDataTable;
     private ListDataProvider<TemperatureData> dataProvider;
     private ListBox countryListBox;
+    private ListBox cityListBox;
     private ListBox fromYearListBox;
     private ListBox toYearListBox;
     private ListBox uncertaintyListBox;
@@ -60,6 +61,11 @@ public class CountryView extends Composite implements CountryPresenter.Display {
         countryListBox = new ListBox();
         countryListBox.setMultipleSelect(true);
         countryListBox.setStyleName("chosen-select");
+
+        cityListBox = new ListBox();
+        cityListBox.setMultipleSelect(true);
+        cityListBox.setStyleName("chosen-select");
+        cityListBox.setStylePrimaryName("citybox");
 
         Label filterYearStart = new Label ("From:");
         fromYearListBox = new ListBox();
@@ -94,6 +100,7 @@ public class CountryView extends Composite implements CountryPresenter.Display {
         filterBtn = new Button("Filter");
 
         filterSection.add(countryListBox);
+        filterSection.add(cityListBox);
         filterSection.add(filterYearStart);
         filterSection.add(fromYearListBox);
         filterSection.add(filterYearEnd);
@@ -202,7 +209,9 @@ public class CountryView extends Composite implements CountryPresenter.Display {
     public ListBox getCountryListBox() {
         return countryListBox;
     }
-
+    public ListBox getCityListBox() {
+        return cityListBox;
+    }
     public ListBox getFromYearListBox() {
         return fromYearListBox;
     }
@@ -223,6 +232,12 @@ public class CountryView extends Composite implements CountryPresenter.Display {
             countryListBox.addItem(countryName);
         }
         js();
+    }
+    public void setCityNames(ArrayList<String> cityNames) {
+        for(String cityName : cityNames) {
+            cityListBox.addItem(cityName);
+        }
+        js2();
     }
     public void setTemperatureData(ArrayList<TemperatureData> temperatureData) {
         if(temperatureData.size() == 0) { return; } // Don't update view if there's no data
@@ -328,6 +343,10 @@ public class CountryView extends Composite implements CountryPresenter.Display {
         $wnd.jQuery("#print-link" ).click(function() {
             $wnd.print();
         });
+    }-*/;
+
+    private static native void js2() /*-{
+        $wnd.jQuery('.citybox').chosen();
     }-*/;
 
     public Widget asWidget() {

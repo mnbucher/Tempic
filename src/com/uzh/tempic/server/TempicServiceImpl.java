@@ -144,15 +144,15 @@ public class TempicServiceImpl extends RemoteServiceServlet implements TempicSer
      * @pre -
      * @post the returned value corresponds to the actual result of the query formed with the parameters
      * @param countryNames A ArrayList containing all countryNames as Strings
+     * @param searchBy Either country or city, depending on the filter list
      * @param from The starting year of the data set
      * @param to The last year (inclusive) of the data set
      * @param uncertainty The uncertainty of the temperature data entry
      * @param limitTo The amount of results the query should be limited to
      * @param aggregateBy Whether the data should be aggregated by month or year (String "month" or "year")
-     * @param groupByCityOrCountry Whether the data should be grouped by city or country (Expects a String "city" or "country")
-     * @return A ArrayList containing all relevant data according to the parameters
+     * @param groupByCityOrCountry Whether the data should be grouped by city or country (Expects a String "city" or "country")       @return A ArrayList containing all relevant data according to the parameters
      */
-    public ArrayList<TemperatureData> getTemperatureDataFiltered(ArrayList<String> countryNames, int from, int to, double uncertainty, int limitTo, String aggregateBy, String groupByCityOrCountry) throws TempicException {
+    public ArrayList<TemperatureData> getTemperatureDataFiltered(ArrayList<String> countryNames, String searchBy, int from, int to, double uncertainty, int limitTo, String aggregateBy, String groupByCityOrCountry) throws TempicException {
         String inStatement = "";
         for(int i = 0; i < countryNames.size() - 1; i++) {
             inStatement = inStatement.concat("'" + countryNames.get(i) + "',");
@@ -168,7 +168,7 @@ public class TempicServiceImpl extends RemoteServiceServlet implements TempicSer
         if(groupByCityOrCountry.equals("country")) {
             String sqlQuery = "SELECT MAX(dt) AS dt, AVG(average_temperature) AS average_temperature, " +
                     "AVG(average_temperature_uncertainty) as average_temperature_uncertainty, country " +
-                    "FROM temperature_data WHERE country IN  (" + inStatement + ") AND " +
+                    "FROM temperature_data WHERE " + searchBy + " IN  (" + inStatement + ") AND " +
                     "YEAR(temperature_data.dt) BETWEEN '" + from + "' AND '" + to + "' AND " +
                     "average_temperature_uncertainty <= '" + uncertainty + "'" +
                     "GROUP BY " + groupyBy + ", country " +
@@ -200,7 +200,7 @@ public class TempicServiceImpl extends RemoteServiceServlet implements TempicSer
         } else {
             String sqlQuery = "SELECT MAX(dt) AS dt, AVG(average_temperature) AS average_temperature, " +
                     "AVG(average_temperature_uncertainty) as average_temperature_uncertainty, city, country, latitude, " +
-                    "longitude  FROM temperature_data WHERE country IN  (" + inStatement + ") AND " +
+                    "longitude  FROM temperature_data WHERE " + searchBy + " IN  (" + inStatement + ") AND " +
                     "YEAR(temperature_data.dt) BETWEEN '" + from + "' AND '" + to + "' AND " +
                     "average_temperature_uncertainty <= '" + uncertainty + "'" +
                     "GROUP BY " + groupyBy + ", city, country, latitude, longitude " +
