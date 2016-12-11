@@ -36,6 +36,7 @@ public class CountryPresenter implements Presenter {
         ListBox getToYearListBox();
         ListBox getUncertaintyListBox();
         ListBox getAggregateListBox();
+        ListBox getGroupByCityOrCountryListBox();
         Widget asWidget();
     }
 
@@ -61,12 +62,14 @@ public class CountryPresenter implements Presenter {
                 ListBox toYearListBox = display.getToYearListBox();
                 ListBox uncertaintyListBox = display.getUncertaintyListBox();
                 ListBox aggregateListBox = display.getAggregateListBox();
+                ListBox groupByCityOrCountryListBox = display.getGroupByCityOrCountryListBox();
 
                 ArrayList<String> selectedValues = new ArrayList<>();
                 int fromYear = Integer.parseInt(fromYearListBox.getSelectedValue());
                 int toYear = Integer.parseInt(toYearListBox.getSelectedValue());
                 double uncertainty = Double.parseDouble(uncertaintyListBox.getSelectedValue());
                 String aggregateBy = aggregateListBox.getSelectedValue();
+                String groupByCityOrCountry = groupByCityOrCountryListBox.getSelectedValue();
 
                 for (int i = 0, l = countryListBox.getItemCount(); i < l; i++) {
                     if (countryListBox.isItemSelected(i)) {
@@ -79,7 +82,7 @@ public class CountryPresenter implements Presenter {
                     Window.alert("Please select a valid time range.");
                 } else {
                     try {
-                        fetchTemperatureDataFiltered(selectedValues, fromYear, toYear, uncertainty, 50000, aggregateBy);
+                        fetchTemperatureDataFiltered(selectedValues, fromYear, toYear, uncertainty, 50000, aggregateBy, groupByCityOrCountry);
                     } catch (Throwable throwable) {
                         throwable.printStackTrace();
                     }
@@ -125,7 +128,7 @@ public class CountryPresenter implements Presenter {
         initialCountries.addAll(Arrays.asList("China", "Chile", "Brazil", "Burma"));
         int limitTo = 50000;
         int maxUncertainty = 100;
-        rpcService.getTemperatureDataFiltered(initialCountries, 2013, 2013, maxUncertainty, limitTo, "month", new AsyncCallback<ArrayList<TemperatureData>>() {
+        rpcService.getTemperatureDataFiltered(initialCountries, 2013, 2013, maxUncertainty, limitTo, "month", "city", new AsyncCallback<ArrayList<TemperatureData>>() {
             public void onSuccess(ArrayList<TemperatureData> result) {
                 display.setTemperatureData(result);
             }
@@ -145,9 +148,10 @@ public class CountryPresenter implements Presenter {
      * @param uncertainty The acceptable uncertainty
      * @param limitTo The amount of rows that should be loaded
      * @param aggregateBy Whether the data should be aggregated by year or month (String "month" or "year")
+     * @param groupByCityOrCountry
      */
-    private void fetchTemperatureDataFiltered(ArrayList<String> countries, int from, int to, double uncertainty, int limitTo, String aggregateBy) {
-        rpcService.getTemperatureDataFiltered(countries, from, to, uncertainty, limitTo, aggregateBy, new AsyncCallback<ArrayList<TemperatureData>>() {
+    private void fetchTemperatureDataFiltered(ArrayList<String> countries, int from, int to, double uncertainty, int limitTo, String aggregateBy, String groupByCityOrCountry) {
+        rpcService.getTemperatureDataFiltered(countries, from, to, uncertainty, limitTo, aggregateBy, groupByCityOrCountry, new AsyncCallback<ArrayList<TemperatureData>>() {
             public void onSuccess(ArrayList<TemperatureData> result) {
                 display.setTemperatureData(result);
                 if(result.size() == 0) {

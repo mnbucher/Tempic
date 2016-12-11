@@ -149,9 +149,10 @@ public class TempicServiceImpl extends RemoteServiceServlet implements TempicSer
      * @param uncertainty The uncertainty of the temperature data entry
      * @param limitTo The amount of results the query should be limited to
      * @param aggregateBy Whether the data should be aggregated by month or year (String "month" or "year")
+     * @param groupByCityOrCountry Whether the data should be grouped by city or country (Expects a String "city" or "country")
      * @return A ArrayList containing all relevant data according to the parameters
      */
-    public ArrayList<TemperatureData> getTemperatureDataFiltered(ArrayList<String> countryNames, int from, int to, double uncertainty, int limitTo, String aggregateBy) throws TempicException {
+    public ArrayList<TemperatureData> getTemperatureDataFiltered(ArrayList<String> countryNames, int from, int to, double uncertainty, int limitTo, String aggregateBy, String groupByCityOrCountry) throws TempicException {
         String inStatement = "";
         for(int i = 0; i < countryNames.size() - 1; i++) {
             inStatement = inStatement.concat("'" + countryNames.get(i) + "',");

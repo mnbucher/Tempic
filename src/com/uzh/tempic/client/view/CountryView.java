@@ -33,6 +33,7 @@ public class CountryView extends Composite implements CountryPresenter.Display {
     private ListBox toYearListBox;
     private ListBox uncertaintyListBox;
     private ListBox aggregateListBox;
+    private ListBox groupByCityOrCountryListBox;
     private Button filterBtn;
     private SimplePager pager;
 
@@ -85,6 +86,11 @@ public class CountryView extends Composite implements CountryPresenter.Display {
         aggregateListBox.addItem("Month", "month");
         aggregateListBox.addItem("Year", "year");
 
+        Label filterCityOrCountry = new Label ("Group By:");
+        groupByCityOrCountryListBox = new ListBox();
+        groupByCityOrCountryListBox.addItem("Country", "country");
+        groupByCityOrCountryListBox.addItem("City", "city");
+
         filterBtn = new Button("Filter");
 
         filterSection.add(countryListBox);
@@ -96,6 +102,8 @@ public class CountryView extends Composite implements CountryPresenter.Display {
         filterSection.add(uncertaintyListBox);
         filterSection.add(filterAggregateDate);
         filterSection.add(aggregateListBox);
+        filterSection.add(filterCityOrCountry);
+        filterSection.add(groupByCityOrCountryListBox);
         filterSection.add(filterBtn);
 
         filterSection.getElement().setId("country_filterSection");
@@ -206,6 +214,9 @@ public class CountryView extends Composite implements CountryPresenter.Display {
     }
     public ListBox getAggregateListBox() {
         return aggregateListBox;
+    }
+    public ListBox getGroupByCityOrCountryListBox() {
+        return groupByCityOrCountryListBox;
     }
     public void setCountryNames(ArrayList<String> countryNames) {
         for(String countryName : countryNames) {
