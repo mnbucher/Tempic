@@ -1,7 +1,6 @@
 package com.uzh.tempic.client.view;
 
 import com.google.gwt.dom.client.Style.Unit;
-import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.client.ui.DockLayoutPanel;
 import com.googlecode.gwt.charts.client.ChartLoader;
 import com.googlecode.gwt.charts.client.ChartPackage;
@@ -9,21 +8,14 @@ import com.googlecode.gwt.charts.client.ColumnType;
 import com.googlecode.gwt.charts.client.DataTable;
 import com.googlecode.gwt.charts.client.corechart.LineChart;
 import com.googlecode.gwt.charts.client.corechart.LineChartOptions;
-import com.googlecode.gwt.charts.client.format.DateFormat;
-import com.googlecode.gwt.charts.client.options.AggregationTarget;
 import com.googlecode.gwt.charts.client.options.HAxis;
-import com.googlecode.gwt.charts.client.options.Trendline;
 import com.googlecode.gwt.charts.client.options.VAxis;
 import com.uzh.tempic.shared.TemperatureData;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 public class LineChartImpl extends DockLayoutPanel {
@@ -55,7 +47,11 @@ public class LineChartImpl extends DockLayoutPanel {
 
         for(int i = 0; i < temperatureData.size(); i++) {
             datesSet.add(temperatureData.get(i).getDate());
-            citiesSet.add(temperatureData.get(i).getCity());
+            if(temperatureData.get(i).getCity().equals("")) {
+                citiesSet.add(temperatureData.get(i).getCountry());
+            } else {
+                citiesSet.add(temperatureData.get(i).getCity());
+            }
         }
 
         DataTable dataTable = DataTable.create();
@@ -81,7 +77,13 @@ public class LineChartImpl extends DockLayoutPanel {
 
         for (TemperatureData tempData : temperatureData) {
             int row = sortedDates.indexOf(tempData.getDate());
-            int col = sortedCities.indexOf(tempData.getCity()) + 1;
+            int col;
+            if (tempData.getCity().equals("")) {
+                col = sortedCities.indexOf(tempData.getCountry()) + 1;
+            } else {
+                col = sortedCities.indexOf(tempData.getCity()) + 1;
+            }
+
             dataTable.setValue(row, col, tempData.getAvgTemperature());
         }
 

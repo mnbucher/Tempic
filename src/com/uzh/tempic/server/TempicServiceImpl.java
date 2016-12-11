@@ -165,17 +165,50 @@ public class TempicServiceImpl extends RemoteServiceServlet implements TempicSer
             groupyBy = "YEAR(dt)";
         }
 
+        if(groupByCityOrCountry.equals("country")) {
+            String sqlQuery = "SELECT MAX(dt) AS dt, AVG(average_temperature) AS average_temperature, " +
+                    "AVG(average_temperature_uncertainty) as average_temperature_uncertainty, country " +
+                    "FROM temperature_data WHERE country IN  (" + inStatement + ") AND " +
+                    "YEAR(temperature_data.dt) BETWEEN '" + from + "' AND '" + to + "' AND " +
+                    "average_temperature_uncertainty <= '" + uncertainty + "'" +
+                    "GROUP BY " + groupyBy + ", country " +
+                    "ORDER BY country ASC, dt ASC " +
+                    "LIMIT " + limitTo;
+            ArrayList<TemperatureData> tempData = new ArrayList<>();
+            try {
+                Connection conn = getDBConnection();
+                ResultSet rs = conn.prepareStatement(sqlQuery).executeQuery();
+                while (rs.next()) {
+                    TemperatureData tempEntry = new TemperatureData(
+                            rs.getDate("dt"),
+                            rs.getDouble("average_temperature"),
+                            rs.getDouble("average_temperature_uncertainty"),
+                            "",
+                            rs.getString("country"),
+                            "",
+                            "");
+                    tempData.add(tempEntry);
+                }
+                rs.close();
+                conn.close();
+            } catch(TempicException e) {
+                throw e;
+            } catch(SQLException e) {
+                throw new TempicException("SQL Error: " + e.getMessage() + " \n QUERY: " + sqlQuery);
+            }
+            return tempData;
+        } else {
+            String sqlQuery = "SELECT MAX(dt) AS dt, AVG(average_temperature) AS average_temperature, " +
+                    "AVG(average_temperature_uncertainty) as average_temperature_uncertainty, city, country, latitude, " +
+                    "longitude  FROM temperature_data WHERE country IN  (" + inStatement + ") AND " +
+                    "YEAR(temperature_data.dt) BETWEEN '" + from + "' AND '" + to + "' AND " +
+                    "average_temperature_uncertainty <= '" + uncertainty + "'" +
+                    "GROUP BY " + groupyBy + ", city, country, latitude, longitude " +
+                    "ORDER BY country ASC, dt ASC " +
+                    "LIMIT " + limitTo;
 
-        String sqlQuery = "SELECT MAX(dt) AS dt, AVG(average_temperature) AS average_temperature, " +
-                "AVG(average_temperature_uncertainty) as average_temperature_uncertainty, city, country, latitude, " +
-                "longitude  FROM temperature_data WHERE country IN  (" + inStatement + ") AND " +
-                "YEAR(temperature_data.dt) BETWEEN '" + from + "' AND '" + to + "' AND " +
-                "average_temperature_uncertainty <= '" + uncertainty + "'" +
-                "GROUP BY " + groupyBy + ", city, country, latitude, longitude " +
-                "ORDER BY country ASC, dt ASC " +
-                "LIMIT " + limitTo;
-
-        return getTemperatureDataByQuery(sqlQuery);
+            return getTemperatureDataByQuery(sqlQuery);
+        }
     }
 
     /** Gets the average temperature values for each city for one year

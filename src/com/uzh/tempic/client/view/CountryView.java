@@ -224,7 +224,6 @@ public class CountryView extends Composite implements CountryPresenter.Display {
         }
         js();
     }
-
     public void setTemperatureData(ArrayList<TemperatureData> temperatureData) {
         if(temperatureData.size() == 0) { return; } // Don't update view if there's no data
         lineChartImpl.setTemperatureData(temperatureData);
