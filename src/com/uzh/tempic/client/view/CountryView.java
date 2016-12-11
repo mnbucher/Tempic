@@ -325,6 +325,9 @@ public class CountryView extends Composite implements CountryPresenter.Display {
      */
     private static native void js() /*-{
         $wnd.jQuery('.chosen-select').chosen();
+        $wnd.jQuery("#print-link" ).click(function() {
+            $wnd.print();
+        });
     }-*/;
 
     public Widget asWidget() {

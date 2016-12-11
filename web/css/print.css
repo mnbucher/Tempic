@@ -1,0 +1,8 @@
+@media print {
+    #tempic_wrapper #nav {
+        display: none;
+    }
+    #tempic_wrapper #print-link {
+        display: none;
+    }
+}

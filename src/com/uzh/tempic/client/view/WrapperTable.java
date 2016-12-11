@@ -1,7 +1,10 @@
 package com.uzh.tempic.client.view;
 
-import com.google.gwt.core.client.GWT;
-import com.google.gwt.user.client.ui.*;
+import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.Hyperlink;
+import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.VerticalPanel;
 
 public class WrapperTable extends HorizontalPanel {
 
@@ -57,7 +60,12 @@ public class WrapperTable extends HorizontalPanel {
 
         //if(currentView == "dashboard") { currentViewLabel = new Label("Dashboard"); }
         if(currentView == "worldmap") { currentViewLabel = new Label("Worldmap"); }
-        else if(currentView == "country") { currentViewLabel = new Label("Country"); }
+        else if(currentView == "country") {
+            currentViewLabel = new Label("Country");
+            HTML printLink = new HTML("<a href>Print</a>");
+            printLink.getElement().setId("print-link");
+            contentWrapperTable.add(printLink);
+        }
         else { currentViewLabel = new Label("City"); }
 
         currentViewLabel.getElement().setId("currentViewLabel");

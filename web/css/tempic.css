@@ -204,3 +204,28 @@ td.com-google-gwt-user-cellview-client-SimplePager-Style-pageDetails, td.com-goo
 #linechart-wrapper {
     margin: 1em 0 2em 0;
 }
+
+#print-link a {
+    position: absolute;
+    top: 17px;
+    right: 25px;
+    color: #fff;
+    text-decoration: none;
+    background-color: #0275d8;
+    border-color: #0275d8;
+    display: inline-block;
+    font-weight: 400;
+    line-height: 1.25;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    border: 1px solid transparent;
+    padding: .5rem 1rem;
+    font-size: 1rem;
+    border-radius: .25rem;
+}
+#print-link a:hover {
+    color: #fff;
+    background-color: #025aa5;
+    border-color: #01549b;
+}
