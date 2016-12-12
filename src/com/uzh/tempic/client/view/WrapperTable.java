@@ -59,14 +59,13 @@ public class WrapperTable extends HorizontalPanel {
         Label currentViewLabel;
 
         //if(currentView == "dashboard") { currentViewLabel = new Label("Dashboard"); }
-        if(currentView == "worldmap") { currentViewLabel = new Label("Worldmap"); }
-        else if(currentView == "country") {
-            currentViewLabel = new Label("Country");
+        if(currentView == "worldmap") { currentViewLabel = new Label("Exploring the Worldmap"); }
+        else {
+            currentViewLabel = new Label("Analyzing the Data");
             HTML printLink = new HTML("<a href>Print</a>");
             printLink.getElement().setId("print-link");
             contentWrapperTable.add(printLink);
         }
-        else { currentViewLabel = new Label("City"); }
 
         currentViewLabel.getElement().setId("currentViewLabel");
         contentWrapperTable.add(currentViewLabel);

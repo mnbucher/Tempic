@@ -127,11 +127,11 @@ public class GoogleMap extends Composite {
 
         for (TemperatureDataComparison tempComp : temperatureData) {
             String infoWindow = "<strong>" + tempComp.getCity() + "</strong> <br/> " +
-                    "Temperature Difference: " + tempComp.getFormattedTemperatureDifferencePercent() + "<br />" +
-                    "Absolute Temperature Difference: " + tempComp.getTemperatureDifference() + "<br />" +
-                    "Start Year: " + tempComp.getYearA() + " - " + tempComp.getAvgTemperatureA() + " °C</br>" +
-                    "End Year: " + tempComp.getYearB() + " - " + tempComp.getAvgTemperatureB() + " °C</br>" +
-                    "Timespan: " + tempComp.getYearDifference() + " years";
+                    "<strong>Temp. Difference: </strong>" + tempComp.getFormattedTemperatureDifferencePercent() + "<br />" +
+                    "<strong>Absolute Temp. Difference: </strong>" + tempComp.getTemperatureDifference() + "<br />" +
+                    "<strong>Start Year: </strong>" + tempComp.getYearA() + ", " + tempComp.getAvgTemperatureA() + " °C</br>" +
+                    "<strong>End Year: </strong>" + tempComp.getYearB() + ", " + tempComp.getAvgTemperatureB() + " °C</br>" +
+                    "<strong>Timespan: </strong>" + tempComp.getYearDifference() + " years";
 
             HTML infoWindowHTML = new HTML(infoWindow);
 

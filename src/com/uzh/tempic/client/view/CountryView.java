@@ -26,6 +26,8 @@ public class CountryView extends Composite implements CountryPresenter.Display {
     private VerticalPanel contentWrapperTable;
     private VerticalPanel countryTable;
     private HorizontalPanel filterSection;
+    private HorizontalPanel multiSelectLabelSection;
+    private HorizontalPanel multiSelectSection;
     private CellTable temperatureDataTable;
     private ListDataProvider<TemperatureData> dataProvider;
     private ListBox countryListBox;
@@ -58,6 +60,17 @@ public class CountryView extends Composite implements CountryPresenter.Display {
         filterSection = new HorizontalPanel();
         filterSection.setStyleName("filterSection");
 
+        multiSelectSection = new HorizontalPanel();
+        multiSelectSection.setStyleName("multiSelectSection");
+
+        // Add Table for Multiselect LABELS
+        multiSelectLabelSection = new HorizontalPanel();
+        multiSelectLabelSection.setStyleName("multiSelectLabelSection");
+        Label countryLabel = new Label("Countries");
+        Label cityLabel = new Label("City");
+        multiSelectLabelSection.add(countryLabel);
+        multiSelectLabelSection.add(cityLabel);
+
         countryListBox = new ListBox();
         countryListBox.setMultipleSelect(true);
         countryListBox.setStyleName("chosen-select");
@@ -87,20 +100,22 @@ public class CountryView extends Composite implements CountryPresenter.Display {
         uncertaintyListBox.addItem("< 5", "5");
         uncertaintyListBox.addItem("< 3", "3");
 
-        Label filterAggregateDate = new Label ("Aggregate By:");
+        Label filterAggregateDate = new Label ("Aggregation:");
         aggregateListBox = new ListBox();
         aggregateListBox.addItem("Month", "month");
         aggregateListBox.addItem("Year", "year");
 
-        Label filterCityOrCountry = new Label ("Group By:");
+        Label filterCityOrCountry = new Label ("Group:");
         groupByCityOrCountryListBox = new ListBox();
         groupByCityOrCountryListBox.addItem("Country", "country");
         groupByCityOrCountryListBox.addItem("City", "city");
 
         filterBtn = new Button("Filter");
+        filterBtn.setStyleName("filter-button");
 
-        filterSection.add(countryListBox);
-        filterSection.add(cityListBox);
+        multiSelectSection.add(countryListBox);
+        multiSelectSection.add(cityListBox);
+
         filterSection.add(filterYearStart);
         filterSection.add(fromYearListBox);
         filterSection.add(filterYearEnd);
@@ -114,6 +129,8 @@ public class CountryView extends Composite implements CountryPresenter.Display {
         filterSection.add(filterBtn);
 
         filterSection.getElement().setId("country_filterSection");
+        countryTable.add(multiSelectLabelSection);
+        countryTable.add(multiSelectSection);
         countryTable.add(filterSection);
         countryTable.setSize("100%","auto");
         lineChartImpl = new LineChartImpl();
