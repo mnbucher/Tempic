@@ -421,7 +421,6 @@ public class Slider extends Widget
 
             // Get the options for this slider (specified above)
             var opt = options;
-            console.log(opt);
             // Get the number of possible values
             var vals = opt.max - opt.min;
 

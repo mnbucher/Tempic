@@ -89,6 +89,7 @@ public class GoogleMap extends Composite {
         circleOpts.setMap(mapWidget);
 
         final Circle circle = Circle.newInstance(circleOpts);
+
         circle.setMap(mapWidget);
         markerList.add(circle);
 
