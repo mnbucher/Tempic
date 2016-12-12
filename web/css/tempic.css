@@ -66,6 +66,7 @@ strong,b {
     text-align: center;
     color: white;
     text-shadow: 0px 0px 10px black;
+    font-family: 'Source Sans Pro',sans-serif;
 }
 
 #tempic_app, #tempic_wrapper, #tempic {
