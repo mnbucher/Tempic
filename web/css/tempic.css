@@ -28,7 +28,7 @@ strong,b {
 
 #sliderwrapper {
     position: absolute;
-    bottom: 30px;
+    bottom: 50px;
     left: 10px;
     right: 100px;
     box-sizing: border-box;
@@ -56,6 +56,16 @@ strong,b {
 .slider-values {
     position: absolute;
     top: 4px;
+}
+
+#slider label {
+    position: absolute;
+    width: 20px;
+    margin-top: 20px;
+    margin-left: -10px;
+    text-align: center;
+    color: white;
+    text-shadow: 0px 0px 10px black;
 }
 
 #tempic_app, #tempic_wrapper, #tempic {

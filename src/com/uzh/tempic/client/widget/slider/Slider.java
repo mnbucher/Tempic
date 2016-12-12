@@ -414,7 +414,30 @@ public class Slider extends Widget
             x.@com.uzh.tempic.client.widget.slider.Slider::fireOnStopEvent(Lcom/google/gwt/user/client/Event;Lcom/google/gwt/core/client/JsArrayInteger;)(event, ui.values);
         };
         
-        $wnd.$("#" + id).slider(options);
+        $wnd.$("#" + id).slider(options).each(function() {
+
+            // Add labels to slider whose values
+            // are specified by min, max
+
+            // Get the options for this slider (specified above)
+            var opt = options;
+            console.log(opt);
+            // Get the number of possible values
+            var vals = opt.max - opt.min;
+
+            // Position the labels
+            for (var i = 0; i <= vals; i+=20) {
+
+                // Create a new element and position it with percentages
+                var el = $wnd.$('<label>' + (i + opt.min) + '</label>').css('left', (i/vals*100) + '%');
+
+                // Add the element inside #slider
+                $wnd.$("#" + id).append(el);
+
+            }
+
+        });
+
     }-*/;
 
 
