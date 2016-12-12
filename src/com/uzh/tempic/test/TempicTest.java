@@ -2,14 +2,23 @@ package com.uzh.tempic.test;
 
 import com.google.gwt.junit.client.GWTTestCase;
 
+import org.junit.runner.RunWith;
+import org.junit.runners.Suite;
+import org.junit.runners.Suite.SuiteClasses;
+
+@RunWith(Suite.class)
+@SuiteClasses({
+        CityTest.class,
+        CountryTest.class,
+        GoogleMapTest.class,
+        TemperatureDataTest.class,
+        TemperatureDataComparisonTest.class,
+        TempicServiceImplTest.class,
+})
+
 /**
- * Work in Progress - Test not completed because classes are not done yet
+ * Test Suite which executes all our tests
  */
-public class TempicTest extends GWTTestCase {
-    public String getModuleName() {
-        return "com.uzh.tempic.Tempic";
-    }
-    //public void testSimple() {
-        //assertTrue(true);
-   // }
+public class TempicTest {
+
 }

@@ -47,6 +47,10 @@ public class TemperatureDataComparison extends TemperatureData {
         return Math.abs((this.getAvgTemperatureB() / this.getAvgTemperatureA()) - 1);
     }
 
+    /**
+     * Returns the formatted temperature difference
+     * @return String the formatted temperature difference
+     */
     public String getFormattedTemperatureDifferencePercent() {
         double roundedValue = Math.round(this.getTemperatureDifferencePercent() * 100.0) / 100.0;
         roundedValue = roundedValue * 100; // Make it appear as percent value
