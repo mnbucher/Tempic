@@ -2,6 +2,10 @@
 
 Project for the Software Engineering lecture in Autumn Semester 2016 @ University of Zurich (UZH).
 
+## Final project result
+
+<img src="docs/tempic_final.png" width="100%" alt="This is tempic. An awesome tool to experience Temperature changes through time." /> 
+
 ## Contributors
 
 * **Martin Bucher** - [mnbucher](https://github.com/mnbucher)
@@ -10,10 +14,6 @@ Project for the Software Engineering lecture in Autumn Semester 2016 @ Universit
 * **Robin Kaufmann** – [relaxia](https://github.com/Relaxia)
 
 See also the list of [contributors](https://github.com/mnbucher/olat/contributors) who participated in this project.
-
-## Final project result
-
-<img src="docs/tempic_final.png" width="100%" alt="This is tempic. An awesome tool to experience Temperature changes through time." /> 
 
 ## Technical Stuff
 ### MYSQL Connection
