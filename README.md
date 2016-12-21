@@ -2,9 +2,15 @@
 
 Project for the Software Engineering lecture in Autumn Semester 2016 @ University of Zurich (UZH).
 
+The app was built on Google's Web Toolkit Framework (GWT). See [here](http://www.gwtproject.org) for more details about GWT.
+
 ## Final project result
 
 <img src="docs/tempic_final.jpg" width="100%" alt="This is tempic. An awesome tool to experience Temperature changes through time." /> 
+
+## Live Demo
+
+Our app is live on Google's App Engine: [www.tempic-uzh.appspot.com](http://www.tempic-uzh.appspot.com)
 
 ## Contributors
 
