@@ -4,7 +4,7 @@ Project for the Software Engineering lecture in Autumn Semester 2016 @ Universit
 
 ## Final project result
 
-<img src="docs/tempic_final.png" width="100%" alt="This is tempic. An awesome tool to experience Temperature changes through time." /> 
+<img src="docs/tempic_final.jpg" width="100%" alt="This is tempic. An awesome tool to experience Temperature changes through time." /> 
 
 ## Contributors
 
