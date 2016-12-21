@@ -1,16 +1,31 @@
-#Tempic Readme
+#Tempic
 
-## MYSQL Connection
+Project for the Software Engineering lecture in Autumn Semester 2016 @ University of Zurich (UZH).
+
+## Contributors
+
+* **Martin Bucher** - [mnbucher](https://github.com/mnbucher)
+* **Sebastian Richner** – [SRichner](https://github.com/SRichner)
+* **Michael Ziörjen** – [miczed](https://github.com/miczed)
+* **Robin Kaufmann** – [relaxia](https://github.com/Relaxia)
+
+See also the list of [contributors](https://github.com/mnbucher/olat/contributors) who participated in this project.
+
+## Final project result
+
+<img src="docs/tempic_final.png" width="100%" alt="This is tempic. An awesome tool to experience Temperature changes through time." /> 
+
+## Technical Stuff
+### MYSQL Connection
 In order to connect to the Google Cloud SQL Server when running the app locally you need to be in the UZH IP Adress range.
 We restricted the access to the server to prevent other users from querying our database.
 So any IP in the range between **89.206.0.0** and **89.206.255.255** is able to query the database (given the correct credentials were used.)
 
-## Edit Database
+### Edit Database
 In order to edit the database you'll need a MySQL Client ([Sequel Pro Mac](https://www.sequelpro.com/) or [MySQL Workbench Mac / Windows](https://dev.mysql.com/downloads/workbench/)).
 The access credentials are stored in the dropbox under **passwords.txt**. 
 
-
-## Database Structure
+### Database Structure
 The database currently only has one table with the following columns:
 ![alt text](https://raw.githubusercontent.com/mnbucher/Tempic/master/docs/database_structure.png "Tempic Database Structure")
 
