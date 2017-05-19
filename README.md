@@ -10,7 +10,7 @@ The app was built on Google's Web Toolkit Framework (GWT). See [here](http://www
 
 ## Live Demo
 
-Our app is live on Google's App Engine: [www.tempic-uzh.appspot.com](http://www.tempic-uzh.appspot.com)
+~~Our app is live on Google's App Engine: [www.tempic-uzh.appspot.com](http://www.tempic-uzh.appspot.com)
 
 ## Contributors
 
