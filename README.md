@@ -1,4 +1,4 @@
-#Tempic
+# Tempic
 
 Project for the Software Engineering lecture in Autumn Semester 2016 @ University of Zurich (UZH).
 
